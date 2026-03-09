@@ -1,67 +1,81 @@
 {% extends "base.html" %}
 {% block content %}
+{% set hero = homepage.hero %}
 <section class="astral-home">
   <div class="astral-home__topline">
-    <span>✦ Willkommen im Astralia Netzwerk</span>
+    <span>✦ {{ SITE_NAME }}</span>
   </div>
 
   <header class="astral-hero-panel">
     <p class="astral-hero-panel__eyebrow">VIRTUAL TALENT CONSTELLATION</p>
     <h1 class="astral-logo-word">ASTRALIA</h1>
-    <p class="astral-hero-panel__sub">DEUTSCHES VTUBER NETZWERK</p>
+    {% if hero.kicker %}<p class="astral-hero-panel__sub">{{ hero.kicker }}</p>{% endif %}
     <div class="astral-hero-panel__stats">
       <span>🔴 {{ live_profiles|length }} Live jetzt</span>
       <span>{{ all_talents|length }} Mitglieder</span>
-      <span>Gegründet 2023</span>
+    </div>
+    {% if hero.subtitle_html %}
+    <div class="astral-hero-copy">{{ hero.subtitle_html }}</div>
+    {% endif %}
+    <div class="astral-actions">
+      {% if hero.primary_button.label and hero.primary_button.url %}
+      <a class="btn" href="{{ hero.primary_button.url }}">{{ hero.primary_button.label }}</a>
+      {% endif %}
+      {% if hero.secondary_button.label and hero.secondary_button.url %}
+      <a class="btn ghost" href="{{ hero.secondary_button.url }}">{{ hero.secondary_button.label }}</a>
+      {% endif %}
+      {% if hero.tertiary_button.label and hero.tertiary_button.url %}
+      <a class="btn ghost" href="{{ hero.tertiary_button.url }}" target="_blank" rel="noopener">{{ hero.tertiary_button.label }}</a>
+      {% endif %}
     </div>
   </header>
 
-  <nav class="astral-tabnav" aria-label="Hauptnavigation">
-    <a href="{{ url_for('index') }}">Startseite</a>
-    <a href="{{ url_for('talents') }}">Streamer</a>
-    <a href="{{ url_for('projects') }}">Projekte</a>
-    <a href="{{ url_for('news') }}">Nachrichten</a>
-    <a href="{{ url_for('partners') }}">Partner</a>
-    <a href="{{ url_for('about') }}">Über uns</a>
-    <a href="{{ url_for('contact') }}">Kontakt</a>
+  <nav class="astral-tabnav" aria-label="Homepage Bereiche">
+    {% for section in home_sections %}
+    <a href="#home-{{ section.id }}">{{ section.heading or section.id }}</a>
+    {% endfor %}
   </nav>
 
   <div class="astral-grid">
     <aside class="astral-col astral-col--left">
-      <section class="astral-widget">
-        <h2>Mein Profil</h2>
-        <div class="astral-profile">
-          <div class="astral-profile__avatar">🛰️</div>
-          <p class="astral-profile__name">Sternenjäger99</p>
-          <p class="astral-profile__tag">auf der Suche nach Galaxien</p>
-        </div>
-      </section>
-
-      <section class="astral-widget">
-        <h2>Jetzt Online</h2>
+      <section id="home-live" class="astral-widget">
+        <h2>{{ section_lookup.get('live', {}).get('heading', 'Jetzt Online') }}</h2>
         <ul class="astral-list">
           {% for talent in online_now %}
-          <li><span class="dot-live"></span>{{ talent.name | replace('\\', '') }}</li>
+          <li><span class="dot-live"></span><a href="https://www.twitch.tv/{{ talent.slug }}" target="_blank" rel="noopener">{{ talent.name | replace('\\', '') }}</a></li>
           {% else %}
           <li>Aktuell niemand live</li>
           {% endfor %}
         </ul>
       </section>
 
-      <section class="astral-widget">
-        <h2>Dein Rang</h2>
-        <p class="astral-rank">⭐ Sternenstaub</p>
+      <section id="home-partners" class="astral-widget">
+        <h2>{{ section_lookup.get('partners', {}).get('heading', 'Partner') }}</h2>
+        <ul class="astral-list">
+          {% for partner in partners[:6] %}
+          <li><a href="{{ partner.url or '#' }}" {% if partner.url %}target="_blank" rel="noopener"{% endif %}>{{ partner.name }}</a></li>
+          {% else %}
+          <li>Keine Partner eingetragen.</li>
+          {% endfor %}
+        </ul>
       </section>
     </aside>
 
     <main class="astral-col astral-col--center">
-      <section class="astral-widget astral-featured">
-        <h2>Aktuell vorgestellt</h2>
-        <h3>Willkommen in der Galaxis, Sternenreisende!</h3>
-        <p>Astralia ist Deutschlands führendes VTuber-Netzwerk – ein Ort für Fans, Streamer und kreative Community-Events.</p>
-        <div class="astral-actions">
-          <a class="btn" href="{{ url_for('talents') }}">Jetzt entdecken</a>
-          <a class="btn ghost" href="{{ url_for('contact') }}">Partner werden</a>
+      <section id="home-projects" class="astral-widget astral-featured">
+        <h2>{{ section_lookup.get('projects', {}).get('heading', 'Projekte') }}</h2>
+        <div class="astral-live-grid">
+          {% for item in projects[:3] %}
+          <article class="astral-live-card">
+            <a href="{{ url_for('project_detail', slug=item.slug) }}">
+              <img src="{{ item.image_url or item.image }}" alt="{{ item.title }}">
+              <strong>{{ item.title }}</strong>
+              <small>{{ item.summary or '' }}</small>
+            </a>
+          </article>
+          {% else %}
+          <article class="astral-live-card astral-live-card--empty">Keine Projekte verfügbar.</article>
+          {% endfor %}
         </div>
       </section>
 
@@ -82,8 +96,8 @@
         </div>
       </section>
 
-      <section class="astral-widget">
-        <h2>Forum – Neueste Beiträge</h2>
+      <section id="home-news" class="astral-widget">
+        <h2>{{ section_lookup.get('news', {}).get('heading', 'Neuigkeiten') }}</h2>
         <table class="astral-forum-table">
           <thead>
             <tr><th>Thema</th><th>Antworten</th><th>Aufrufe</th><th>Zuletzt</th></tr>
@@ -105,25 +119,16 @@
     </main>
 
     <aside class="astral-col astral-col--right">
-      <section class="astral-widget">
-        <h2>Kommende Events</h2>
+      <section id="home-calendar" class="astral-widget">
+        <h2>{{ section_lookup.get('calendar', {}).get('heading', 'Kommende Events') }}</h2>
         <ul class="astral-list">
           {% for event in upcoming_events %}
           <li>
-            <strong>{{ event.title or 'Event' }}</strong>
-            <small>{{ event.date_label or event.start or '' }}</small>
+            <strong>{{ event.label or 'Event' }}</strong>
+            <small>{{ event.date }}{% if event.time_display %} · {{ event.time_display }}{% endif %}</small>
           </li>
           {% else %}
           <li>Keine Events geplant.</li>
-          {% endfor %}
-        </ul>
-      </section>
-
-      <section class="astral-widget">
-        <h2>Shoutbox</h2>
-        <ul class="astral-list astral-list--chat">
-          {% for item in news %}
-          <li><strong>User{{ loop.index }}:</strong> {{ item.title }}</li>
           {% endfor %}
         </ul>
       </section>
@@ -133,6 +138,8 @@
         <ul class="astral-list">
           {% for link in FOOTER.socials %}
           <li><a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}</a></li>
+          {% else %}
+          <li>Keine Social-Links konfiguriert.</li>
           {% endfor %}
         </ul>
       </section>

@@ -4785,6 +4785,7 @@ def index():
     homepage_config = _prepare_homepage_for_display(get_homepage_settings())
     sections = [section for section in homepage_config.get("sections", []) if section.get("enabled", True)]
     sections.sort(key=lambda item: item.get("order", 0))
+    section_lookup = {section.get("id"): section for section in sections if section.get("id")}
     all_talents = sorted(
         [
             {"slug": slug, "name": (member.get("name") or slug)}
@@ -4810,6 +4811,7 @@ def index():
         partners=partners,
         homepage=homepage_config,
         home_sections=sections,
+        section_lookup=section_lookup,
         live_profiles=live_profiles,
         all_talents=all_talents,
         online_now=online_now,

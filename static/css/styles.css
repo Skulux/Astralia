@@ -1156,3 +1156,6 @@ h1,h2,h3{
   .astral-tabnav a{flex:1 1 calc(50% - 8px);text-align:center}
   .astral-live-grid{grid-template-columns:1fr}
 }
+
+.astral-hero-copy{max-width:820px;margin:14px auto 0;color:#b7c9ea;font-size:1rem;line-height:1.6}
+.astral-hero-copy p{margin:.4rem 0}
