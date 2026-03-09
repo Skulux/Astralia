@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page shop-detail">
+  <a class="back-link" href="{{ url_for('shop') }}">← Zurück zum Shop</a>
+  <div class="shop-detail-hero">
+    {% if item.image %}
+    <div class="shop-detail-media {% if item.sold_out %}is-sold-out{% endif %}">
+      <img src="{{ item.image }}" alt="{{ item.title }}">
+      {% if item.sold_out %}
+      <span class="shop-card-status">Ausverkauft</span>
+      {% elif item.effect_label %}
+      <span class="shop-card-effect">{{ item.effect_label }}</span>
+      {% endif %}
+    </div>
+    {% endif %}
+    <div class="shop-detail-content">
+      <header class="shop-detail-header">
+        <div class="shop-detail-tags">
+          {% if item.badge %}
+          <span class="shop-badge">{{ item.badge }}</span>
+          {% endif %}
+          {% if item.effect_label and not item.sold_out %}
+          <span class="shop-effect-tag">{{ item.effect_label }}</span>
+          {% endif %}
+        </div>
+        <h1>{{ item.title }}</h1>
+        {% if item.streamer %}
+        <p class="shop-detail-streamer">Ein Produkt von {{ item.streamer }}</p>
+        {% endif %}
+      </header>
+      <div class="shop-price-block shop-price-block--hero">
+        {% if item.original_price %}
+        <span class="shop-price-old">{{ item.original_price }}</span>
+        {% endif %}
+        {% if item.price %}
+        <span class="shop-price-current">{{ item.price }}</span>
+        {% endif %}
+        {% if item.discount_percent %}
+        <span class="shop-price-discount">{{ item.discount_percent }}</span>
+        {% endif %}
+      </div>
+      {% if item.stock is not none %}
+      <p class="shop-stock-info {% if item.sold_out %}sold-out{% endif %}">
+        {% if item.sold_out %}Ausverkauft{% else %}Noch {{ item.stock }} verfügbar{% endif %}
+      </p>
+      {% endif %}
+      {% if item.est_arrival %}
+      <p class="shop-detail-arrival">{{ item.est_arrival }}</p>
+      {% endif %}
+      {% if item.description %}
+      <div class="shop-detail-description">{{ item.description|nl2br }}</div>
+      {% endif %}
+      {% set initial_price_display = item.price if item.price else '€0,00' %}
+      {% set purchase_max = 0 %}
+      {% if item.max_per_order %}{% set purchase_max = item.max_per_order %}{% endif %}
+      {% if item.stock is not none %}
+        {% if purchase_max %}
+          {% if item.stock < purchase_max %}{% set purchase_max = item.stock %}{% endif %}
+        {% else %}
+          {% set purchase_max = item.stock %}
+        {% endif %}
+      {% endif %}
+      <div
+        class="shop-configurator"
+        data-purchase-widget
+        data-base-price="{{ '%.2f'|format(item.price_value) if item.price_value is not none else '0.00' }}"
+        data-currency-symbol="€"
+        {% if item.stock is not none %}data-stock="{{ item.stock }}"{% endif %}
+      >
+        {% if item.options %}
+        <fieldset class="shop-variant-fieldset">
+          <legend>Variante wählen</legend>
+          <div class="shop-option-choices">
+            {% for option in item.options %}
+            <label class="shop-option-choice">
+              <input
+                type="radio"
+                name="shop-option-choice"
+                value="{{ option.id }}"
+                data-option-price="{{ '%.2f'|format(option.price_value) if option.price_value is not none else '' }}"
+                {% if loop.first %}checked{% endif %}
+              >
+              <span class="shop-option-choice-body">
+                <span class="shop-option-choice-title">{{ option.label }}</span>
+                {% if option.note %}
+                <span class="shop-option-choice-note">{{ option.note }}</span>
+                {% endif %}
+                {% if option.price_display %}
+                <span class="shop-option-choice-price">{{ option.price_display }}</span>
+                {% endif %}
+              </span>
+            </label>
+            {% endfor %}
+          </div>
+        </fieldset>
+        {% endif %}
+        <div class="shop-quantity-row">
+          <label>
+            <span>Menge</span>
+            <input
+              type="number"
+              value="1"
+              min="1"
+              {% if purchase_max %}max="{{ purchase_max }}" data-max="{{ purchase_max }}"{% endif %}
+              {% if item.stock is not none %}data-stock="{{ item.stock }}"{% endif %}
+              data-quantity
+              {% if item.sold_out %}disabled{% endif %}
+            >
+          </label>
+          <div class="shop-price-summary">
+            <div>
+              <span class="shop-summary-label">Einzelpreis:</span>
+              <span class="shop-summary-value" data-unit-price>{{ initial_price_display }}</span>
+            </div>
+            <div>
+              <span class="shop-summary-label">Gesamt:</span>
+              <strong class="shop-summary-total" data-total-price>{{ initial_price_display }}</strong>
+            </div>
+          </div>
+        </div>
+        {% if item.max_per_order %}
+        <p class="shop-limit-info">Maximal {{ item.max_per_order }} Stück pro Bestellung.</p>
+        {% endif %}
+        {% if item.stock is not none and not item.sold_out %}
+        <p class="shop-stock-hint">Begrenzter Vorrat – sichere dir dein Exemplar frühzeitig.</p>
+        {% endif %}
+      </div>
+      {% if item.purchase_url and not item.sold_out %}
+      <div class="shop-detail-actions">
+        <a class="btn" href="{{ item.purchase_url }}" target="_blank" rel="noopener">Jetzt bestellen</a>
+      </div>
+      {% elif item.sold_out %}
+      <div class="shop-detail-actions">
+        <span class="btn disabled">Aktuell ausverkauft</span>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if related %}
+  <section class="shop-related">
+    <h2>Weitere Highlights</h2>
+    <div class="cards shop-items">
+      {% for other in related %}
+      <article class="card shop-card {% if other.effect_class %}{{ other.effect_class }}{% endif %} {% if other.sold_out %}is-sold-out{% endif %}">
+        {% if other.image %}
+        <a class="shop-card-image" href="{{ url_for('shop_detail', slug=other.slug) }}">
+          <img src="{{ other.image }}" alt="{{ other.title }}">
+          {% if other.sold_out %}
+          <span class="shop-card-status">Ausverkauft</span>
+          {% elif other.effect_label %}
+          <span class="shop-card-effect">{{ other.effect_label }}</span>
+          {% endif %}
+        </a>
+        {% endif %}
+        <div class="card-body">
+          <div class="shop-card-header">
+            <h3>{{ other.title }}</h3>
+            <div class="shop-card-badges">
+              {% if other.badge %}
+              <span class="shop-badge">{{ other.badge }}</span>
+              {% endif %}
+              {% if other.effect_label and not other.sold_out and not other.image %}
+              <span class="shop-effect-tag">{{ other.effect_label }}</span>
+              {% endif %}
+            </div>
+          </div>
+          {% if other.streamer %}
+          <p class="shop-card-streamer">Von {{ other.streamer }}</p>
+          {% endif %}
+          <div class="shop-price-block">
+            {% if other.original_price %}
+            <span class="shop-price-old">{{ other.original_price }}</span>
+            {% endif %}
+            {% if other.price %}
+            <span class="shop-price-current">{{ other.price }}</span>
+            {% endif %}
+            {% if other.discount_percent %}
+            <span class="shop-price-discount">{{ other.discount_percent }}</span>
+            {% endif %}
+          </div>
+          {% if other.est_arrival %}
+          <p class="shop-card-arrival">{{ other.est_arrival }}</p>
+          {% endif %}
+          <a class="btn small" href="{{ url_for('shop_detail', slug=other.slug) }}">Details ansehen</a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</section>
+{% endblock %}

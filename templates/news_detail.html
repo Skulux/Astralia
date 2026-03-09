@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% import "partials/content_blocks.html" as content_blocks %}
+{% block content %}
+<section class="page article-detail">
+  <div class="article-detail__intro">
+    <a class="article-detail__back" href="{{ url_for('news') }}">← Zurück zu allen Neuigkeiten</a>
+  </div>
+  <article class="article-detail__content">
+    <header class="article-detail__header">
+      <div class="article-detail__heading">
+        <h1 class="article-detail__title">{{ article.title }}</h1>
+        {% if article.date %}<p class="article-detail__meta">{{ article.date }}</p>{% endif %}
+        {% if article.summary %}
+        <div class="article-detail__summary">{{ article.summary | markdown }}</div>
+        {% endif %}
+      </div>
+      {% set hero_image = article.image_url or article.image %}
+      {% if hero_image %}
+      <figure class="article-detail__hero">
+        <img src="{{ hero_image }}" alt="{{ article.title }}">
+      </figure>
+      {% endif %}
+    </header>
+    {% if article.body %}
+    <div class="article-detail__body">{{ article.body | markdown }}</div>
+    {% endif %}
+    {{ content_blocks.render(article.blocks) }}
+  </article>
+
+  {% if related %}
+  <section class="article-related">
+    <h2>Weitere Neuigkeiten</h2>
+    <div class="cards">
+      {% for item in related %}
+      <article class="card">
+        {% set card_image = item.image_url or item.image %}
+        {% if card_image %}<img src="{{ card_image }}" alt="{{ item.title or 'Newsbild' }}">{% endif %}
+        <div class="card-body">
+          <h3>{{ item.title }}</h3>
+          {% if item.date %}<p class="muted">{{ item.date }}</p>{% endif %}
+          {% if item.summary %}<div class="card-summary">{{ item.summary | markdown }}</div>{% endif %}
+          <a class="btn small" href="{{ url_for('news_detail', slug=item.slug) }}">Zum Artikel</a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</section>
+{% endblock %}

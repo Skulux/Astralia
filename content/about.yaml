@@ -1,0 +1,122 @@
+hero:
+  title: Über Lumynaria
+  lead: Lumynaria ist ein VTuber Hub für deutschsprachige VTuber*innen.
+  body: Tauche ein in die Konstellation, in der Kreativität auf Gemeinschaft trifft.
+    Bei Lumynaria vereinen wir talentierte VTuber, Traumgestalter und Sternenjäger
+    unter einem strahlenden Dach. Hier findest du lebendige Streams, beeindruckende
+    Kunst, nächtliche Lacher und eine Community, die in allen Farben des Universums
+    leuchtet.
+  image: uploads/about-hero-d038aef176df4eba97b465160d519e38.png
+  image_alt: Illustration eines galaktischen Fensters mit einem funkelnden Stern
+  image_scale: 40
+goals:
+- title: Community Auf- und Ausbau
+  description: "Wir möchten durch regelmäßige Events, Livestreams, Meet-ups und gemeinsame\
+    \ Aktionen Momente schaffen, die Nähe und Gemeinschaft fördern.\r\n\r\nDabei gestalten\
+    \ wir einen Ort, an dem sich neue VTuber*innen frei entfalten, vernetzen und gemeinsam\
+    \ träumen können ein Raum, in dem Zusammenarbeit, Kreativität und Freundschaft\
+    \ wachsen dürfen."
+- title: Ein Raum zum Wohlfühlen
+  description: Wir möchten einen Ort schaffen, an dem Menschen einfach sie selbst
+    sein können frei von Druck, Vorurteilen und Lärm. Ein Raum, der Geborgenheit,
+    Freude und Verbindung schenkt online sowie im Herzen.
+- title: Merchandising
+  description: Wir möchten ein zentrales Merchandising-System aufbauen und betreiben,
+    das unseren Talenten ermöglicht, ihre eigenen Produkte mit Leichtigkeit und Professionalität
+    anzubieten ohne sich um Logistik oder Versand sorgen zu müssen.
+offer:
+- title: Behalte deine IP
+  description: Du behältst 100 % deiner Kreativität und Inhalte alles, was du erstellst,
+    gehört dir, und du verdienst alles auf deinen persönlichen Kanälen.
+- title: Creator Support
+  description: Wir helfen dir, dich zu vernetzen, Projekte zu koordinieren und deine
+    Ideen umzusetzen.
+- title: Community Support
+  description: Wir fördern den Dialog zwischen dir und deiner Community durch regelmäßige
+    Q&A-Sessions, Umfragen und interaktive Events.
+- title: Collabs & Events
+  description: Ob saisonale Events wie Weihnachten oder Sommerfest, Community-Charity
+    oder große Collabs wir helfen bei Planung, Organisation und Umsetzung. Jährliche
+    Events innerhalb des Teams, seih es Collab Tage oder Charity-/ Events finden auch
+    unter der Planung von Lumynaria statt!
+faq:
+- question: Was sind VTuber?
+  answer: VTuber sind virtuelle YouTuber oder Streamer, die digitale Avatare anstelle
+    ihres realen Aussehens verwenden. Diese Avatare werden meist mit 2D-, 3D-Modellen
+    und als PNG dargestellt und bewegen sich mithilfe von Motion-Tracking, Voice Tracking
+    & Gesichtserkennung synchron zu den Bewegungen und Emotionen der Person hinter
+    dem Avatar. VTuber treten auf Plattformen wie YouTube, Twitch oder TikTok auf
+    und bieten dort Inhalte wie Gaming, Musik, Unterhaltung usw. an.
+- question: Was ist ein VTuber Hub?
+  answer: Ein VTuber Hub ist eine Gemeinschaft oder Plattform, die VTuber miteinander
+    verbindet und ihnen Austausch, Zusammenarbeit und gegenseitige Unterstützung ermöglicht.
+    Unser VTuber Hub ist frei und unabhängig aufgebaut. Jeder VTuber behält sein eigenes
+    Modell, seine Identität und volle kreative Kontrolle. Es werden keine Einnahmen
+    abgezogen oder verwaltet alles, was ein VTuber verdient, bleibt vollständig bei
+    ihm selbst. Der Hub dient lediglich als Netzwerk, um gemeinsam zu wachsen, Erfahrungen
+    zu teilen, Projekte / Collabs zu planen und eine starke, unterstützende Community
+    zu schaffen, ohne finanzielle Verpflichtungen oder Abhängigkeiten.
+- question: Unterschied zwischen VTuber Hub und Agency
+  answer: "Der wichtigste Unterschied zwischen unserem VTuber Hub und einer klassischen\
+    \ VTuber-Agentur liegt in der Freiheit und Selbstständigkeit der Mitglieder. Eine\
+    \ Agency funktioniert in der Regel wie ein Managementunternehmen. Sie stellt oft\
+    \ die Avatare, übernimmt Marketing, Planung und teilweise auch technische Unterstützung.\
+    \ Dafür behält sie jedoch meist einen Anteil der Einnahmen, legt Regeln für Auftritte\
+    \ und Inhalte fest und hat oft Mitspracherecht bei Entscheidungen über das Auftreten\
+    \ oder die Zusammenarbeit des VTubers.\r\n\r\nUnser VTuber Hub dagegen ist keine\
+    \ Agentur, sondern eine offene Gemeinschaft. Jeder VTuber bleibt vollkommen unabhängig,\
+    \ behält sein eigenes Modell, seine Einnahmen und seine kreative Kontrolle. Es\
+    \ gibt keine vertragliche Bindung und keine Gewinnbeteiligung. Stattdessen steht\
+    \ der Austausch, die gegenseitige Unterstützung und die gemeinsame Weiterentwicklung\
+    \ im Vordergrund. Der Hub bietet Raum für Kooperation, Inspiration und gemeinsames\
+    \ Wachstum ohne Verpflichtungen, Einschränkungen oder finanzielle Abgaben."
+- question: Wie kann ich ein Teil von Lumynaria werden?
+  answer: Um Teil von Lumynaria zu werden, kannst du dich während der Bewerbungsphase
+    ganz einfach über das Kontaktformular bewerben.  Wir heißen alle VTuber willkommen,
+    egal ob du ein 3D-, 2D-, PNG-Tuber oder Hybrid-VTuber bist.
+- question: Was sind die Teilnahme Bedingungen?
+  answer: "Um Teil von Lumynaria zu werden, musst du mindestens 18 Jahre alt sein.\
+    \ Wir heißen alle Arten von VTubern willkommen egal ob 2D-, 3D-, PNG- oder Hybrid-VTuber.\
+    \ Jeder sollte über ein eigenes Modell verfügen und die Nutzungsrechte daran besitzen.\r\
+    \n\r\nWir erwarten ein respektvolles Miteinander. Diskriminierendes oder toxisches\
+    \ Verhalten wird nicht toleriert und führt zum Ausschluss aus dem Projekt."
+- question: Wofür sind die Gruppen in Lumynaria?
+  answer: Die Gruppen in Lumynaria bestehen jeweils aus fünf VTuber:innen und dienen
+    vor allem dem gemeinschaftlichen Auftritt für Werbungen, Events und Specials.
+    Dazu gehören beispielsweise Quiz-Duelle, Peak 5 vs. 5 Matches oder andere kooperative
+    bzw. kompetitive Formate, bei denen die Gruppen ihre Dynamik und individuellen
+    Fähigkeiten zeigen können. So werden sowohl die Talente der VTuber:innen als auch
+    die Unterhaltungsvielfalt für die Zuschauer:innen optimal präsentiert.
+team:
+- name: Symphoniea
+  role: Projektleitung
+  bio: "Support\r\nEventplanung"
+  image: uploads/about-team-0-5e8576ed765a4335a8e7c16cadb6117b.jpg
+- name: Skulux
+  role: Projektleitung
+  bio: "Developing\r\nEventplanung"
+  image: uploads/about-team-1-6b9d817e45714d52af8bc21e4691e5d1.png
+- name: Yozora
+  role: Projektleitung
+  bio: "Allgemeine Planung\r\nInterne Kommunikation"
+  image: uploads/about-team-2-1b0e52573d4743dab1fd66ae99b99bcd.png
+- name: Syo_VT
+  role: Stv. Leitung
+  bio: Eventmanagment
+  image: uploads/about-team-4-07ce40401311431b993ca8986d6ffb88.jpg
+- name: Loeewii
+  role: Stv. Leitung
+  bio: "Eventmanagment\r\nGrafiken"
+  image: uploads/about-team-5-be07bf35fdb845ccbfc25ab16c960cdc.jpg
+- name: Jerry
+  role: Berater
+  bio: "Finanz-Beratung\r\nBeschwerde Abteilung\r\nSupport"
+  image: uploads/about-team-5-aac94977efd34358956717edaa04361d.png
+- name: Yuno Yuzuha
+  role: Buchhaltung
+  bio: "Buchhaltung\r\nFinanzen\r\nMerchverkauf\r\nShop"
+  image: uploads/about-team-3-bc7de84ae2384c0b9752cc48d7653153.png
+- name: Leriusser
+  role: Moderator
+  bio: Support
+  image: uploads/about-team-6-ad7dab3c05504310b52219a62b783969.png

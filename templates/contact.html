@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page">
+  <h1>Kontakt</h1>
+  <p>Fragen, Bewerbungen oder Kollab-Anfragen? Schreibt uns gern.</p>
+
+  <form class="form" method="post" action="{{ url_for('contact') }}">
+    <div class="grid2">
+      <label>Dein Name
+        <input type="text" name="name" value="{{ form_data.name | default('') }}" required>
+      </label>
+      <label>E-Mail
+        <input type="email" name="email" value="{{ form_data.email | default('') }}" required>
+      </label>
+    </div>
+    <label>Betreff
+      <input type="text" name="subject" value="{{ form_data.subject | default('') }}" required>
+    </label>
+    <label>Nachricht
+      <textarea name="message" rows="6" required>{{ form_data.message | default('') }}</textarea>
+    </label>
+    <button class="btn" type="submit">Senden</button>
+  </form>
+</section>
+{% endblock %}

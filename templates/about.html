@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page about-page">
+  <div class="about-hero">
+    <div class="about-hero-text">
+      <h1>{{ hero.title or 'Über uns' }}</h1>
+      {% if hero.lead %}
+      <p class="lead">{{ hero.lead | nl2br }}</p>
+      {% endif %}
+      {% if hero.body %}
+      <p>{{ hero.body | nl2br }}</p>
+      {% endif %}
+    </div>
+    {% if hero.image %}
+    {% set hero_scale = hero.image_scale|int(100) %}
+    <div class="about-hero-visual" style="--hero-visual-scale: {{ '%.3f' % (hero_scale / 100) }}">
+      {% if hero.image.startswith('http') %}
+      <img src="{{ hero.image }}" alt="{{ hero.image_alt or 'Illustration' }}">
+      {% else %}
+      <img src="{{ asset_url(hero.image) }}" alt="{{ hero.image_alt or 'Illustration' }}">
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+
+  {% if goals %}
+  <section class="about-section">
+    <h2>Unsere Ziele</h2>
+    <div class="about-cards">
+      {% for item in goals %}
+      <article class="about-card">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.description | nl2br }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if offers %}
+  <section class="about-section">
+    <h2>Unser Angebot</h2>
+    <div class="about-cards">
+      {% for item in offers %}
+      <article class="about-card">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.description | nl2br }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if faq %}
+  <section class="about-section">
+    <h2>FAQ</h2>
+    <div class="faq-list">
+      {% for item in faq %}
+      <details class="faq-item">
+        <summary>{{ item.question }}</summary>
+        <p>{{ item.answer | nl2br }}</p>
+      </details>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if team %}
+  <section class="about-section">
+    <h2>Management-Team</h2>
+    <div class="about-team-grid">
+      {% for member in team %}
+      <article class="team-card">
+        <div class="team-avatar">
+          {% if member.image and member.image.startswith('http') %}
+          <img src="{{ member.image }}" alt="{{ member.name }} Portrait">
+          {% else %}
+          {% set avatar = member.image or 'images/talents/members/' ~ member.name|lower|replace(' ', '') ~ '.svg' %}
+          <img src="{{ asset_url(avatar) }}" alt="{{ member.name }} Portrait">
+          {% endif %}
+        </div>
+        <div class="team-info">
+          <h3>{{ member.name }}</h3>
+          {% if member.role %}<p class="team-role">{{ member.role | nl2br }}</p>{% endif %}
+          {% if member.bio %}<p class="team-bio">{{ member.bio | nl2br }}</p>{% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="page talent-profile">
+  <div class="profile-visual" style="--tone-1: {{ talent.colors[0] if talent.colors else '#b393ff' }}; --tone-2: {{ talent.colors[1] if talent.colors|length > 1 else '#f0a9ff' }};">
+    <div class="profile-glow"></div>
+    {% set fullbody = talent.fullbody_image or talent.profile_image %}
+    {% if fullbody %}
+    {% if fullbody.startswith('http') %}
+    <img src="{{ fullbody }}" alt="{{ talent.name }} Fullbody Artwork" class="profile-fullbody">
+    {% else %}
+    <img src="{{ asset_url(fullbody) }}" alt="{{ talent.name }} Fullbody Artwork" class="profile-fullbody">
+    {% endif %}
+    {% endif %}
+    <img src="{{ asset_url(team.logo) }}" alt="{{ team.name }} Logo" class="profile-team-logo">
+  </div>
+  <div class="profile-content">
+    <a class="back-link" href="{{ url_for('talents') }}">← Zurück zur Übersicht</a>
+    <header class="profile-header">
+      <span class="profile-team">{{ team.name }}</span>
+      <h1>{{ talent.name | replace('\\', '') }}</h1>
+      {% if talent.motto %}<p class="profile-motto"><em>{{ talent.motto | nl2br }}</em></p>{% endif %}
+      {% if talent.slug %}
+      {% set status = live_status.get(talent.slug) %}
+      {% set state = status.state if status else 'error' %}
+      {% set status_label = status.message if status else 'Status derzeit nicht verfügbar.' %}
+      <div class="profile-live-status {{ 'is-live' if state == 'live' else 'is-offline' if state == 'offline' else 'is-error' }}">
+        <span class="profile-live-status__indicator" aria-hidden="true"></span>
+        <span class="profile-live-status__text" aria-live="polite">{{ status_label }}</span>
+      </div>
+      {% endif %}
+    </header>
+    <dl class="profile-meta">
+      <div>
+        <dt>Name</dt>
+        <dd>{{ talent.name | break_name }}</dd>
+      </div>
+      <div>
+        <dt>Geburtstag</dt>
+        <dd>{{ talent.birthday }}</dd>
+      </div>
+      <div>
+        <dt>Spezies</dt>
+        <dd>{{ talent.species | format_species }}</dd>
+      </div>
+      <div>
+        <dt>Größe</dt>
+        <dd>{{ talent.height }}</dd>
+      </div>
+    </dl>
+
+    <section class="profile-section">
+      <h2>Einführung</h2>
+      <p>{{ talent.introduction | nl2br }}</p>
+    </section>
+
+    <section class="profile-section">
+      <h2>Besonderheiten &amp; Fähigkeiten</h2>
+      <p>{{ talent.specialties | nl2br }}</p>
+    </section>
+
+    <section class="profile-section">
+      <h2>Lieblingsdinge</h2>
+      <ul class="profile-tags">
+        {% for item in talent.favorites %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="profile-section">
+      <h2>Social Media</h2>
+      <ul class="profile-socials">
+        {% for link in talent.socials %}
+        <li>
+          <a class="profile-social" href="{{ link.url }}" target="_blank" rel="noopener">
+            <img src="{{ asset_url('icons/' ~ link.icon) }}" alt="{{ link.label }} Icon">
+            <span>{{ link.label }}</span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
+  {% if talent.slug and is_live %}
+  <div class="profile-live-embed">
+    <div class="profile-live-embed__glow"></div>
+    <div class="profile-live-embed__frame">
+      <iframe
+        title="Twitch Livestream"
+        src="{{ twitch_embed_url }}"
+        height="720"
+        width="1280"
+        allowfullscreen
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"
+      ></iframe>
+    </div>
+  </div>
+  {% endif %}
+</article>
+{% block extra_scripts %}
+  {{ super() }}
+{% endblock %}
+{% endblock %}

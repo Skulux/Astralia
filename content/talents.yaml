@@ -1,0 +1,850 @@
+teams:
+- id: aurorea
+  name: Aurorea
+  slogan: Im Licht der Polarlichter erwachen Träume
+  logo: uploads/team-aurorea-logo-e24ccf4d76ea4c2b99cface8bdfab200.png
+  colors:
+  - '#77b2bc'
+  - '#c4a4ff'
+  members:
+  - slug: maxi_nighttime
+    name: Maxi Nighttime
+    birthday: '06.06'
+    species: Cherry Blossom Fox / Forexa
+    height: 1,67 m
+    profile_image: uploads/Maxi-profile-29993fc700aa4bdf91829131dca77425.webp
+    fullbody_image: uploads/Maxi-fullbody-995bdbacf9dd4cfd9fa573e05c6cad0c.jpeg
+    favorites:
+    - Pasta Gerichte
+    specialties: Kann mich in einen Fuchs verwandeln und in einen halb fuchs und Mensch.
+      dazu habe ich eine Halskette die mir erlaubt einen Sakura Tornado zu machen
+      und Sakura Waffen.
+    motto: „Alleine kannst du die Welt nicht verändern, nur mit anderen Menschen gemeinsam.
+      Das ist das Besondere an unserer Welt!“ (L „Death Note“)
+    socials:
+    - label: Linktree
+      url: https://linktr.ee/MaxiAlexanderShadowNighttime
+      icon: linktree.svg
+    - label: Twitch
+      url: https://www.twitch.tv/maxi_nighttime
+      icon: twitch.svg
+    introduction: Hey, Ich bin Maxi Nighttime auch als Maxi bekannt. Bin ein Cherry
+      Blossom Fox, in anderen Worten bin ich ein Pinker Fuchs. Ich streame seit 2
+      oder 3 Jahren als VTuber. Bei mir gibt es Party spiele, Dungeon and Dragons,
+      Geschichten schreiben und Zeichnung. Ich mag viele Sachen aber am meisten neue
+      Freunde zu finden.
+  - slug: yozoratutsuki
+    name: Yozora \Tutsuki
+    birthday: '11.05'
+    species: Kitsune aus Japan
+    height: 1,60 m
+    profile_image: uploads/yozora-profile-9cc9223236374a61af3206f312f1138b.png
+    fullbody_image: uploads/yozora-fullbody-81aacb921e3a44a3931bfe932360e7c5.png
+    favorites:
+    - Lila
+    - Rot
+    - Döner
+    - Nudeln mit Tomatensoße
+    specialties: schnelle Finger fürs Zeichnen
+    motto: fear of death is worse than death itself
+    socials:
+    - label: Twitch
+      url: https://www.twitch.tv/yozoratutsuki
+      icon: twitch.svg
+    - label: X
+      url: https://x.com/Animefen2
+      icon: x.svg
+    - label: TikTok
+      url: https://www.tiktok.com/@yozoratutsuki
+      icon: tiktok.svg
+    introduction: "Hi Hi \r\nIch bin Yozora ein netter Kitsune der auf einer Abgelegen\
+      \ Gegend kommt.\r\nIch spiele und streame gerne Horror, Shooter, Rollenspiele\
+      \ und Simulatoren zusätzlich spiele ich gerne VR Chat.\r\nIch habe auch Spaß\
+      \ am Zeichen gefunden ^^"
+  - slug: scyphosia
+    name: Scyphosia
+    birthday: '17.09'
+    species: Quallen-Sirene
+    height: 1,70 m
+    profile_image: uploads/Scyphosia-profile-5307ee1c8c4647b7b7128ab014e1c3fc.png
+    fullbody_image: uploads/Scyphosia-fullbody-210d46dfddeb4befa2d078476e3fdf04.jpg
+    favorites:
+    - Plankton
+    specialties: Ich bin Giftig
+    motto: EINFACH SCHWIMMEN
+    socials:
+    - label: Linktree
+      url: https://linktr.ee/scyphosia
+      icon: linktree.svg
+    - label: Twitch
+      url: https://www.twitch.tv/scyphosia
+      icon: twitch.svg
+    introduction: "Ich bin Scy, manche nennen mich auch einfach Qualle. \r\nIch streame\
+      \ auf Twitch hauptsächlich League of Legends und allerlei Variety-Games. Auf\
+      \ TikTok & YouTube teile ich Highlights und Chaos-Momente. Bei mir geht’s locker,\
+      \ lustig und manchmal auch ein bisschen tiefgründig zu wie ein Sprung in den\
+      \ Ozean, nur ohne nass zu werden."
+  - slug: black_bunny202
+    name: Black_Bunny
+    birthday: '03.02'
+    species: Cyber Bunny
+    height: 1,70 m
+    profile_image: uploads/black_bunny202-profile-4673318549df489fa868e9e8b064e14c.png
+    fullbody_image: uploads/black_bunny202-fullbody-2d5150b888234a37b3f1492b61f15418.png
+    favorites:
+    - Lila
+    - Schwarz
+    - Rot
+    - Motorradfahren
+    specialties: Zeichnen
+    motto: Fahr niemals schneller als dein Schutzengel fliegen kann
+    socials:
+    - label: Twitch
+      url: https://www.twitch.tv/black_bunny202
+      icon: twitch.svg
+    introduction: Hallöchen und Willkommen ich bin Bunny. Hier passieren Lustige Sachen
+      mit Freunden oder Alleine, also mach es dir gerne Bequem und genieß die Show^^
+  - slug: tigerrose201
+    name: Tora the Tiger
+    birthday: '24.01'
+    species: Indien weißer Bengal-Tiger
+    height: 1,65 m
+    profile_image: uploads/TigerRose201-profile-5c8b468bee21461bb7efad1d4c2bc690.png
+    fullbody_image: uploads/TigerRose201-fullbody-1da82530faa8443c8720e0574cae7dd6.png
+    favorites:
+    - Meine Haustiere
+    - Gyros
+    - Cyan
+    specialties: Kann viele von mir überzeugen
+    motto: Mangas jeglicher Art
+    socials:
+    - label: TikTok
+      url: https://www.tiktok.com/@torathetiger201
+      icon: tiktok.svg
+    - label: Twitch
+      url: https://www.twitch.tv/tigerrose201
+      icon: twitch.svg
+    introduction: Hi ich bin Tora (TigerRose). Ich bin 19 Jahre alt und komme aus
+      MV. Mein Problem ist das ich sehr schüchtern fremden gegenüber bin.
+- id: solarea
+  name: Solarea
+  slogan: m goldenen Glanz der Sonne tanzt die Hoffnung
+  logo: uploads/team-solarea-logo-29ca70ad30b34bc8b9b0952fda4d2205.png
+  colors:
+  - '#ffd479'
+  - '#ff9770'
+  members:
+  - slug: syo_vt
+    name: Syo_VT
+    birthday: '06.09'
+    species: Drache
+    height: 60 cm
+    profile_image: uploads/syo_vt-profile-859d11690cec4c4780acb939e6cf64df.png
+    fullbody_image: uploads/syo_vt-fullbody-ca1e6487d2784b2cb9310c95df3527fe.png
+    favorites:
+    - Armer Ritter
+    - Lila
+    - Meine Ruhe
+    - Bett
+    - Schlafen
+    specialties: Direkter als eine Abriss Birne, wo für dich draufsteht
+    motto: Nehme mich wie ich bin oder verpiss dich
+    socials:
+    - label: X
+      url: https://x.com/Syo_slayer
+      icon: x.svg
+    - label: Twitch
+      url: https://twitch.com/syo_vt
+      icon: twitch.svg
+    introduction: "Hey, ich bin SyO wenn du auf direkten Humor, bissige Sprüche und\
+      \ ’ne gute Portion Beleidigungen mit Stil stehst, bist du hier genau richtig!\
+      \ \U0001F60E\r\nBei mir kann jeder so sein, wie er ist Hauptsache, du stellst\
+      \ dich nicht dumm an!\r\nWillkommen bei SyO_VT, wo’s ehrlich, laut und verdammt\
+      \ unterhaltsam zugeht! \U0001F525"
+  - slug: yaetingyunfanvt
+    name: Yaetingyun\fanVT
+    birthday: '26.01'
+    species: Glücksfuchs / Gottheit
+    height: 1,85 m
+    profile_image: uploads/Yae-profile-a9ad93d21d4240e09bd61ae2f1dce20f.png
+    fullbody_image: uploads/Yae-fullbody-dcd5c0daf1364646bd6030d98d524cd8.jpg
+    favorites:
+    - Lasagne
+    - Blau
+    - Pink
+    - Alles was cute ist
+    - Wuthering Waves
+    - Strinova
+    - Repo
+    - Subnautica
+    specialties: Bringt Leute zum lachen und bringt ihnen Glück vorbei
+    motto: Seid happy und ich höre euch immer gerne zu
+    socials:
+    - label: X
+      url: https://x.com/Kokomigenshin10
+      icon: x.svg
+    - label: Twitch
+      url: https://www.twitch.tv/yaetingyunfanvt
+      icon: twitch.svg
+    - label: TikTok
+      url: https://www.tiktok.com/@yaetingyunfan
+      icon: tiktok.svg
+    - label: YouTube
+      url: https://www.youtube.com/@yaetingyunfanvodtwitch
+      icon: youtube.svg
+    introduction: Hiii ich bin der liebe Yae ich bin ein kleiner Glücksfuchsgott der
+      Gaming liebt vor allem WUWA wo ich stolzer Camellya Main bin, ich liebe es mit
+      anderen Späße zu machen und bin ab zu mal auch sehr lost.
+  - slug: haydendemonica
+    name: Hayden \Demonica
+    birthday: '11.07'
+    species: Dämon aus einem Königreich in der Hölle
+    height: 1,65 m
+    profile_image: uploads/haydendemonica-profile-7d6805d668c54064be6f4df336f26a9c.png
+    fullbody_image: uploads/haydendemonica-fullbody-6b2d3faf56a04919b3fa48916dbc293e.png
+    favorites:
+    - Rot
+    - Schwarz
+    - Onigiri
+    - Erdbeermilch
+    - Tee
+    specialties: 'Pyrokinesis: Kann Feuer erschaffen und kontrollieren | Kann eine
+      Art dunkle Materie kontrollieren und mit ihr Gegenstände schaffen | Hat Flügel
+      mit welchen sie Fliegen kann aber sie auch verbergen kann | Shapeshiftig: Besitzt
+      die Fähigkeit sich in verschiedenste Lebewesen zu verwandeln'
+    motto: ''
+    socials:
+    - label: Twitch
+      url: https://www.twitch.tv/haydendemonica
+      icon: twitch.svg
+    - label: X
+      url: https://x.com/HaydenDemonica
+      icon: x.svg
+    - label: Tiktok
+      url: https://www.tiktok.com/@haydendemonica
+      icon: tiktok.svg
+    - label: Patreon
+      url: https://patreon.com/HaydenDemonica
+      icon: website.svg
+    - label: Youtube
+      url: https://www.youtube.com/@HaydenDemonica
+      icon: youtube.svg
+    introduction: "Aus der Hölle empor gestiegen um sich nochmal unter die Menschen\
+      \ zu wagen, in der Hoffnung doch das Gute in ihnen zu sehen, verbreitet dieser\
+      \ junge Dämonenprinz ganz viel Chaos auf ihrem Weg. Gemeinsam mit ihrer kleinen\
+      \ Begleiterin Chi, einem Erdbeer-Höllenkalb, sorgt sie für allerlei Unterhaltung\
+      \ und zieht jene sterblichen in ihren Bann. Ob Cozy Kunst, crazy Reactions oder\
+      \ spaßigem Gaming, bei diesem kleinen Feuerteufel ist man mit allem bedient.\
+      \ \r\n\r\nLasst euch jedoch nicht von der größtenteils freundlichen Persönlichkeit\
+      \ und dem eher harmloserem Erscheinungsbild dieses Rotschopfes Täuschen, in\
+      \ ihr schlummern Kräfte und Geheimnisse, welchen noch ans Licht zu kommen mögen!\
+      \ \r\n\r\nBegleitet sie und ihre Untote Gefolgschaft auf ihren Abenteuern!"
+  - slug: Yutaro
+    name: Yutaro
+    birthday: '31.10'
+    species: Dämon / Drache
+    height: 1,90 m
+    profile_image: uploads/Yutaro-profile-133048282269430eba1f174b62ef874d.png
+    fullbody_image: uploads/Yutaro-fullbody-8eef898e5a2c4730b80c29000f8d11e5.png
+    favorites:
+    - Schwarz
+    - Torrija
+    - Autos
+    - Geld
+    specialties: "Feuerkräfte\r\nFliegen"
+    motto: ''
+    socials:
+    - label: Twitch
+      url: https://www.twitch.tv/YutaroVT
+      icon: twitch.svg
+    introduction: Hey ich bin Yutaro, du kannst mich aber auch gerne Yuta nennen.
+      Bei mir wirst du viel Geschreie und Ragebait finden, ich spiele gerne Shooter
+      aber auch mal comfy Games zum runterkommen.
+  - slug: kyubi_kami
+    name: Kyubi Kami
+    birthday: '16.07'
+    species: Kitsune / Japan
+    height: 1,74 m
+    profile_image: uploads/Kyubi-profile-b21143ca8c1249b881330a13e1123b71.png
+    fullbody_image: uploads/Kyubi-fullbody-647c67db5ed24586bbf45c6ff8407e9c.png
+    favorites:
+    - Shinto Shrine
+    - Rot
+    - Lila
+    specialties: Magie
+    motto: 'Lieblingswort: Respektiv'
+    socials:
+    - label: Twitch
+      url: https://www.twitch.tv/kyubi_kami
+      icon: twitch.svg
+    introduction: Hallo, mein Name ist Kyubi Kami oder einfach Kyubi und ich bin ein
+      Deutscher Sprachiger VTuber. Ich bin ein Fuchs Yōkai der von Inari in die Menschenwelt
+      geschickt wurde und jetzt unter ihnen Lebt.
+- id: velorea
+  name: Velorea
+  slogan: in Meteor zieht Funken durch die Nacht
+  logo: uploads/team-velorea-logo-771221b26b2848e19de5c6b4728b75cd.png
+  colors:
+  - '#64e4ff'
+  - '#b893ff'
+  members:
+  - slug: yunoyuzuha
+    name: Yuno Yuzuha
+    birthday: '29.04'
+    species: Border Collie Netrunner
+    height: 1,65 m
+    profile_image: uploads/Yuno-profile-305ffebb64a84e31b699e3f10eef37ee.png
+    fullbody_image: uploads/Yuno-fullbody-130b6714961c42d9bbd275216ac7235d.png
+    favorites:
+    - Grün
+    - Käsespätzle
+    - Choco Frappe
+    - Kirsch-Eistee
+    specialties: Hat einen eigene Bande in Nightcity "Cyberbeans", ist als Netrunner
+      unterwegs und hackt sich in ihre Gegner
+    motto: '"Pixel, Punk und bissige Worte wer bellt, kriegt auch meine Zähne zu spüren"'
+    socials:
+    - label: Twitch
+      url: https://twitch.tv/YunoYuzuha
+      icon: twitch.svg
+    - label: X
+      url: https://x.com/YunoYuzuha
+      icon: x.svg
+    - label: TikTok
+      url: https://www.tiktok.com/@yunoyuzuha_
+      icon: tiktok.svg
+    introduction: 'Na, was glotzt du so? Ich bin Yuno, 27, Chaos auf zwei Beinen und
+      Rudelführerin der Cyberbeans. Night City ist mein Revier! Laut, dreckig, grün
+      leuchtend wie meine Lieblingsfarbe. Wenn du Sprüche klopfen willst, mach dich
+      gefasst: Ich konter schneller, als du ‘Reload’ sagen kannst. Und ja, ich belle…
+      aber meistens beiße ich'
+  - slug: klinday_
+    name: Klinday
+    birthday: '25.10'
+    species: Wolf
+    height: 1,80 m
+    profile_image: uploads/Klinday-profile-85c8a912243848ed807caaf67ae9a48d.png
+    fullbody_image: uploads/Klinday-fullbody-dfd3eef0206a41a7aaa98a58c36dd698.png
+    favorites:
+    - 'Meine Waffe: Wolfbringer'
+    - WOW
+    specialties: Besondere Combat Skills mit allerlei Waffen (Geschwindigkeit und
+      Kraft)
+    motto: Lebe nicht im Morgen. Lebe nicht im Gestern. Du atmest jetzt also lebe
+      auch dort!
+    socials:
+    - label: Linktree
+      url: https://linktr.ee/Klinday_
+      icon: linktree.svg
+    - label: Twitch
+      url: https://www.twitch.tv/klinday_
+      icon: twitch.svg
+    introduction: Moin! Ich bin Klinday! Euer Freundlicher Wolf von nebenan! Ich weiß
+      mein genaues alter leider nicht.... Is aber auch egal! Mögt ihr Multiplayer
+      Content wie DBD oder MMOS wie WoW seid ihr hier bei mir an der richtigen stelle!
+      Und wenn ihr selbst mal von diesen etwas probieren möchtet helfe ich gerne aus!
+  - slug: lurio_sensay
+    name: Lurio_sensay
+    birthday: '07.02'
+    species: Höllenhund
+    height: 1,80 m
+    profile_image: uploads/Lurio-profile-9932142b93ba4cf3960bf3e4f54fc478.png
+    fullbody_image: uploads/Lurio-fullbody-1760d9e63bf54b499ee2419a07794f5d.png
+    favorites:
+    - Kochen
+    - Karmesinrot
+    specialties: Beherrscht Rage Mode und Flammenkontrolle.
+    motto: Ich bin importiert
+    socials:
+    - label: X
+      url: https://x.com/Lurio_sensay
+      icon: x.svg
+    - label: Twitch
+      url: https://www.twitch.tv/lurio_sensay
+      icon: twitch.svg
+    introduction: Hi ich bin Lurio, Italiener und streame auf Deutsch und dabei spiele
+      ich jedes Game, jeden Tag immer Latenight
+  - slug: fairyprincessvt
+    name: Fairy
+    birthday: '03.02'
+    species: Fee
+    height: 1,57 m
+    profile_image: uploads/fairyprincessvt-profile-86f02fce531143b888207bf147c14847.png
+    fullbody_image: uploads/fairyprincessvt-fullbody-36989cb7387f42b68d4b09eae2fab7ac.png
+    favorites:
+    - Kirschblüten
+    - Rosa Sachen
+    - Katzen
+    - Pinguine
+    - Spaghetti Bolognese
+    - Rosa
+    - Lila
+    - Blau
+    specialties: Hat eine Fee Form und kann Blumen schneller erblühen lassen
+    motto: ''
+    socials:
+    - label: Twitch
+      url: https://www.twitch.tv/fairyprincessvt
+      icon: twitch.svg
+    introduction: "Ich bin Fairy. Außerhalb des Feenlands dürfen wir unseren Namen\
+      \ nicht verraten, deswegen bin ich überall nur als Fairy bekannt, manche nennen\
+      \ mich aber auch einfach nur Fee.\r\nEines Tages musste ich leider aus dem Feenland\
+      \ flüchten, weil es angegriffen wurde und so suchte ich Schutz in der Welt der\
+      \ Menschen. Allerdings wusste ich nicht, dass ich dadurch all meine Feen Fähigkeiten\
+      \ aufgeben würde und ich mich nicht mehr in meine normale Feen Form verwandeln\
+      \ konnte.\r\n\r\nNun lebe ich ich einer menschlichen Gestalt in der Welt der\
+      \ Menschen und arbeite in einem kleinen alten Blumenladen, lasse dort ab und\
+      \ zu ein paar der schönsten Blumen erblühen und habe nebenbei das \"Streaming\"\
+      \ für mich entdeckt.\r\nSeit jenem Tag, habe ich angefangen unterschiedliche\
+      \ Spiele auf dieser lilanen Plattform zu streamen und habe mir einen Recht großen\
+      \ Freundeskreis aufgebaut.\r\nVielleicht finde ich mit Hilfe dieser Freunde\
+      \ irgendwann einen Weg, wieder nach Hause zu gehen."
+  - slug: leriusser
+    name: Leriusser \ Tazukichan
+    birthday: '11.03'
+    species: Hybrid-VTuber (Fluch & Mensch)
+    height: 1,34 m (Fluch) \ 1,85 m (Mensch)
+    profile_image: uploads/leriusser-profile-8fae25b6594a4395927ff9c1b5616df8.jpg
+    fullbody_image: uploads/leriusser-fullbody-48021f9e3c0f40eaad80b26c056f1deb.jpg
+    favorites:
+    - Burger
+    - Nintendo
+    - Rot
+    - Anime
+    specialties: "Hybrid Vtuber (Großteil des Contents Mit Facecam nicht mit Vtuber)\r\
+      \n\r\nFähigkeiten: Viel wissen und Lustig"
+    motto: YOLO, solange andere lachen egal wie bin ich Glücklich,  im fucking sane.
+    socials:
+    - label: Twitch
+      url: https://www.twitch.tv/leriusser
+      icon: twitch.svg
+    - label: YouTube
+      url: https://www.youtube.com/@Leriusserttv
+      icon: youtube.svg
+    - label: X
+      url: https://x.com/Fabian894494
+      icon: x.svg
+    introduction: Muss ich das schreiben? Ihr wisst doch, was bei mir los ist. Ich
+      streame mit Cam, hab meinen VTuber im Screen und mein Fluch Tazuki ist natürlich
+      dabei. Wenn ihr was braucht, sagt Bescheid – danki!
+- id: lunea
+  name: Lunea
+  slogan: m silbernen Schein des Mondes wächst stille die Magie
+  logo: uploads/team-lunea-logo-b6f5a66bd527455492104a1c70492203.png
+  colors:
+  - '#a3a9ff'
+  - '#f6c6ff'
+  members:
+  - slug: n0frog
+    name: N0Frog
+    birthday: '10.11'
+    species: Mensch aus Shibuya
+    height: 1,80 m
+    profile_image: uploads/N0frog-profile-aff0ddd4d5ab4943b98e3d7300b917a8.png
+    fullbody_image: uploads/N0frog-fullbody-47c44d076cfb4bfda684dfcdf11354a8.png
+    favorites:
+    - Lila
+    - Musik
+    - Shooter
+    - Autos
+    - Streetart
+    - 'Anime: Demon Slayer'
+    specialties: Ich mach die krassesten Tornados
+    motto: Lieber Spaß als Ernst
+    socials:
+    - label: Twitch
+      url: https://www.twitch.tv/n0frog
+      icon: twitch.svg
+    - label: X
+      url: https://x.com/NNofrog
+      icon: x.svg
+    introduction: Hallo ich bin N0Frog oder auch Froggie genannt. Ich bin ein sehr
+      Humorvoller und verpeilter VTuber der gerne lacht und auch mal Sachen vercheckt.
+      Ich versuche meine Freunde immer bei Laune zu halten und hoffe das ich das bei
+      euch auch schaffe. :D
+  - slug: skulux
+    name: Skulux
+    birthday: '27.06'
+    species: Wolf/Kitsune/Traumgöttin
+    height: Größer als ein Smart, kleiner als ein Doppeltür-kühlschrank
+    profile_image: images/talents/members/Skulux_pp.png
+    fullbody_image: images/talents/members/Skulux.jpg
+    favorites:
+    - Lila
+    - Träume
+    specialties: In träume eintauchen, kleine Kristalle beschwören (kampf)
+    motto: '"The day before yesterday, I saw a rabbit. Yesterday, it was a deer. And
+      today, it’s you."  -Ichinose Kotomi'
+    socials:
+    - label: Twitch
+      url: https://twitch.com/Skulux
+      icon: twitch.svg
+    - label: X
+      url: https://x.com/Skulux_
+      icon: x.svg
+    - label: Website
+      url: https://skulux.com/
+      icon: website.svg
+    introduction: Ich bin Skulux. Ich bin der Teamlead, Programmierer und Netzwerkadministrator
+      vom Lumynaria. Streame nicht so oft aber wenn ihr Wholesome unterwegs sein wollt,
+      dann ist das der richtige Ort. ich verzauber euch mit etwas Magie und meinen
+      Tarotkarten.
+  - slug: symphoniea
+    name: Symphoniea
+    birthday: '23.02'
+    species: Sternen-Succubus / Kitsune
+    height: 1,60 m
+    profile_image: uploads/Symphoniea-profile-1173a98865dc43e8be993919dcb75d1f.png
+    fullbody_image: uploads/Symphoniea-fullbody-4fb67379a32d4e54a7f85a5058b69792.png
+    favorites:
+    - Sushi
+    - Eis
+    - Blau
+    specialties: "Healing Power\r\nMind Reading\r\nMagic Voice"
+    motto: '"Ich bin der Stern, der dich in der Dunkelheit verführt und das Licht,
+      das dich verbrennt, wenn du zu nah kommst."'
+    socials:
+    - label: Twitch
+      url: https://twitch.tv/symphoniea
+      icon: twitch.svg
+    - label: Carrd
+      url: https://symphoniea.carrd.com
+      icon: website.svg
+    - label: X
+      url: https://x.com/symphonieaVT
+      icon: x.svg
+    introduction: Hey ich bin Symphoniea, du kannst mich aber auch gerne Sympho oder
+      Miyu nennen. Ich bin eine Variety Streamerin das heißt das ich jedes Spiel Genre,
+      spiele halt darauf wo ich gerade Lust habe. Die meiste Zeit verbringe ich mit
+      Singen oder mit meinen Freunden zu reden zu spielen.
+  - slug: melody_4you
+    name: Melody
+    birthday: '05.10'
+    species: Kitsune aus der Galaxie
+    height: 1,75 m
+    profile_image: uploads/Melody-profile-47afc94fc2e14aaea291395f1908865d.png
+    fullbody_image: uploads/Melody-fullbody-e2d7f475f8c143b686159397664317f8.png
+    favorites:
+    - Lila
+    - Kartoffeln
+    - Sterne
+    - Krähen
+    - Katzen
+    specialties: immer verwirrt sein
+    motto: ohne Dunkelheit kann ein Stern nicht leuchten
+    socials:
+    - label: Twitch
+      url: https://www.twitch.tv/melody_4you
+      icon: twitch.svg
+    - label: TikTok
+      url: https://www.tiktok.com/@melody_4youvt
+      icon: tiktok.svg
+    - label: Instagram
+      url: https://www.instagram.com/melody_4youvt
+      icon: instagram.svg
+    - label: X
+      url: https://x.com/a_melody_4you
+      icon: x.svg
+    introduction: Hi! Mein Name ist Melody und ich bin eine verwirrte Kitsune aus
+      den Sternen. In meiner Freizeit schaue ich gerne nachts zu meiner Heimat, den
+      Sternen, hinauf und höre sehr gerne Musik. Wenn man mich näher kennenlernt,
+      merkt man sehr schnell dass ich verpeilt, chaotisch, natürlich verwirrt, manchmal
+      laut und sehr planlos sein kann, aber ich bin auch kreativ, hilfsbereit und
+      habe immer ein offenes Ohr! Wie kann man mich zähmen? Gute Frage! Ich habe eine
+      Schwäche für jedes Gericht das Kartoffeln enthält, vor allem Pommes! Ich freue
+      mich euch kennenzulernen :)
+  - slug: tefluvt
+    name: Tefluvt
+    birthday: '25.10'
+    species: Cat VTuber
+    height: 1,87 m
+    profile_image: uploads/Teflu-profile-8e0b1a2f77d4418ba94f4e25d4a1204c.png
+    fullbody_image: uploads/Teflu-fullbody-ed696dc77f85488ab798d3972da5c393.png
+    favorites:
+    - Orange
+    - Sushi
+    - Magie
+    - Horror
+    specialties: Zwei verschiedene Augenfarben, Meisterung der Dunklen Magie.
+    motto: '"Selbst wenn du niemanden hast, tust du gutes, werden Leute sich an dich
+      erinnern"'
+    socials:
+    - label: Carrd
+      url: https://teflu.carrd.co/
+      icon: website.svg
+    - label: Twitch
+      url: https://twitch.com/tefluvt
+      icon: twitch.svg
+    introduction: Hallo Freunde, ich bin Teflu. Suchst du nach Gaming oder Horror
+      Content? Dann schaue doch gerne mal vorbei.
+- id: stellarea
+  name: Stellarea
+  slogan: Zwischen den Sternen flüstern unerfüllte Wünsche
+  logo: uploads/team-stellarea-logo-24fae96742ed4154bd05551a80ef7720.png
+  colors:
+  - '#fdbb2d'
+  - '#22c1c3'
+  members:
+  - slug: tathor
+    name: Tathor
+    birthday: '03.07'
+    species: Cyber-Cat
+    height: 75 cm
+    profile_image: uploads/Tathor-profile-6beedddb37b045499faeb591d0bfea45.png
+    fullbody_image: uploads/Tathor-fullbody-e28cfd7312954b03a8a828b256484469.png
+    favorites:
+    - Urple
+    - Zocken
+    specialties: Frech, gute Orientierung, blickt schnell in Spielen durch
+    motto: Meh
+    socials:
+    - label: Twitch
+      url: https://www.twitch.tv/tathor
+      icon: twitch.svg
+    introduction: "Eine kleine Freche Cyber-Katze die durch das Internet streift und\
+      \ überall für Chaos sorgt\r\nwo es Möglich ist. \r\n\r\nContent:\r\nAlles mögliche\
+      \ Shooter, RTS, Simulationen, RPGs, MMOs, Sandbox, Partygames\r\nDas worauf\
+      \ ich gerade halt Lust hab. Ab und zu auch Horror Games.\r\nVon Retro bis zu\
+      \ Neuen spielen ist alles mit dabei!"
+  - slug: flicsegawa
+    name: Flic Segawa
+    birthday: '12.12'
+    species: Kon (Fuchswesen)
+    height: 50 cm (60 cm mit Ohren)
+    profile_image: uploads/Flic-profile-7720ea7d291e42db9d3708228f8611f1.png
+    fullbody_image: uploads/Flic-fullbody-2d2a0751b017403aa67e6409f7627a0b.png
+    favorites:
+    - Pizza Hawaii
+    - Pink
+    - Technik
+    - Musik
+    specialties: Technickgenie; Singen (angeblich); Klarinette Spielen
+    motto: '"Das können wir Ändern"'
+    socials:
+    - label: Twitch
+      url: https://twitch.tv/flicsegawa
+      icon: twitch.svg
+    - label: X
+      url: https://x.com/FlicSegawa
+      icon: x.svg
+    - label: YouTube
+      url: https://www.youtube.com/@FlicSegawa
+      icon: youtube.svg
+    introduction: Hayoo Flic Segawa mein Name. Von Natur aus IT-nerd, Retrojunkie
+      und Ohrenvernichtungseinheit. Wenn ihr mich auf der Lila Plattform Live seht
+      kommt doch vorbei uns sagt alo :3
+  - slug: evilyuna73
+    name: Evilyuna73
+    birthday: '12.03'
+    species: Polarfuchs
+    height: 1,55 m
+    profile_image: uploads/Yuna-profile-26a0ff0185d9468681deedc29dd9ccc2.png
+    fullbody_image: uploads/Yuna-fullbody-1c04ef10080d4bce94d9d00806aadf1c.png
+    favorites:
+    - Rotes Thai Curry
+    - Blau
+    specialties: Idol
+    motto: '"Man hats nicht leicht aber leicht hats einen"'
+    socials:
+    - label: Carrd
+      url: https://evilyuna73.carrd.co/
+      icon: link.svg
+    - label: Twitch
+      url: https://twitch.com/evilyuna73
+      icon: twitch.svg
+    introduction: Ich liebe es zu singen, Harmonien zu kreieren und mit meiner Stimme
+      Gefühle auszudrücken. Musik begleitet mich schon mein Leben lang und auf Twitch
+      teile ich diese Leidenschaft mit meiner Community. Dabei bin ich ziemlich verpeilt,
+      aber genau das macht mich aus. Eine Mischung aus Musik, Gaming, Anime-Talk und
+      viel guter Laune mit einer ordentlichen Portion Chaos.
+  - slug: rpgreki
+    name: RPGReki
+    birthday: '09.10'
+    species: Incubun
+    height: 1,69 m
+    profile_image: uploads/reki-profile-1e7fda5b5bc646d5ae324d600e3ff6bb.png
+    fullbody_image: uploads/reki-fullbody-1a241d6915df4830b39543b6172240ad.png
+    favorites:
+    - Ramen
+    specialties: Zeit-, Elektro-, Dunkel- und Psychomagie
+    motto: Träumt was schönes, vielleicht von mir?
+    socials:
+    - label: Twitch
+      url: https://twitch.tv/RPGReki
+      icon: twitch.svg
+    - label: Bluesky
+      url: https://bsky.app/profile/rpgreki.vtubers.social
+      icon: bluesky.svg
+    introduction: Hallo! Ich bin RPGReki oder einfach Reki, früher auch bekannt als
+      Reki. Ich geben mich als Bunny Boy, der in Haitii City aufgewachsen ist, aus.
+      Manchmal benutze ich meine Inkubus-Magie, um in anderen Zeiten und Reichen nach
+      Ärger zu suchen.
+  - slug: rozedendron
+    name: RozeDendron
+    birthday: '08.05'
+    species: Humanoid aus Belka
+    height: 1,30 cm
+    profile_image: uploads/rozedendron-profile-56bcfa32033248ab9cacb4ba2ff1b522.png
+    fullbody_image: uploads/rozedendron-fullbody-693096c557db4da48caaa397be305fe4.png
+    favorites:
+    - Gebratene Ente
+    - Violett
+    - Panzer
+    - Jets
+    specialties: Iris  Heterochromie (Blau & Lila Augen) // Pilotin // Panzerkommandantin
+    motto: Why can a bird fly, but a fly cant bird.
+    socials:
+    - label: Twitch
+      url: https://www.twitch.tv/rozedendron
+      icon: twitch.svg
+    - label: YouTube
+      url: https://www.youtube.com/@RozeDendron
+      icon: youtube.svg
+    - label: Instagram
+      url: https://www.instagram.com/rozedendron/
+      icon: instagram.svg
+    introduction: Oy. Your local T Girl Roze. Ich mach hauptsächlich WT und Randomizer
+      Content. Wenn du Gurken magst oder einfach cool bist, schau doch mal rein
+- id: nebulea
+  name: Nebulea
+  slogan: Im Nebel tanzen Träume wie Sterne
+  logo: uploads/team-nebulea-logo-cd0442aef01843bd8f58895d3f3a4f5d.png
+  colors:
+  - '#626cc9'
+  - '#74dfff'
+  members:
+  - slug: dietonia
+    name: DieTonia
+    birthday: '13.05'
+    species: Mensch/Dämon-Fuchs aus Japan
+    height: 1,60 m
+    profile_image: uploads/Toni-profile-e4e2ecd28fb14853b724ca05f9dd9cc8.png
+    fullbody_image: uploads/Toni-fullbody-201199481d7d431bb5dfe89209b614bb.png
+    favorites:
+    - Carbonara
+    - Asiatische Küche
+    - Korokke
+    - Grün
+    - Schwarz
+    - Pink
+    - Kürbis-Orange
+    - Süße Taschen
+    specialties: Zaubert jedem ein Lächeln ins Gesicht und sorgt für Wohlfühl-Vibes.
+    motto: No risk, no fun YOLO, let’s go.
+    socials:
+    - label: Linktree
+      url: https://linktr.ee/DieTonia
+      icon: linktree.svg
+    - label: Twitch
+      url: https://twitch.com/DieTonia
+      icon: twitch.svg
+    introduction: "Halluuuu, ich bin DieTonia \U0001F495\r\nIch bin eine Assassin\
+      \ Bibliothekarin mit einer kleinen Dämon-Fuchs form,\r\nich bin seit 4 Jahren\
+      \ in Social Media Bereich und hatte meine Up and Downs\r\naber bin immer noch\
+      \ hier hihi.\r\nIch Liebe Comfy und Gothic zusammen zu mischen, weil das einfach\
+      \ ich bin und ich liebe es,\r\nMeine Communty und ich sind eine comfy, Loste\
+      \ und Laute aka auch etwas ruhige Umgebung, ich will das sich jeder bei mir\
+      \ wohlfühlt\U0001F495"
+  - slug: shinochoi
+    name: ShinoChoi
+    birthday: '14.11'
+    species: Nursecat
+    height: 1,65 m
+    profile_image: uploads/Shino-profile-0d32353bfdd74c47ba0127545d67d554.jpg
+    fullbody_image: uploads/Shino-fullbody-231ba353746249c48d030ed477503209.png
+    favorites:
+    - Helles Grau
+    - Pastellgelb
+    - Kartoffelsuppe
+    - Meine Katzienten ärgern
+    specialties: Beruhigt Menschen mit Problemen und ist immer für sie da.
+    motto: Auch Katzen können heilen… manchmal mit Krallen.
+    socials:
+    - label: Linktree
+      url: https://linktr.ee/shinochoivt
+      icon: linktree.svg
+    - label: Twitch
+      url: https://twitch.com/shinochoi
+      icon: twitch.svg
+    introduction: "Miau, ich bin ShinoChoi \U0001F495\r\nIch bin eine Nursecat die\
+      \ seit einem Jahr Aktiv auf Twitch und TikTok ist.\r\nIch liebe es, süßes und\
+      \ spooky zu verbinden von meiner kleinen Nursecat\r\n bis hin zu meinen verrückten\
+      \ Ideen.\U0001FA79\U0001F43E\r\nZusammen mit meinen tollen Katzienten erschaffe\
+      \ ich eine kleine Welt voller Craziness, ab und zu Dummheit und einer Prise\
+      \ unheimlicher Niedlichkeit.\U0001F497"
+  - slug: syerdark
+    name: syerdark
+    birthday: '24.08'
+    species: Halb Mensch, halb Dämon
+    height: 1,70 m
+    profile_image: uploads/syer-profile-7d385689429d4203b70c28a2513a3723.png
+    fullbody_image: uploads/syer-fullbody-f86ce0597cf647229de66e1bc73a6804.png
+    favorites:
+    - Nudeln
+    - Lila
+    specialties: Wenn ich etwas mache will es auch zu ende bringen
+    motto: Auch wenn das leben schwer ist, verliere dein Ziel niemals aus den Augen,
+      auch wenn es dich oft zu boden bringen wird, am Ende gehst du als Gewinner heraus.
+    socials:
+    - label: Twitch
+      url: https://www.twitch.tv/syerdark
+      icon: twitch.svg
+    introduction: Hi, ich bin syerdark, ich bin ein halb Mensch halb Dämon, ich spiele
+      sehr gerne shooter unter anderem Valo oder COD, Rocket Leauge und GTA RP. Wenn
+      ich müde bin, setzt mein Kopf für lange Zeit aus und ich antworte eher auf Flugmodus.
+  - slug: starxrai_n
+    name: StarXrAin
+    birthday: '04.09'
+    species: Wolf
+    height: 1,75 m
+    profile_image: uploads/starxrai_n-profile-385d073e571d4426a2e22668add73bac.webp
+    fullbody_image: uploads/starxrai_n-fullbody-7d6526a960a2411db07fc54ba4c737b4.png
+    favorites:
+    - Sushi
+    - Rot
+    - Schwarz
+    - Dead by Daylight
+    specialties: Außerordentlich Stupid
+    motto: '"I lost my shoe..."'
+    socials:
+    - label: Twitch
+      url: https://www.twitch.tv/StarXrAi_n
+      icon: twitch.svg
+    - label: Tiktok
+      url: https://www.tiktok.com/@starxrai_n
+      icon: tiktok.svg
+    - label: Instagram
+      url: https://www.instagram.com/starxrai_n
+      icon: instagram.svg
+    introduction: Hallu~! Ich bin StarXrAin, eure flauschige VTuberin mit Wolfsohren
+      & Horrorfaible! Ich schrei mehr als ich treff, aber hey  dafür stehe ich mit
+      meinem Namen✨
+  - slug: lila_nightflower
+    name: Lila Nightflower
+    birthday: '11.01'
+    species: Eis Fuchs-Drache & Wald-Geist
+    height: 1,75 m
+    profile_image: uploads/lila_nightflower-profile-04e18ef483724519a2bf86fb5f5a9925.png
+    fullbody_image: uploads/lila_nightflower-fullbody-37859202489f4bafa7d33b7ec18e4ff5.png
+    favorites:
+    - Japanisch
+    - Pink
+    - Schwarz
+    - Lila
+    - Weiß
+    - Streamen
+    - Zeichnen
+    specialties: Lost & Schreie viel rum
+    motto: huhu
+    socials:
+    - label: Twitch
+      url: https://www.twitch.tv/lila_nightflower
+      icon: twitch.svg
+    introduction: "✦  Hey mein Name ist Lila_Nightflower oder einfach Lila oder [Frau]\
+      \ Nightflower <3\r\n\r\n✦ Ich bin ein Waldgeist genau gesagt ein Eisfuchs-Drache\r\
+      \n\r\n✦ Geburtstag: 11.01\r\n\r\n✦ Und ja ich bin Transfeminin und würde gerne\
+      \ als she/her (Sie) angesprochen werden reiße aber niemand den Kopf ab wenn\
+      \ es mal falsch gemacht wird!\r\n\r\n✦ Ich streame eigentlich alles und es kommt\
+      \ noch viel also freut euch\r\n\r\n✦ Und ACHTUNG ich bin bisschen Lost und brauche\
+      \ mal länger aber lustig und freue mich auf euch mega!!\r\n\r\n✦ Ich freue mich\
+      \ wenn ihr da bleibt und zuschaut <3"

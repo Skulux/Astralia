@@ -1,0 +1,20 @@
+<svg width="320" height="180" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="auroraGradient" x1="40" y1="20" x2="280" y2="160" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7f5af0" />
+      <stop offset="0.5" stop-color="#2cb1bc" />
+      <stop offset="1" stop-color="#f6c177" />
+    </linearGradient>
+    <linearGradient id="auroraGlow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f172a" stop-opacity="0.8" />
+      <stop offset="1" stop-color="#0f172a" stop-opacity="0.95" />
+    </linearGradient>
+  </defs>
+  <rect width="320" height="180" rx="28" fill="#0b1220" />
+  <rect x="14" y="14" width="292" height="152" rx="24" fill="url(#auroraGlow)" />
+  <path d="M38 118C70 64 134 38 198 56C238 68 274 94 294 124" stroke="url(#auroraGradient)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="92" cy="84" r="12" fill="#7f5af0" />
+  <circle cx="160" cy="72" r="10" fill="#2cb1bc" />
+  <circle cx="236" cy="102" r="9" fill="#f6c177" />
+  <text x="50%" y="140" text-anchor="middle" fill="#e0e7ff" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="24" font-weight="600">Aurora Alliance</text>
+</svg>

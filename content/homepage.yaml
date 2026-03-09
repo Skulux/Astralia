@@ -1,0 +1,243 @@
+hero:
+  logo: uploads/home-hero-logo-6ecd4fcf6be144829b796a542dfed326.png
+  subtitle: "**Lumynaria** ist ein deutschsprachiger VTuber-Hub und Zuhause für viele\
+    \ VTuber.\r\nHier treffen VTuberinnen aus ganz Deutschland aufeinander, um Ideen\
+    \ zu teilen, Projekte umzusetzen und gemeinsam zu wachsen.  \r\nWir fördern Kreativität,\
+    \ Gemeinschaft und Authentizität, ganz ohne Verträge oder Einschränkungen.\r\n\
+    Bei Lumynaria kannst du ganz du selbst sein und deine Träume verwirklichen."
+  kicker: Lumynaria ist der Ort, an dem Sterne entstehen und Träume Form annehmen.
+  background_image: ''
+  primary_button:
+    label: Talente ansehen
+    url: /talents
+  secondary_button:
+    label: Projekte entdecken
+    url: /projects
+  tertiary_button:
+    label: Zum Discord
+    url: https://dc.lumynaria.de
+sections:
+- id: live
+  heading: Jetzt Live
+  cta_label: ''
+  cta_url: ''
+  enabled: true
+  order: 1
+- id: projects
+  heading: Aktuelle Projekte
+  cta_label: Alle Projekte →
+  cta_url: /projects
+  enabled: true
+  order: 2
+- id: news
+  heading: Neuigkeiten
+  cta_label: Alle News →
+  cta_url: /news
+  enabled: true
+  order: 3
+- id: calendar
+  heading: Kalender
+  cta_label: ''
+  cta_url: ''
+  enabled: true
+  order: 4
+- id: partners
+  heading: Partner
+  cta_label: Alle Partner →
+  cta_url: /partners
+  enabled: true
+  order: 5
+calendar:
+  events:
+  - id: event-8
+    date: '2025-10-25'
+    label: Klinday´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-3
+    date: '2025-10-25'
+    label: Teflus Geburtstags Stream
+    icon: cake
+    url: ''
+    time: '18:00'
+  - id: event-9
+    date: '2025-10-31'
+    label: Loeewii´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-19
+    date: '2025-11-10'
+    label: N0Frog´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-24
+    date: '2025-12-12'
+    label: Flic´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-32
+    date: '2026-01-11'
+    label: Lila´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-8
+    date: '2026-01-24'
+    label: Tora´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-11
+    date: '2026-01-26'
+    label: Yae´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-7
+    date: '2026-02-03'
+    label: Black Bunny´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-17
+    date: '2026-02-03'
+    label: Fairy´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-16
+    date: '2026-02-07'
+    label: Lurio´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-33
+    date: '2026-02-09'
+    label: Lurio´s - 2D Debut
+    icon: star
+    url: https://www.twitch.tv/lurio_sensay
+    time: '14:00'
+  - id: event-21
+    date: '2026-02-23'
+    label: Symphoniea´s Geburstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-18
+    date: '2026-03-11'
+    label: Leriusser´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-25
+    date: '2026-03-12'
+    label: Evilyuna´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-15
+    date: '2026-04-29'
+    label: Yuno´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-27
+    date: '2026-05-08'
+    label: Roze´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-5
+    date: '2026-05-11'
+    label: Yozora´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-28
+    date: '2026-05-13'
+    label: Toni´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-4
+    date: '2026-06-06'
+    label: Maxi´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-20
+    date: '2026-06-27'
+    label: Skulux´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-23
+    date: '2026-07-03'
+    label: Tathor´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-12
+    date: '2026-07-11'
+    label: Hayden´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-14
+    date: '2026-07-16'
+    label: Kyubi´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-30
+    date: '2026-08-24'
+    label: Syer´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-31
+    date: '2026-09-04'
+    label: Star´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-10
+    date: '2026-09-06'
+    label: Syo´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-6
+    date: '2026-09-17'
+    label: Scyphosia´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-22
+    date: '2026-10-05'
+    label: Melody´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-26
+    date: '2026-10-09'
+    label: Reki´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-9
+    date: '2026-10-25'
+    label: Teflu´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly
+  - id: event-29
+    date: '2026-11-14'
+    label: Shino´s Geburtstag
+    icon: cake
+    url: ''
+    recurrence: yearly

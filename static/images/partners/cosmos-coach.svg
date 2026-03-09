@@ -1,0 +1,22 @@
+<svg width="320" height="180" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cosmosGradient" x1="32" y1="28" x2="288" y2="152" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#38bdf8" />
+      <stop offset="0.45" stop-color="#818cf8" />
+      <stop offset="1" stop-color="#ec4899" />
+    </linearGradient>
+    <radialGradient id="cosmosHalo" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(160 90) rotate(90) scale(120 200)">
+      <stop offset="0" stop-color="#0ea5e9" stop-opacity="0.2" />
+      <stop offset="1" stop-color="#020617" stop-opacity="0.9" />
+    </radialGradient>
+  </defs>
+  <rect width="320" height="180" rx="28" fill="#020617" />
+  <rect x="16" y="16" width="288" height="148" rx="24" fill="#0f172a" />
+  <rect x="28" y="28" width="264" height="124" rx="22" fill="url(#cosmosHalo)" />
+  <path d="M88 126C96 86 120 58 160 58C200 58 224 86 232 126" stroke="url(#cosmosGradient)" stroke-width="12" stroke-linecap="round" />
+  <path d="M124 86C134 98 146 104 160 104C174 104 186 98 196 86" stroke="#38bdf8" stroke-width="6" stroke-linecap="round" opacity="0.6" />
+  <circle cx="160" cy="60" r="18" fill="#ec4899" opacity="0.45" />
+  <circle cx="112" cy="126" r="10" fill="#38bdf8" />
+  <circle cx="208" cy="126" r="10" fill="#818cf8" />
+  <text x="50%" y="148" text-anchor="middle" fill="#e2e8f0" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="24" font-weight="600">Cosmos Coach</text>
+</svg>

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% import "partials/content_blocks.html" as content_blocks %}
+{% block content %}
+<section class="page project-detail">
+  <div class="project-detail__intro">
+    <a class="project-detail__back" href="{{ url_for('projects') }}">← Zurück zu allen Projekten</a>
+  </div>
+  <article class="project-detail__content">
+    <header class="project-detail__header">
+      <div class="project-detail__heading">
+        <h1 class="project-detail__title">{{ project.title }}</h1>
+        {% if project.tags %}
+        <div class="project-detail__tags">
+          {% for tag in project.tags %}<span>{{ tag }}</span>{% endfor %}
+        </div>
+        {% endif %}
+        {% if project.summary %}
+        <div class="project-detail__summary">{{ project.summary | markdown }}</div>
+        {% endif %}
+        {% if project.url %}
+        <a class="btn" href="{{ project.url }}" target="_blank" rel="noopener">Projekt besuchen</a>
+        {% endif %}
+      </div>
+      {% set hero_image = project.image_url or project.image %}
+      {% if hero_image %}
+      <figure class="project-detail__hero">
+        <img src="{{ hero_image }}" alt="{{ project.title }}">
+      </figure>
+      {% endif %}
+    </header>
+    {% if project.blurb %}
+    <div class="project-detail__body">{{ project.blurb | markdown }}</div>
+    {% endif %}
+    {{ content_blocks.render(project.blocks) }}
+  </article>
+
+  {% if related %}
+  <section class="project-related">
+    <h2>Weitere Projekte</h2>
+    <div class="cards">
+      {% for item in related %}
+      <article class="card">
+        {% set card_image = item.image_url or item.image %}
+        {% if card_image %}<img src="{{ card_image }}" alt="{{ item.title or 'Projektbild' }}">{% endif %}
+        <div class="card-body">
+          <h3>{{ item.title }}</h3>
+          {% if item.summary %}<div class="card-summary">{{ item.summary | markdown }}</div>{% endif %}
+          <a class="btn small" href="{{ url_for('project_detail', slug=item.slug) }}">Mehr erfahren</a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</section>
+{% endblock %}

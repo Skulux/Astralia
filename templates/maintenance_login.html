@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% set minimal_layout = True %}
+{% block content %}
+<section class="maintenance-login">
+  <div class="maintenance-login__card">
+    <div class="maintenance-login__brand">
+      <span class="maintenance-login__brand-logo" aria-hidden="true">✦</span>
+      <span class="maintenance-login__brand-name">{{ SITE_NAME }}</span>
+    </div>
+    {% if error %}
+    <div class="maintenance-login__error">{{ error }}</div>
+    {% endif %}
+    <form method="post">
+      <input type="hidden" name="next" value="{{ request.args.get('next') }}">
+      <label>
+        <span>Benutzername</span>
+        <input type="text" name="username" autocomplete="username" required>
+      </label>
+      <label>
+        <span>Passwort</span>
+        <input type="password" name="password" autocomplete="current-password" required>
+      </label>
+      <button class="button" type="submit">Anmelden</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

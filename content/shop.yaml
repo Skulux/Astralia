@@ -1,0 +1,47 @@
+- slug: stardust-hoodie
+  title: "Stardust Hoodie"
+  streamer: "Lumina"
+  description: |
+    Weicher Oversize-Hoodie mit gesticktem Lumynaria-Sternbild. Innen kuschelig gebürstet und perfekt für lange Streaming-Nächte.
+  price: "€59,00"
+  original_price: "€69,00"
+  discount_label: "Launch -15%"
+  est_arrival: "Versand ab Mitte Mai"
+  badge: "Beliebt"
+  image: "https://placehold.co/800x900/1b1830/ffffff?text=Stardust+Hoodie"
+  purchase_url: "https://lumynaria.example/shop/stardust-hoodie"
+  options:
+    - "Größe S (55 cm)"
+    - "Größe M (60 cm)"
+    - "Größe L (65 cm)"
+    - "Größe XL (70 cm)"
+- slug: nebula-postcards
+  title: "Nebula Postcard Set"
+  streamer: "Aster & Lyra"
+  description: |
+    Set aus fünf holografischen Postkarten mit unterschiedlichen Motiven.
+    Ideal für Autogramme nach Community-Treffen.
+  price: "€18,00"
+  est_arrival: "Limitierte Auflage – Versand innerhalb von 5 Werktagen"
+  badge: "Neu"
+  image: "https://placehold.co/800x900/1b1830/ffffff?text=Nebula+Postcards"
+  purchase_url: "https://lumynaria.example/shop/nebula-postcards"
+  options:
+    - "Format A6 — Blanko"
+    - "Format A6 — mit Autogramm"
+    - "Format A5 — Blanko"
+    - "Format A5 — mit Autogramm"
+- slug: aurora-overlay-pack
+  title: "Aurora Stream Overlay Pack"
+  streamer: "Studio Team"
+  description: |
+    Digitales Overlay-Paket mit Alerts, Panels und Übergängen in zwei Farbvarianten.
+    Sofort-Download inklusive PSD-Dateien und Stream-Deck-Icons.
+  price: "€24,00"
+  est_arrival: "Direkter Download nach Zahlung"
+  badge: "Digital"
+  image: "https://placehold.co/800x900/1b1830/ffffff?text=Aurora+Overlay"
+  purchase_url: "https://lumynaria.example/shop/aurora-overlay"
+  options:
+    - "Standard Edition"
+    - "Creator License (+€10)"

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page">
+  <h1>Projekte</h1>
+  <div class="cards">
+    {% for p in projects %}
+      <article class="card">
+        {% set image_src = p.image_url or p.image %}
+        {% if image_src %}
+        <img src="{{ image_src }}" alt="{{ p.title or 'Projektbild' }}">
+        {% endif %}
+        <div class="card-body">
+          <h3>{{ p.title }}</h3>
+          {% if p.summary %}<div class="card-summary">{{ p.summary | markdown }}</div>{% endif %}
+          <div class="tags">
+            {% for t in p.tags %}<span>{{ t }}</span>{% endfor %}
+          </div>
+          <a class="btn small" href="{{ url_for('project_detail', slug=p.slug) }}">Mehr erfahren</a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

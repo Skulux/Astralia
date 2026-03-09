@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page">
+  <h1>News</h1>
+  <div class="cards">
+    {% for n in posts %}
+      <article class="card">
+        {% set image_src = n.image_url or n.image %}
+        {% if image_src %}
+        <img src="{{ image_src }}" alt="{{ n.title or 'Newsbild' }}">
+        {% endif %}
+        <div class="card-body">
+          <h3>{{ n.title }}</h3>
+          <p class="muted">{{ n.date }}</p>
+          {% if n.summary %}<div class="card-summary">{{ n.summary | markdown }}</div>{% endif %}
+          <a class="btn small" href="{{ url_for('news_detail', slug=n.slug) }}">Weiterlesen</a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

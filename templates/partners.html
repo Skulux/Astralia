@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page partners-page">
+  <header class="page-header partners-page__header">
+    <div>
+      <h1>Partner</h1>
+      <p class="muted">Gemeinsam mit diesen Partnern bringen wir neue Sternbilder an den Himmel von Lumynaria.</p>
+    </div>
+  </header>
+
+  <div class="partner-grid partner-grid--page" role="list">
+    {% for partner in partners %}
+    <a class="partner-card" href="{{ partner.url }}" target="_blank" rel="noopener" role="listitem" aria-label="{{ partner.name }}">
+      <img src="{{ partner.logo_url or partner.logo }}" alt="{{ partner.name or 'Partnerlogo' }}" loading="lazy">
+      <span class="partner-card__label" aria-hidden="true">{{ partner.name }}</span>
+      <span class="sr-only">{{ partner.name }}</span>
+    </a>
+    {% else %}
+    <p class="muted">Noch keine Partner hinterlegt.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page admin-login">
+  <header class="page-header">
+    <h1>{{ login_title|default('Admin Login', true) }}</h1>
+    <p class="muted">{{ login_intro|default('Melde dich mit dem Administrationskonto an, um Inhalte zu bearbeiten.', true) }}</p>
+  </header>
+
+  <form class="admin-card" method="post">
+    <div class="form-grid">
+      <label>
+        <span>Benutzername</span>
+        <input type="text" name="username" required>
+      </label>
+      <label>
+        <span>Passwort</span>
+        <input type="password" name="password" required>
+      </label>
+    </div>
+    <button class="button" type="submit">{{ login_button_label|default('Anmelden', true) }}</button>
+  </form>
+</section>
+{% endblock %}

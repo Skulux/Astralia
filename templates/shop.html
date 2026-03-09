@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page shop-page">
+  <header class="shop-header">
+    <p class="muted">Merch &amp; digitale Goodies</p>
+    <h1>Shop</h1>
+    <p class="shop-lead">Entdecke ausgewählte Produkte aus dem Lumynaria-Kosmos – perfekt zum Verschenken oder Selbstverwöhnen.</p>
+  </header>
+
+  {% if items %}
+  <div class="cards shop-items">
+    {% for item in items %}
+    <article class="card shop-card {% if item.effect_class %}{{ item.effect_class }}{% endif %} {% if item.sold_out %}is-sold-out{% endif %}">
+      {% if item.image %}
+      <a class="shop-card-image" href="{{ url_for('shop_detail', slug=item.slug) }}">
+        <img src="{{ item.image }}" alt="{{ item.title }}">
+        {% if item.sold_out %}
+        <span class="shop-card-status">Ausverkauft</span>
+        {% elif item.effect_label %}
+        <span class="shop-card-effect">{{ item.effect_label }}</span>
+        {% endif %}
+      </a>
+      {% endif %}
+      <div class="card-body">
+        <div class="shop-card-header">
+          <h3>{{ item.title }}</h3>
+          <div class="shop-card-badges">
+            {% if item.badge %}
+            <span class="shop-badge">{{ item.badge }}</span>
+            {% endif %}
+            {% if item.effect_label and not item.sold_out and not item.image %}
+            <span class="shop-effect-tag">{{ item.effect_label }}</span>
+            {% endif %}
+          </div>
+        </div>
+        {% if item.streamer %}
+        <p class="shop-card-streamer">Von {{ item.streamer }}</p>
+        {% endif %}
+        <div class="shop-price-block">
+          {% if item.original_price %}
+          <span class="shop-price-old">{{ item.original_price }}</span>
+          {% endif %}
+          {% if item.price %}
+          <span class="shop-price-current">{{ item.price }}</span>
+          {% endif %}
+          {% if item.discount_percent %}
+          <span class="shop-price-discount">{{ item.discount_percent }}</span>
+          {% endif %}
+        </div>
+        {% if item.est_arrival %}
+        <p class="shop-card-arrival">{{ item.est_arrival }}</p>
+        {% endif %}
+        {% if item.stock is not none %}
+        <p class="shop-card-stock {% if item.sold_out %}sold-out{% endif %}">
+          {% if item.sold_out %}Ausverkauft{% else %}{{ item.stock }} auf Lager{% endif %}
+        </p>
+        {% endif %}
+        {% if item.description %}
+        <p class="shop-description">{{ item.description }}</p>
+        {% endif %}
+        <a class="btn small" href="{{ url_for('shop_detail', slug=item.slug) }}">Details ansehen</a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="muted">Derzeit sind keine Produkte verfügbar. Schau bald wieder vorbei!</p>
+  {% endif %}
+</section>
+{% endblock %}

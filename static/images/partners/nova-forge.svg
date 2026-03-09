@@ -1,0 +1,19 @@
+<svg width="320" height="180" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="novaGradient" x1="36" y1="144" x2="284" y2="36" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f97316" />
+      <stop offset="1" stop-color="#ef4444" />
+    </linearGradient>
+    <radialGradient id="novaCore" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(160 90) rotate(90) scale(110 180)">
+      <stop offset="0" stop-color="#1e293b" stop-opacity="0" />
+      <stop offset="1" stop-color="#020617" stop-opacity="0.92" />
+    </radialGradient>
+  </defs>
+  <rect width="320" height="180" rx="28" fill="#020617" />
+  <rect x="18" y="18" width="284" height="144" rx="24" fill="#0f172a" />
+  <rect x="36" y="36" width="248" height="108" rx="20" fill="url(#novaCore)" />
+  <path d="M80 124H120L160 56L200 124H240" stroke="url(#novaGradient)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M160 56L134 96H186L160 56Z" fill="#f97316" />
+  <circle cx="160" cy="96" r="18" fill="#ef4444" opacity="0.35" />
+  <text x="50%" y="148" text-anchor="middle" fill="#fef3c7" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="24" font-weight="600">Nova Forge</text>
+</svg>

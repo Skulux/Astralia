@@ -1,0 +1,38 @@
+site_name: Lumynaria
+site_tagline: Voices from the silence of the cosmos, carried by the light of forgotten
+  stars
+site_subtitle: German VTuber Hub
+maintenance_mode: false
+shop_enabled: false
+artworks_panel_enabled: false
+meta:
+  default_description: Lumynaria ist der deutsche VTuber Hub für Events, Projekte
+    und Talente im Streaming-Universum.
+  default_image: images/logo.png
+  organization:
+    type: Organization
+    logo: images/logo.png
+footer:
+  about_heading: Lumynaria
+  about_text: "Ein kreatives Netzwerk für deutschsprachige VTuberinnen, Künstlerinnen\
+    \ und Streamer*innen.\r\nFrei, unabhängig und gemeinschaftlich."
+  social_heading: Socials
+  socials:
+  - label: Twitch
+    url: https://www.twitch.tv/vlumynaria
+  - label: X (Twitter)
+    url: https://x.com/VLumynaria
+  legal_heading: Rechtliches
+  legal_links:
+  - label: Impressum
+    url: /impressum
+  - label: Datenschutzerklärung
+    url: /datenschutz
+  fine_print: © {site_name} {year} • Erstellt mit Fleiß und Magie.
+starfield:
+  density_divisor: 9000.0
+  min_count: 100
+  speed_min: 0.031
+  speed_max: 0.201
+  fast_fraction: 0.2
+  fast_multiplier: 2.5

@@ -1,0 +1,146 @@
+- slug: community-management
+  name: VRChat Avatar Merge & Setup
+  description: "Du möchtest deinen VRChat-Avatar zusammensetzen lassen? Flic übernimmt\
+    \ das komplette Zusammenführen (Mergen) deines Avatars.\r\n\r\nWas wird gemacht:\r\
+    \n\r\n- Zusammenführen (Mergen) des Base Models mit Outfits, Hair, Accessories\
+    \ usw.\r\n- Einrichtung der Expressions, Menüs, Gestures, Visemes (nach Wunsch)\r\
+    \n- Bereitstellung als Unity-Projekt oder Unitypackage zur direkten Verwendung\r\
+    \n\r\nWas du zusenden musst:\r\n- Base Model (.fbx oder .blend)\r\n- Outfits,\
+    \ Haare, Accessoires etc.\r\n- Texturen/Materials\r\n\r\nOptional: Custom Animations,\
+    \ Expressions oder Referenzbilder\r\n\r\nAchtung:\r\n- Sämtliche Gegenstände und\
+    \ Animationen müssen vom kunden zu verfügung gestellt werden.\r\n- Es werden keine\
+    \ NSFW gegenstände/models/animationen bearbeitet\r\n- Für die einrichtung vom\
+    \ iPhonetracking (ARKit) muss das Model kompatiebel sein.\r\n- 15€ ermässigung\
+    \ wenn es in kombination mit Bleder genommen wird."
+  offered_by: Flic Segawa
+  image: uploads/service-0-055f8704257e493b81b43ddc7eb53cdb.png
+  image_alt: Moderatoren arbeiten gemeinsam an einem Kontrollpult
+  status: open
+  contacts:
+  - label: Discord
+    url: https://discord.com/users/341873633615937547
+    icon: website.svg
+  gallery:
+  - image: uploads/service-0-gallery-1-25fa5e51eaa5464a88f1d2dd4ae51c46.png
+    alt: Unity Session
+  - image: uploads/service-0-gallery-new-eb948d6cb25b4282b5f9b2cfd0109eb6.png
+    alt: VRChat-Avatar
+  prices:
+  - label: Grundpreis
+    price: 25€
+    note: beinhaltet ready to use VSFS oder VRChat export
+  - label: Extra Toggles
+    price: 3€
+    note: z.b. Emotions
+  - label: Extra Gegenstände
+    price: 5€
+    note: Mikrofon, Schwert, etc.
+  - label: Extra Animationen
+    price: 5€
+    note: z.b. Tänze
+  - label: Texturanpassung
+    price: 10€
+    note: ''
+  - label: ARKit
+    price: 20€
+    note: ''
+  - label: Unityprojekt
+    price: 20€
+    note: ''
+- slug: branding-und-overlays
+  name: VRChat Model - Blender
+  description: "Du möchtest deinen VRChat-Avatar in Blender vorbereiten oder anpassen\
+    \ lassen? \r\nYuna übernimmt das Einrichten, Bearbeiten und Exportieren deines\
+    \ Avatars, komplett nach deinen Wünschen und bereit für Unity.\r\n\r\nWas wird\
+    \ gemacht:\r\n\r\n- Einrichtung und Vorbereitung des Base Models in Blender\r\n\
+    - Zusammenführen mit Kleidung, Haaren und Accessoires\r\n- Export als fertige\
+    \ FBX-Datei zur direkten Nutzung in Unity\r\n- Optional: Bereitstellung des vollständigen\
+    \ Blender-Projekts zur eigenen Weiterbearbeitung\r\n\r\nWas du zusenden musst:\r\
+    \n- Base Model (.blend oder .fbx)\r\n- Kleidung, Haare, Accessoires usw.\r\n-\
+    \ Texturen/Materials\r\n\r\nOptionale Erweiterungen:\r\n- Zusätzliche Kleidung\
+    \ (pro Outfit)\r\n- Zusätzliche Haare\r\n- Weitere Accessoires\r\n- Body- oder\
+    \ Headswap (z. B. Austausch von Körper oder Kopf)\r\n- Komplette Blender-Projektdatei\
+    \ (zur Selbstbearbeitung)\r\n\r\nAchtung:\r\n- Sämtliche Modelle, Assets und Texturen\
+    \ müssen vom Kunden zur Verfügung gestellt werden.\r\n- Es werden keine NSFW-Modelle\
+    \ oder Inhalte bearbeitet.\r\n- Kompatibel mit VRChat-Humanoid-Rigs."
+  offered_by: Evilyuna
+  image: uploads/service-1-a0262e8dac1e4bd386d39b854f038d6f.JPG
+  image_alt: Colorful streaming overlay mockups
+  status: open
+  contacts:
+  - label: Discord
+    url: https://discord.com/users/302423933234446336
+    icon: website.svg
+  badges:
+  - discounted
+  gallery:
+  - image: uploads/service-1-gallery-1-dd5af92604e1433b99ba645a05945341.JPG
+    alt: Blender Preview 1
+  - image: uploads/service-1-gallery-2-2a6347287c294eda98ab00eb43136fde.JPG
+    alt: Blender Preview 2
+  - image: uploads/service-1-gallery-new-db6f90da2a2b4a75b938b8e384e5b5d6.JPG
+    alt: Blender Preview 3
+  prices:
+  - label: Grundpreis
+    price: 25€
+    note: beinhaltet FBX Export, 1x Kleidung, 1x Accessory
+  - label: Extra Kleidung
+    price: 5€
+    note: Preis für jedes weitere Outfit
+  - label: Extra Haare
+    price: 5€
+    note: ''
+  - label: Extra Accessory
+    price: 3€
+    note: ''
+  - label: Body/Headswap
+    price: 15€
+    note: ''
+  - label: Blender-Projekt
+    price: 10€
+    note: Das gesamte Blender-Projekt (zum selber weiterbearbeiten, nicht nur FBX
+      Export)
+- slug: live2d-rigg-fullbody
+  name: LIVE2D Rigg
+  description: "Allowed\r\n- Personal Use\r\n- Menetized content\r\n- Comercial merchandising\r\
+    \n\r\nIncludes\r\n- A moc3 file ready for import into Vtuber Studio softwareIncluding\r\
+    \n- 3 extra expression"
+  offered_by: YunoYuzuha
+  image: https://placehold.co/720x480?text=Live2D
+  image_alt: ''
+  status: open
+  contacts:
+  - label: VGen
+    url: https://vgen.co/YunoYuzuha
+    icon: link.svg
+  prices:
+  - label: Halfbody
+    price: '120'
+    note: Halfbody Rigging
+  - label: Fullbody
+    price: '150'
+    note: Fullbody Rigging
+  - label: Speed Delivery
+    price: '50'
+    note: Schnellere Lieferung
+  - label: Extra Expressions
+    price: '10'
+    note: Face Expressions
+  - label: Arm Toggle
+    price: '10'
+    note: Pets etc.
+  - label: Extra Toggle
+    price: '20'
+    note: z.B. Jacke an / ausziehen
+  - label: Extra Outfit
+    price: '20'
+    note: based on the requirement
+  - label: Extra Hair
+    price: '30'
+    note: based on the requirement
+  - label: Tongue out
+    price: '20'
+    note: ''
+  - label: Animation / Extra
+    price: '40'
+    note: requirements pricing based on requirements
