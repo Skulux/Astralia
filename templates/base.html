@@ -95,23 +95,6 @@
   {% endif %}
   {% endif %}
 
-  {% if not minimal_layout %}
-  <section class="portal-banner" aria-label="Astralia Info">
-    <span class="portal-banner__led"></span>
-    <strong>Astralia.Live</strong>
-    <span>• Cosmic Forum Hub •</span>
-    <span>Now playing: Galactic Community Vibes</span>
-  </section>
-  {% endif %}
-
-  {% if not minimal_layout %}
-  <section class="forum-toolbar" aria-label="Community Statusleiste">
-    <span><strong>Theme:</strong> Astralia Nebula Board</span>
-    <span><strong>Mode:</strong> Retro Forum</span>
-    <span><strong>Domain:</strong> Astralia.Live</span>
-  </section>
-  {% endif %}
-
   <main class="main{% if minimal_layout %} main--minimal{% endif %}">
     {% if not minimal_layout %}
     {% with messages = get_flashed_messages(with_categories=true) %}

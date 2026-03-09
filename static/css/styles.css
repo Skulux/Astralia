@@ -1093,3 +1093,66 @@ h1,h2,h3{
   font-family:"Orbitron",sans-serif;
   letter-spacing:.12em;
 }
+
+/* Astralia.Live redesign v4: dense 2010 forum portal layout */
+.main{padding-top:10px}
+
+.astral-home{max-width:1280px;margin:0 auto 40px;padding:0 14px 20px}
+.astral-home__topline{display:flex;justify-content:flex-end;border-top:2px solid #f3c92d;border-bottom:1px solid #f3c92d;color:#f3c92d;padding:4px 8px;font-family:"Orbitron",sans-serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;background:linear-gradient(90deg,#5e1c84,#4a1a79)}
+.astral-hero-panel{padding:34px 16px 20px;text-align:center;border:1px solid #6d4bd9;background:linear-gradient(180deg,rgba(22,11,57,.9),rgba(8,6,32,.92));position:relative;overflow:hidden}
+.astral-hero-panel::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 18% 24%,rgba(255,209,85,.65) 0 1.2px,transparent 1.8px),radial-gradient(circle at 34% 42%,rgba(75,231,255,.65) 0 1.2px,transparent 1.8px),radial-gradient(circle at 74% 16%,rgba(255,115,226,.65) 0 1.2px,transparent 1.8px),radial-gradient(circle at 88% 68%,rgba(255,209,85,.6) 0 1.2px,transparent 1.8px);opacity:.75;pointer-events:none}
+.astral-hero-panel>*{position:relative;z-index:1}
+.astral-logo-word{margin:0;font-family:"Orbitron",sans-serif;font-size:clamp(2.6rem,9vw,6.6rem);letter-spacing:.14em;background:linear-gradient(90deg,#4deaff 0%,#98c5ff 38%,#f084ef 74%,#ffca5f 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 18px rgba(86,220,255,.35)}
+.astral-hero-panel__eyebrow,.astral-hero-panel__sub{margin:.2rem 0;color:#20d6f6;font-family:"Orbitron",sans-serif;letter-spacing:.34em;text-transform:uppercase;font-size:.68rem}
+.astral-hero-panel__stats{margin-top:14px;display:flex;justify-content:center;flex-wrap:wrap;gap:22px;color:#f1dcff;font-size:.78rem;text-transform:uppercase;letter-spacing:.1em}
+
+.astral-tabnav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:8px 10px;border:1px solid #7b51d4;border-top:0;background:rgba(14,10,46,.86)}
+.astral-tabnav a{padding:8px 14px;border:1px solid #2bd9ff;background:linear-gradient(180deg,#0f4e82,#0a2d5c);text-transform:uppercase;letter-spacing:.11em;font-family:"Orbitron",sans-serif;font-size:.7rem;color:#aaf2ff;text-decoration:none}
+.astral-tabnav a:hover{filter:brightness(1.2)}
+
+.astral-grid{display:grid;grid-template-columns:280px minmax(0,1fr) 280px;gap:14px;margin-top:14px}
+.astral-col{display:grid;gap:14px;align-content:start}
+.astral-widget{border:1px solid #7a4dd5;background:rgba(17,10,47,.86);padding:10px;box-shadow:inset 0 0 0 1px rgba(108,56,208,.45)}
+.astral-widget>h2{margin:0 0 10px;padding:5px 8px;background:linear-gradient(90deg,#6f2fbc,#3a297f);border:1px solid rgba(186,111,255,.5);font-family:"Orbitron",sans-serif;font-size:.74rem;letter-spacing:.16em;color:#ffd84f;text-transform:uppercase}
+.astral-widget h3{margin:.2rem 0 .55rem;font-size:1.8rem;letter-spacing:.03em;text-transform:none;font-family:"Rajdhani",sans-serif}
+
+.astral-profile{text-align:center}
+.astral-profile__avatar{width:98px;height:98px;border-radius:50%;margin:8px auto;display:grid;place-items:center;font-size:2rem;background:radial-gradient(circle at 30% 30%,#53e9ff,#7b58f3 65%,#28135b);box-shadow:0 0 22px rgba(78,228,255,.5)}
+.astral-profile__name{margin:.25rem 0;font-weight:700}
+.astral-profile__tag{margin:0;color:#8be4ff;font-size:.82rem}
+.astral-rank{margin:0;font-size:1.15rem;text-align:center;color:#ffd95e}
+
+.astral-list{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.astral-list li{padding:6px 4px;border-bottom:1px dashed rgba(121,84,209,.45);font-size:.9rem}
+.astral-list li small{display:block;color:#8cb6dc;margin-top:2px}
+.dot-live{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ff426e;box-shadow:0 0 8px #ff426e;margin-right:8px}
+.astral-list--chat li{font-size:.84rem;line-height:1.35}
+
+.astral-featured p{margin:0 0 .85rem;color:#b9c8e6}
+.astral-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+.astral-live-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.astral-live-card{border:1px solid #4c2f96;background:linear-gradient(180deg,rgba(25,22,69,.9),rgba(12,10,40,.95));padding:8px}
+.astral-live-card a{display:grid;gap:6px;color:inherit;text-decoration:none}
+.astral-live-card img{width:100%;height:95px;object-fit:cover;border-radius:0}
+.astral-live-card strong{font-family:"Orbitron",sans-serif;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.astral-live-card small{font-size:.76rem;color:#89c2e1}
+.astral-live-card--empty{grid-column:1/-1;text-align:center;color:#9caecf}
+
+.astral-forum-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.astral-forum-table th,.astral-forum-table td{padding:8px 6px;border-bottom:1px solid rgba(112,76,201,.35);text-align:left}
+.astral-forum-table th{font-family:"Orbitron",sans-serif;text-transform:uppercase;font-size:.7rem;letter-spacing:.12em;color:#ffd95e}
+.astral-forum-table td:nth-child(n+2){color:#8aa6cb;font-size:.8rem}
+
+@media (max-width:1200px){
+  .astral-grid{grid-template-columns:240px minmax(0,1fr) 240px}
+}
+@media (max-width:980px){
+  .astral-grid{grid-template-columns:1fr}
+  .astral-live-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:600px){
+  .astral-logo-word{letter-spacing:.07em}
+  .astral-tabnav a{flex:1 1 calc(50% - 8px);text-align:center}
+  .astral-live-grid{grid-template-columns:1fr}
+}

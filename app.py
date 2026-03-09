@@ -4785,6 +4785,16 @@ def index():
     homepage_config = _prepare_homepage_for_display(get_homepage_settings())
     sections = [section for section in homepage_config.get("sections", []) if section.get("enabled", True)]
     sections.sort(key=lambda item: item.get("order", 0))
+    all_talents = sorted(
+        [
+            {"slug": slug, "name": (member.get("name") or slug)}
+            for slug, member in member_index.items()
+        ],
+        key=lambda item: item["name"].lower(),
+    )
+    online_now = live_profiles[:6]
+    calendar_events = homepage_config.get("calendar", {}).get("events", [])
+    upcoming_events = calendar_events[:5] if isinstance(calendar_events, list) else []
     hero_meta = homepage_config.get("hero", {})
     hero_image = hero_meta.get("background_url") or hero_meta.get("logo_url")
     meta_description = hero_meta.get("subtitle") or hero_meta.get("kicker")
@@ -4801,6 +4811,9 @@ def index():
         homepage=homepage_config,
         home_sections=sections,
         live_profiles=live_profiles,
+        all_talents=all_talents,
+        online_now=online_now,
+        upcoming_events=upcoming_events,
         page_meta=page_meta,
     )
 
