@@ -110,6 +110,14 @@
   </section>
   {% endif %}
 
+  {% if not minimal_layout %}
+  <section class="forum-toolbar" aria-label="Community Statusleiste">
+    <span><strong>Theme:</strong> Astralia Nebula Board</span>
+    <span><strong>Mode:</strong> Retro Forum</span>
+    <span><strong>Domain:</strong> Astralia.Live</span>
+  </section>
+  {% endif %}
+
   <main class="main{% if minimal_layout %} main--minimal{% endif %}">
     {% if not minimal_layout %}
     {% with messages = get_flashed_messages(with_categories=true) %}

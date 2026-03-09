@@ -858,66 +858,133 @@ a:hover{text-decoration:underline}
 .shop-option-remove:hover{background:rgba(255,255,255,.12);transform:translateY(-2px)}
 .shop-option-block .button-secondary{justify-self:start}
 
+/* Astralia.Live redesign v2: full retro forum / myspace galaxy */
+:root{
+  --bg:#04070f;
+  --panel:#0c1429;
+  --panel-2:#111f3f;
+  --ink:#d8e7ff;
+  --muted:#9ab0d6;
+  --accent:#45d0ff;
+  --accent-2:#ff7fe7;
+  --border:#4e6ba8;
+}
 
-/* Astralia.Live rebrand: forum + myspace nostalgia */
 body{
-  background-image:var(--background), repeating-linear-gradient(0deg, rgba(255,255,255,.015) 0, rgba(255,255,255,.015) 1px, transparent 1px, transparent 24px), repeating-linear-gradient(90deg, rgba(255,255,255,.015) 0, rgba(255,255,255,.015) 1px, transparent 1px, transparent 24px);
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(900px 500px at -8% -12%, rgba(69,208,255,.2), transparent 70%),
+    radial-gradient(900px 700px at 108% 12%, rgba(255,127,231,.15), transparent 72%),
+    linear-gradient(180deg, rgba(7,12,24,.94), rgba(4,7,15,.98)),
+    repeating-linear-gradient(0deg, rgba(118,148,204,.08) 0, rgba(118,148,204,.08) 1px, transparent 1px, transparent 26px),
+    repeating-linear-gradient(90deg, rgba(118,148,204,.06) 0, rgba(118,148,204,.06) 1px, transparent 1px, transparent 26px);
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:repeating-linear-gradient(180deg, rgba(255,255,255,.015) 0, rgba(255,255,255,.015) 1px, transparent 1px, transparent 3px);
+  mix-blend-mode:screen;
+  opacity:.35;
+  z-index:99;
+}
+
+.site-header,
+.portal-banner,
+.forum-toolbar,
+.section,
+.page,
+.card,
+.panel,
+.site-footer,
+.article-detail__header,
+.project-detail__header,
+.talent-card,
+.shop-card,
+.partner-card{
+  border-radius:0 !important;
+  border:2px solid var(--border) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14), 0 0 0 1px rgba(9,15,30,.65), 0 12px 24px rgba(0,0,0,.4) !important;
 }
 
 .site-header{
-  border-bottom:2px solid #4c72b6;
-  box-shadow:0 8px 24px rgba(0,0,0,.35);
+  background:linear-gradient(180deg,#1a2d57,#0f1d3c 60%, #0b152d) !important;
 }
 
 .brand-text{
   font-family:"VT323",monospace;
-  letter-spacing:.06em;
-  font-size:1.45rem;
+  font-size:1.65rem;
+  letter-spacing:.08em;
   text-transform:uppercase;
+  color:#eef7ff;
 }
 
 .nav-link{
-  border:1px solid rgba(126,168,232,.45);
-  background:linear-gradient(180deg, rgba(23,39,74,.75), rgba(13,24,48,.8));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+  border-radius:0;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:.78rem;
+  border:1px solid #5b84cd;
+  background:linear-gradient(180deg,#2a4d8e,#1a2f59);
 }
 
 .nav-link.active{
-  background:linear-gradient(180deg, rgba(82,130,214,.52), rgba(72,48,142,.45));
-  border-color:#8db6ff;
-}
-
-.section,.card,.panel,.article-detail__header,.project-detail__header,.talent-card,.shop-card,.partner-card{
-  border:1px solid rgba(120,158,220,.45);
-  box-shadow:0 10px 24px rgba(2,8,20,.45), inset 0 1px 0 rgba(255,255,255,.08);
+  background:linear-gradient(180deg,#6539b0,#2f5da0);
+  border-color:#8fdcff;
 }
 
 .portal-banner{
+  width:min(1180px, calc(100% - 24px));
+  margin:10px auto 0;
+  padding:10px 16px;
   display:flex;
   gap:14px;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  font-family:"VT323",monospace;
+  font-size:1.28rem;
+  background:linear-gradient(90deg,#162b56,#2f2866,#162b56);
+  color:#eff6ff;
+  text-shadow:0 0 10px rgba(69,208,255,.55);
+}
+
+.forum-toolbar{
+  width:min(1180px, calc(100% - 24px));
+  margin:0 auto;
+  padding:8px 14px;
+  display:flex;
+  gap:12px 20px;
+  flex-wrap:wrap;
   align-items:center;
   justify-content:center;
-  flex-wrap:wrap;
-  margin:14px auto 0;
-  width:min(1120px,calc(100% - 32px));
-  padding:8px 16px;
-  background:linear-gradient(90deg,#182d58,#2a1f4e,#182d58);
-  border:1px solid #7096d8;
-  border-radius:12px;
-  color:#ecf4ff;
-  font-family:"VT323",monospace;
-  font-size:1.2rem;
-  text-shadow:0 0 8px rgba(136,214,255,.45);
+  font-size:.84rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  background:linear-gradient(180deg,#0f1e40,#0b1732);
 }
 
-.portal-banner__led{
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  background:#7dff9f;
-  box-shadow:0 0 8px #7dff9f;
-}
+.forum-toolbar strong{color:#9de5ff}
+
+.main{padding-top:16px}
 
 h1,h2,h3{
-  text-shadow:0 0 14px rgba(110,193,255,.16);
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  text-shadow:0 0 12px rgba(69,208,255,.3);
+}
+
+.button,
+.button-secondary,
+button{
+  border-radius:0 !important;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+@media (max-width: 900px){
+  .portal-banner{font-size:1.05rem}
+  .forum-toolbar{font-size:.72rem}
 }
