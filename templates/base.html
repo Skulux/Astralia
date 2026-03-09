@@ -45,7 +45,7 @@
   {% block extra_meta %}{% endblock %}
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Marcellus&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Marcellus&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset_url('css/styles.css') }}">
   <script defer src="{{ asset_url('js/main.js') }}"></script>
   {% block extra_head %}{% endblock %}
@@ -99,6 +99,15 @@
     </div>
   </div>
   {% endif %}
+  {% endif %}
+
+  {% if not minimal_layout %}
+  <section class="portal-banner" aria-label="Astralia Info">
+    <span class="portal-banner__led"></span>
+    <strong>Astralia.Live</strong>
+    <span>• Cosmic Forum Hub •</span>
+    <span>Now playing: Galactic Community Vibes</span>
+  </section>
   {% endif %}
 
   <main class="main{% if minimal_layout %} main--minimal{% endif %}">

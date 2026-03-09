@@ -13,7 +13,7 @@ Verantwortliche
 
 Angaben gemäß § 5 DDG
 
-Lumynaria - Angelina Schulze
+Astralia - Angelina Schulze
 
 c/o Online-Impressum.de #1358
 
@@ -21,14 +21,14 @@ c/o Online-Impressum.de #1358
 Europaring 90, 53757 Sankt Augustin
 
 
-E-Mail: symphoniea@lumynaria.de
+E-Mail: symphoniea@astralia.de
 
 
 Zuständige Regulierungs- und Aufsichtsbehörde
 - Medienanstalt Berlin-Brandenburg
 Sitz: Deutschland 
 
-Die vollständige Anbieterkennzeichnung (Impressum) findest du unter: https://mein.online-impressum.de/lumynaria/
+Die vollständige Anbieterkennzeichnung (Impressum) findest du unter: https://mein.online-impressum.de/astralia/
 
 ───── ୨୧ ─────
 

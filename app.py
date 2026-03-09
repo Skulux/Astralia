@@ -344,9 +344,9 @@ NETIM_MAIL_DEFAULTS = {
     "MAIL_PORT": 465,
     "MAIL_USE_TLS": False,
     "MAIL_USE_SSL": True,
-    "MAIL_USERNAME": "project@lumynaria.de",
+    "MAIL_USERNAME": "project@astralia.de",
     "MAIL_PASSWORD": "your_mail_password",
-    "MAIL_DEFAULT_SENDER": "Lumynaria <noreply@lumynaria.de>",
+    "MAIL_DEFAULT_SENDER": "Astralia <noreply@astralia.de>",
 }
 
 
@@ -381,7 +381,7 @@ app.config.setdefault("BROTLI_QUALITY", 6)
 app.config.setdefault("BROTLI_MIN_SIZE", 1400)
 
 mail = Mail(app)
-CONTACT_RECIPIENT = os.environ.get("CONTACT_RECIPIENT", "contact@lumynaria.de")
+CONTACT_RECIPIENT = os.environ.get("CONTACT_RECIPIENT", "contact@astralia.de")
 DECAPI_BASE_URL = "https://decapi.me/twitch"
 
 
@@ -1173,7 +1173,7 @@ CALENDAR_RECURRENCE_OPTIONS = {
 }
 
 DEFAULT_SITE_SETTINGS = {
-    "site_name": "Lumynaria",
+    "site_name": "Astralia.Live",
     "site_tagline": "Voices from the silence of the cosmos, carried by the light of forgotten stars",
     "site_subtitle": "German VTuber Hub",
     "maintenance_mode": False,
@@ -1181,7 +1181,7 @@ DEFAULT_SITE_SETTINGS = {
     "artworks_panel_enabled": True,
     "talents_no_teams": False,
     "meta": {
-        "default_description": "Lumynaria ist der deutsche VTuber Hub für Events, Projekte und Talente im Streaming-Universum.",
+        "default_description": "Astralia ist der deutsche VTuber Hub für Events, Projekte und Talente im Streaming-Universum.",
         "default_image": "images/logo.png",
         "organization": {
             "type": "Organization",
@@ -1274,7 +1274,7 @@ DEFAULT_HOMEPAGE_SETTINGS = {
         },
         "tertiary_button": {
             "label": "Zum Discord",
-            "url": "https://dc.lumynaria.de",
+            "url": "https://dc.astralia.de",
         },
     },
     "sections": DEFAULT_HOMEPAGE_SECTIONS,
@@ -4971,7 +4971,7 @@ def services():
     services_list = get_services()
     page_meta = build_seo_metadata(
         title="Services",
-        description="Produktions- und Community-Angebote von Lumynaria im Überblick.",
+        description="Produktions- und Community-Angebote von Astralia im Überblick.",
         canonical=url_for("services", _external=True),
     )
     return render_template("services.html", services=services_list, page_meta=page_meta)
@@ -5004,7 +5004,7 @@ def news():
     data = get_news_entries()
     page_meta = build_seo_metadata(
         title="News",
-        description="Aktuelle Neuigkeiten und Events aus dem Lumynaria-Kosmos.",
+        description="Aktuelle Neuigkeiten und Events aus dem Astralia-Kosmos.",
         canonical=url_for("news", _external=True),
     )
     return render_template("news.html", posts=data, page_meta=page_meta)
@@ -5062,7 +5062,7 @@ def shop():
     items = get_shop_items()
     page_meta = build_seo_metadata(
         title="Shop",
-        description="Merch und digitale Goodies von Lumynaria.",
+        description="Merch und digitale Goodies von Astralia.",
         canonical=url_for("shop", _external=True),
     )
     return render_template("shop.html", items=items, page_meta=page_meta)
@@ -5125,12 +5125,12 @@ def contact():
             flash("Bitte fülle alle Felder aus.", "error")
         else:
             msg = Message(
-                subject=f"[Lumynaria Kontakt] {form_data['subject']}",
+                subject=f"[Astralia Kontakt] {form_data['subject']}",
                 recipients=[CONTACT_RECIPIENT],
                 reply_to=form_data["email"],
             )
             msg.body = (
-                "Neue Kontaktanfrage von Lumynaria.de\n\n"
+                "Neue Kontaktanfrage von Astralia.de\n\n"
                 f"Name: {form_data['name']}\n"
                 f"E-Mail: {form_data['email']}\n"
                 f"Betreff: {form_data['subject']}\n\n"

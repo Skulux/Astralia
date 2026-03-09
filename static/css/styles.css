@@ -1,11 +1,11 @@
 :root{
-    --bg:#0e0b13; --panel:#151223; --panel-2:#1b1830; --ink:#e8e5ff; --ink-strong:#ffffff; --muted:#bdb8e6;
-  --accent:#b393ff; --accent-2:#f0a9ff; --glow:#c1aaff; --border:#2b2542;
+    --bg:#060912; --panel:#0f1a2e; --panel-2:#152444; --ink:#dbe8ff; --ink-strong:#ffffff; --muted:#99abd3;
+  --accent:#6ec1ff; --accent-2:#b18cff; --glow:#88d6ff; --border:#2f4f88;
   --background:
     radial-gradient(820px 600px at 12% 18%, rgba(103, 76, 190, .32), rgba(14, 11, 19, 0) 70%) fixed,
     radial-gradient(780px 560px at 88% 26%, rgba(76, 134, 220, .26), rgba(14, 11, 19, 0) 68%) fixed,
     radial-gradient(860px 640px at 18% 78%, rgba(188, 98, 230, .24), rgba(14, 11, 19, 0) 72%) fixed,
-    radial-gradient(1200px 800px at 44% 52%, #181428 0%, #0e0b13 60%) fixed;
+    radial-gradient(1200px 800px at 44% 52%, #101b33 0%, #060912 60%) fixed;
   --surface-header:rgba(14,11,19,.7);
   --surface-card:linear-gradient(180deg,rgba(27,24,48,.8),rgba(21,18,35,.9));
   --surface-team:linear-gradient(180deg,rgba(27,24,48,.9),rgba(21,18,35,.92));
@@ -857,3 +857,67 @@ a:hover{text-decoration:underline}
 .shop-option-remove{width:38px;height:38px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.05);color:#fff;font-size:1.1rem;display:grid;place-items:center;cursor:pointer;transition:background .2s ease,transform .2s ease}
 .shop-option-remove:hover{background:rgba(255,255,255,.12);transform:translateY(-2px)}
 .shop-option-block .button-secondary{justify-self:start}
+
+
+/* Astralia.Live rebrand: forum + myspace nostalgia */
+body{
+  background-image:var(--background), repeating-linear-gradient(0deg, rgba(255,255,255,.015) 0, rgba(255,255,255,.015) 1px, transparent 1px, transparent 24px), repeating-linear-gradient(90deg, rgba(255,255,255,.015) 0, rgba(255,255,255,.015) 1px, transparent 1px, transparent 24px);
+}
+
+.site-header{
+  border-bottom:2px solid #4c72b6;
+  box-shadow:0 8px 24px rgba(0,0,0,.35);
+}
+
+.brand-text{
+  font-family:"VT323",monospace;
+  letter-spacing:.06em;
+  font-size:1.45rem;
+  text-transform:uppercase;
+}
+
+.nav-link{
+  border:1px solid rgba(126,168,232,.45);
+  background:linear-gradient(180deg, rgba(23,39,74,.75), rgba(13,24,48,.8));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+.nav-link.active{
+  background:linear-gradient(180deg, rgba(82,130,214,.52), rgba(72,48,142,.45));
+  border-color:#8db6ff;
+}
+
+.section,.card,.panel,.article-detail__header,.project-detail__header,.talent-card,.shop-card,.partner-card{
+  border:1px solid rgba(120,158,220,.45);
+  box-shadow:0 10px 24px rgba(2,8,20,.45), inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.portal-banner{
+  display:flex;
+  gap:14px;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin:14px auto 0;
+  width:min(1120px,calc(100% - 32px));
+  padding:8px 16px;
+  background:linear-gradient(90deg,#182d58,#2a1f4e,#182d58);
+  border:1px solid #7096d8;
+  border-radius:12px;
+  color:#ecf4ff;
+  font-family:"VT323",monospace;
+  font-size:1.2rem;
+  text-shadow:0 0 8px rgba(136,214,255,.45);
+}
+
+.portal-banner__led{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:#7dff9f;
+  box-shadow:0 0 8px #7dff9f;
+}
+
+h1,h2,h3{
+  text-shadow:0 0 14px rgba(110,193,255,.16);
+}
