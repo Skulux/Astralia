@@ -45,22 +45,16 @@
   {% block extra_meta %}{% endblock %}
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Marcellus&family=VT323&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Marcellus&family=Orbitron:wght@500;700;800&family=Rajdhani:wght@500;700&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset_url('css/styles.css') }}">
   <script defer src="{{ asset_url('js/main.js') }}"></script>
   {% block extra_head %}{% endblock %}
 </head>
 <body class="{% if minimal_layout %}layout-minimal{% endif %}">
-  <div class="starfield" aria-hidden="true">
-    <canvas
-      id="starfield-canvas"
-      data-density-divisor="{{ STARFIELD.density_divisor }}"
-      data-min-count="{{ STARFIELD.min_count }}"
-      data-speed-min="{{ STARFIELD.speed_min }}"
-      data-speed-max="{{ STARFIELD.speed_max }}"
-      data-fast-fraction="{{ STARFIELD.fast_fraction }}"
-      data-fast-multiplier="{{ STARFIELD.fast_multiplier }}"
-    ></canvas>
+  <div class="spacebackdrop" aria-hidden="true">
+    <span class="spacebackdrop__stars"></span>
+    <span class="spacebackdrop__stars spacebackdrop__stars--soft"></span>
+    <span class="spacebackdrop__rings"></span>
   </div>
   {% if not minimal_layout %}
   <header class="site-header" data-nav-container>

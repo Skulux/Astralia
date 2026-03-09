@@ -988,3 +988,108 @@ button{
   .portal-banner{font-size:1.05rem}
   .forum-toolbar{font-size:.72rem}
 }
+
+/* Astralia.Live redesign v3: 2010 space portal (static, non-animated backdrop) */
+.starfield{display:none !important}
+
+body{
+  font-family:"Rajdhani","Plus Jakarta Sans",system-ui,sans-serif;
+  background:#030614;
+}
+
+.spacebackdrop{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(25,45,118,.32), rgba(3,6,20,0) 34%),
+    radial-gradient(circle at 50% 50%, rgba(8,11,35,.95) 0%, #030614 70%);
+}
+
+.spacebackdrop__stars,
+.spacebackdrop__stars--soft,
+.spacebackdrop__rings{
+  position:absolute;
+  inset:0;
+  display:block;
+}
+
+.spacebackdrop__stars{
+  background-image:
+    radial-gradient(circle at 7% 22%, rgba(41,230,255,.8) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 15% 74%, rgba(41,230,255,.7) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 24% 38%, rgba(41,230,255,.66) 0 1px, transparent 1.3px),
+    radial-gradient(circle at 33% 81%, rgba(41,230,255,.8) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 47% 28%, rgba(41,230,255,.8) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 56% 68%, rgba(41,230,255,.7) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 63% 18%, rgba(41,230,255,.72) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 72% 52%, rgba(41,230,255,.78) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 84% 32%, rgba(41,230,255,.75) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 92% 74%, rgba(41,230,255,.8) 0 1px, transparent 1.4px);
+}
+
+.spacebackdrop__stars--soft{
+  opacity:.35;
+  filter:blur(.4px);
+  background-image:
+    radial-gradient(circle at 10% 54%, rgba(102,235,255,.8) 0 2px, transparent 2.8px),
+    radial-gradient(circle at 29% 12%, rgba(102,235,255,.6) 0 2px, transparent 2.8px),
+    radial-gradient(circle at 44% 76%, rgba(102,235,255,.65) 0 2px, transparent 2.8px),
+    radial-gradient(circle at 69% 34%, rgba(102,235,255,.6) 0 2px, transparent 2.8px),
+    radial-gradient(circle at 87% 20%, rgba(102,235,255,.66) 0 2px, transparent 2.8px);
+}
+
+.spacebackdrop__rings{
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0 13%, rgba(68,112,216,.14) 13.2% 13.4%, transparent 13.6% 21%, rgba(68,112,216,.12) 21.2% 21.35%, transparent 21.55% 32%, rgba(68,112,216,.1) 32.2% 32.35%, transparent 32.55% 46%, rgba(68,112,216,.08) 46.2% 46.35%, transparent 46.55%);
+}
+
+body::before{display:none !important}
+
+.site-header{
+  background:linear-gradient(180deg, rgba(13,27,70,.94), rgba(8,19,50,.96)) !important;
+  border-bottom:1px solid rgba(96,145,255,.6) !important;
+}
+
+.brand-text{
+  font-family:"Orbitron",sans-serif;
+  letter-spacing:.16em;
+  font-size:1.15rem;
+  background:linear-gradient(90deg,#4be8ff 0%, #9ec5ff 30%, #f3b5ff 68%, #ffbe5e 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 18px rgba(90,215,255,.35);
+}
+
+.portal-banner{
+  border:1px solid rgba(99,147,255,.6) !important;
+  background:linear-gradient(90deg, rgba(11,27,68,.92), rgba(32,27,79,.92), rgba(11,27,68,.92)) !important;
+  font-family:"Orbitron",sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  font-size:.9rem;
+}
+
+.forum-toolbar{
+  border-top:0 !important;
+  background:linear-gradient(180deg, rgba(8,19,50,.92), rgba(7,15,39,.94)) !important;
+  font-family:"Rajdhani",sans-serif;
+  letter-spacing:.12em;
+}
+
+.nav-link{
+  font-family:"Rajdhani",sans-serif;
+  border:1px solid #466cb4;
+  background:linear-gradient(180deg, rgba(30,57,113,.92), rgba(18,35,77,.95));
+}
+
+.nav-link.active{
+  background:linear-gradient(180deg, rgba(74,47,163,.95), rgba(34,83,159,.95));
+}
+
+h1,h2,h3{
+  font-family:"Orbitron",sans-serif;
+  letter-spacing:.12em;
+}
