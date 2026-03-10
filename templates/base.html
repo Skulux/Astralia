@@ -56,29 +56,6 @@
     <span class="spacebackdrop__rings"></span>
   </div>
   {% if not minimal_layout %}
-  <header class="site-header" data-nav-container>
-    <a class="brand" href="{{ url_for('index') }}">
-      <img class="brand-logo" src="{{ asset_url('images/logo.png') }}" alt="{{ SITE_NAME }} Logo">
-      <span class="brand-text">{{ SITE_NAME }}</span>
-    </a>
-    <div class="nav-controls">
-      <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" data-nav-toggle>
-        <span class="nav-toggle__bars" aria-hidden="true">
-          <span></span>
-          <span></span>
-          <span></span>
-        </span>
-        <span class="sr-only">Menü öffnen</span>
-      </button>
-      <nav id="primary-nav" class="nav" data-nav>
-        {% for label, endpoint in NAV_ITEMS %}
-          {% set is_active = request.endpoint == endpoint or (endpoint == 'shop' and request.endpoint == 'shop_detail') %}
-          <a class="nav-link {% if is_active %}active{% endif %}" href="{{ url_for(endpoint) }}">{{ label }}</a>
-        {% endfor %}
-      </nav>
-    </div>
-  </header>
-  <div class="nav-backdrop" data-nav-backdrop></div>
 
   {% if MAINTENANCE_MODE %}
   <div class="maintenance-banner">
