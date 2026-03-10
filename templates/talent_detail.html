@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<article class="page talent-profile">
+<article class="page talent-profile{% if talent.slug == 'maxi_nighttime' %} talent-profile--myspace{% endif %}">
   <div class="profile-visual" style="--tone-1: {{ talent.colors[0] if talent.colors else '#b393ff' }}; --tone-2: {{ talent.colors[1] if talent.colors|length > 1 else '#f0a9ff' }};">
     <div class="profile-glow"></div>
     {% set fullbody = talent.fullbody_image or talent.profile_image %}
@@ -29,6 +29,14 @@
       </div>
       {% endif %}
     </header>
+
+    {% if talent.slug == 'maxi_nighttime' %}
+    <div class="myspace-statusline">
+      <span>★ Offline since 2009</span>
+      <span>Top 8: Astralia Crew</span>
+      <span>Music: Nightcore Galaxy Mix</span>
+    </div>
+    {% endif %}
     <dl class="profile-meta">
       <div>
         <dt>Name</dt>

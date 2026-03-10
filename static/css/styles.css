@@ -1504,3 +1504,69 @@ a, button, input, textarea, select, .btn, .nav-link { cursor: pointer; }
 .friend-row__status.is-live{color:#ffea90;border-color:#f3c92d;background:rgba(116,79,2,.25)}
 .friend-row__status.is-offline{color:#97add4}
 .friend-row__status.is-error{color:#ff9bb7;border-color:#cb5d81}
+
+
+/* Astralia.Live redesign v12: Maxi Nighttime myspace profile mode */
+.talent-profile--myspace{
+  border:2px solid #ff5fd7;
+  background:linear-gradient(180deg,rgba(34,8,56,.9),rgba(10,7,30,.95));
+  box-shadow:0 0 0 1px rgba(0,245,255,.35),0 18px 34px rgba(2,8,22,.55);
+}
+
+.talent-profile--myspace .profile-content{
+  border-radius:0;
+  border:1px solid #7f4bd9;
+  background:linear-gradient(180deg,rgba(23,12,57,.95),rgba(14,9,38,.96));
+}
+
+.talent-profile--myspace .profile-header h1{
+  font-family:"Orbitron",sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  background:linear-gradient(90deg,#45e6ff,#f58cff,#ffd05e);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.talent-profile--myspace .profile-team{
+  border-radius:0;
+  border:1px solid #f3c92d;
+  background:linear-gradient(90deg,#5e1c84,#4a1a79);
+  color:#ffe78f;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.myspace-statusline{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:0 0 14px;
+}
+.myspace-statusline span{
+  font-size:.68rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  border:1px solid #5c8ce0;
+  background:rgba(12,24,52,.7);
+  color:#9eefff;
+  padding:4px 8px;
+}
+
+.talent-profile--myspace .profile-meta{
+  border:1px solid #5f43b3;
+  padding:8px;
+  border-radius:0;
+  background:rgba(10,8,33,.75);
+}
+.talent-profile--myspace .profile-meta div{
+  border-radius:0;
+  border:1px solid rgba(122,87,210,.35);
+}
+
+.talent-profile--myspace .profile-social{
+  border-radius:0;
+  border-color:#57d6ff;
+  background:linear-gradient(180deg,rgba(14,42,76,.72),rgba(13,19,48,.72));
+}
