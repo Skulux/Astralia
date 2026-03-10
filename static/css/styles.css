@@ -1262,3 +1262,46 @@ select{
 /* Astralia.Live redesign v7: cursor styling */
 body { cursor: crosshair; }
 a, button, input, textarea, select, .btn, .nav-link { cursor: pointer; }
+
+/* Astralia.Live redesign v8: about page aligned to portal index style */
+.astral-about .astral-about-hero{margin-top:14px}
+.astral-logo-word--subpage{font-size:clamp(2rem,6vw,4.2rem);letter-spacing:.08em}
+.astral-about-lead{max-width:920px;margin:.4rem auto 0;color:#a8ddff;font-size:1.1rem}
+
+.about-portal-grid{display:grid;gap:14px;margin-top:14px}
+.about-portal-media .about-hero-visual{max-width:calc(var(--hero-visual-scale,1) * 520px);margin:0 auto}
+.about-portal-media .about-hero-visual img{border-radius:0;border:1px solid #7550ce;box-shadow:0 18px 40px rgba(4,8,25,.45)}
+
+.about-cards--portal{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.about-cards--portal .about-card,
+.about-portal-team .team-card{
+  border-radius:0;
+  border:1px solid #5f40ad;
+  background:linear-gradient(180deg,rgba(24,17,62,.9),rgba(12,9,36,.95));
+  box-shadow:inset 0 0 0 1px rgba(118,82,210,.3);
+  transform:none;
+}
+.about-cards--portal .about-card::before,
+.about-portal-team .team-card::before{display:none}
+
+.about-cards--portal .about-card h3,
+.about-portal-team .team-info h3{
+  font-family:"Orbitron",sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  font-size:.95rem;
+}
+.about-cards--portal .about-card p,
+.about-portal-team .team-bio,
+.about-portal-team .team-role{color:#9eb8de}
+
+.astral-about .faq-item{
+  border-radius:0;
+  border:1px solid #5f40ad;
+  background:rgba(13,10,38,.92);
+}
+.astral-about .faq-item summary{font-family:"Orbitron",sans-serif;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
+
+@media (max-width:700px){
+  .astral-about-lead{font-size:1rem}
+}
