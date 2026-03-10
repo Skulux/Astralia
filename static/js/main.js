@@ -1340,4 +1340,39 @@ document.addEventListener("DOMContentLoaded", () => {
       animate();
     }
   });
+
+  // Cursor sparkle trail
+  if (!document.getElementById("astralia-cursor-trail-style")) {
+    const style = document.createElement("style");
+    style.id = "astralia-cursor-trail-style";
+    style.textContent = "@keyframes astraliaFadeOut { to { opacity: 0; transform: scale(0); } }";
+    document.head.appendChild(style);
+  }
+
+  const sparkleColors = ["#ff69d4", "#00f5ff", "#ffd700", "#9b59f5"];
+  let lastSparkle = 0;
+  document.addEventListener("mousemove", (event) => {
+    const now = performance.now();
+    if (now - lastSparkle < 22) {
+      return;
+    }
+    lastSparkle = now;
+
+    const star = document.createElement("div");
+    star.style.cssText = `
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: ${sparkleColors[Math.floor(Math.random() * sparkleColors.length)]};
+      left: ${event.clientX - 2}px;
+      top: ${event.clientY - 2}px;
+      box-shadow: 0 0 6px currentColor;
+      animation: astraliaFadeOut 0.6s forwards;
+    `;
+    document.body.appendChild(star);
+    window.setTimeout(() => star.remove(), 620);
+  }, { passive: true });
 });
