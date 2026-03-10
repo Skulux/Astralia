@@ -1193,170 +1193,151 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const canvas = document.getElementById("starfield-canvas");
+  const canvas = document.getElementById("starfield") || document.getElementById("starfield-canvas");
   if (!canvas) {
     return;
   }
-
-  const readFloat = (value) => {
-    if (typeof value !== "string" || value.trim() === "") {
-      return null;
-    }
-    const number = Number.parseFloat(value);
-    return Number.isFinite(number) ? number : null;
-  };
-
-  const readInt = (value) => {
-    if (typeof value !== "string" || value.trim() === "") {
-      return null;
-    }
-    const number = Number.parseInt(value, 10);
-    return Number.isFinite(number) ? number : null;
-  };
-
-  const dataset = canvas.dataset;
-  const densityDivisor = Math.min(
-    50000,
-    Math.max(500, readFloat(dataset.densityDivisor) ?? 9000)
-  );
-  const minCount = Math.min(
-    5000,
-    Math.max(10, readInt(dataset.minCount) ?? 90)
-  );
-  const speedMin = Math.min(
-    5,
-    Math.max(0.001, readFloat(dataset.speedMin) ?? 0.03)
-  );
-  let speedMax = readFloat(dataset.speedMax);
-  if (!Number.isFinite(speedMax)) {
-    speedMax = speedMin + 0.09;
-  }
-  speedMax = Math.min(10, Math.max(speedMin, speedMax));
-  const baseSpeedRange = Math.max(0, speedMax - speedMin);
-  const fastFractionRaw = readFloat(dataset.fastFraction);
-  const fastFraction = Math.min(
-    1,
-    Math.max(0, Number.isFinite(fastFractionRaw) ? fastFractionRaw : 0.2)
-  );
-  const fastMultiplierRaw = readFloat(dataset.fastMultiplier);
-  const fastMultiplier = Math.max(
-    1,
-    Number.isFinite(fastMultiplierRaw) ? fastMultiplierRaw : 2.5
-  );
-
   const ctx = canvas.getContext("2d");
-  const stars = [];
+  if (!ctx) {
+    return;
+  }
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let width = 0;
   let height = 0;
-  let dpr = window.devicePixelRatio || 1;
-  let lastTime = performance.now();
-  const pointer = { x: 0, y: 0 };
-  const pointerTarget = { x: 0, y: 0 };
-  const parallaxStrength = 18;
+  let animationFrame = null;
+  let shootingTimer = null;
 
-  const createStar = (initial = true) => {
-    const baseSpeed = speedMin + Math.random() * baseSpeedRange;
-    const isFast = Math.random() < fastFraction;
-    const speed = isFast ? baseSpeed * fastMultiplier : baseSpeed;
-    return {
-      x: Math.random() * width,
-      y: initial ? Math.random() * height : -20,
-      radius: 0.6 + Math.random() * 1.4,
-      speed,
-      twinkle: 0.4 + Math.random() * 0.6,
-      offset: Math.random() * Math.PI * 2
-    };
+  const randomColor = () => {
+    const colors = ["#ffffff", "#e8d5ff", "#00f5ff", "#ff69d4", "#ffd700"];
+    return colors[Math.floor(Math.random() * colors.length)];
   };
 
+  const stars = [];
+  const shootingStars = [];
+
   const resize = () => {
-    dpr = window.devicePixelRatio || 1;
     width = window.innerWidth;
     height = window.innerHeight;
-    canvas.width = Math.round(width * dpr);
-    canvas.height = Math.round(height * dpr);
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(dpr, dpr);
 
-    const targetCount = Math.max(
-      minCount,
-      Math.round((width * height) / densityDivisor)
-    );
-    while (stars.length < targetCount) {
-      stars.push(createStar());
-    }
-    while (stars.length > targetCount) {
-      stars.pop();
+    const targetCount = Math.max(140, Math.floor((width * height) / 9000));
+    stars.length = 0;
+    for (let i = 0; i < targetCount; i += 1) {
+      stars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: Math.random() * 1.8 + 0.2,
+        opacity: Math.random(),
+        speed: Math.random() * 0.4 + 0.05,
+        twinkleSpeed: Math.random() * 0.02 + 0.005,
+        twinkleDir: Math.random() > 0.5 ? 1 : -1,
+        color: randomColor()
+      });
     }
   };
 
-  const updatePointerTarget = (event) => {
-    const rect = canvas.getBoundingClientRect();
-    const relativeX = (event.clientX - rect.left) / rect.width - 0.5;
-    const relativeY = (event.clientY - rect.top) / rect.height - 0.5;
-    pointerTarget.x = Math.max(-1, Math.min(1, relativeX * 2));
-    pointerTarget.y = Math.max(-1, Math.min(1, relativeY * 2));
-  };
-
-  const relaxPointer = () => {
-    pointerTarget.x = 0;
-    pointerTarget.y = 0;
-  };
-
-  window.addEventListener("pointermove", updatePointerTarget, { passive: true });
-  window.addEventListener("pointerout", (event) => {
-    if (!event.relatedTarget) {
-      relaxPointer();
+  const spawnShootingStar = () => {
+    if (prefersReducedMotion || document.hidden) {
+      return;
     }
-  });
-  window.addEventListener("blur", relaxPointer);
+    shootingStars.push({
+      x: Math.random() * width * 0.7,
+      y: Math.random() * height * 0.4,
+      len: Math.random() * 120 + 60,
+      speed: Math.random() * 8 + 6,
+      opacity: 1,
+      angle: Math.PI / 4 + (Math.random() - 0.5) * 0.3
+    });
+  };
 
-  const draw = (timestamp) => {
-    const delta = Math.min(60, timestamp - lastTime);
-    lastTime = timestamp;
-
-    const pointerEase = Math.min(0.12, 0.02 + (delta / 1000) * 0.4);
-    pointer.x += (pointerTarget.x - pointer.x) * pointerEase;
-    pointer.y += (pointerTarget.y - pointer.y) * pointerEase;
-    const offsetX = pointer.x * parallaxStrength;
-    const offsetY = pointer.y * parallaxStrength;
-
-    ctx.clearRect(0, 0, width, height);
-
-    for (const star of stars) {
-      const drift = delta * 0.08;
-      star.y += star.speed * drift;
-      star.x += Math.sin(timestamp * 0.0002 + star.offset) * 0.025 * drift;
-
-      if (star.y > height + 20) {
-        star.x = Math.random() * width;
-        star.y = -20;
-      }
-      if (star.x < -40 || star.x > width + 40) {
-        star.x = (star.x + width + 40) % (width + 80) - 40;
-      }
-
-      const twinkle = Math.sin(timestamp * 0.002 + star.offset) * 0.5 + 0.5;
-      const alpha = 0.25 + twinkle * star.twinkle * 0.75;
-      const drawX = star.x + offsetX;
-      const drawY = star.y + offsetY;
-      const gradient = ctx.createRadialGradient(drawX, drawY, 0, drawX, drawY, star.radius * 2.5);
-      gradient.addColorStop(0, `rgba(255, 244, 255, ${alpha})`);
-      gradient.addColorStop(1, "rgba(120, 110, 180, 0)");
-      ctx.fillStyle = gradient;
+  const drawNebula = () => {
+    [
+      [width * 0.2, height * 0.3, 300, [107, 33, 200, 0.04]],
+      [width * 0.75, height * 0.6, 250, [255, 105, 212, 0.03]],
+      [width * 0.5, height * 0.8, 200, [0, 245, 255, 0.025]]
+    ].forEach(([nx, ny, nr, [r, g, b, a]]) => {
+      const grad = ctx.createRadialGradient(nx, ny, 0, nx, ny, nr);
+      grad.addColorStop(0, `rgba(${r},${g},${b},${a})`);
+      grad.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = grad;
       ctx.beginPath();
-      ctx.arc(drawX, drawY, star.radius * 2.2, 0, Math.PI * 2);
+      ctx.arc(nx, ny, nr, 0, Math.PI * 2);
       ctx.fill();
+    });
+  };
+
+  const animate = () => {
+    ctx.clearRect(0, 0, width, height);
+    drawNebula();
+
+    for (const s of stars) {
+      s.opacity += s.twinkleSpeed * s.twinkleDir;
+      if (s.opacity >= 1 || s.opacity <= 0.1) {
+        s.twinkleDir *= -1;
+      }
+      ctx.globalAlpha = s.opacity;
+      ctx.fillStyle = s.color;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+      s.y += s.speed * 0.03;
+      if (s.y > height) {
+        s.y = 0;
+        s.x = Math.random() * width;
+      }
     }
 
-    requestAnimationFrame(draw);
+    for (let i = shootingStars.length - 1; i >= 0; i -= 1) {
+      const ss = shootingStars[i];
+      ctx.globalAlpha = ss.opacity;
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(ss.x, ss.y);
+      ctx.lineTo(ss.x - Math.cos(ss.angle) * ss.len, ss.y - Math.sin(ss.angle) * ss.len);
+      ctx.stroke();
+      ss.x += Math.cos(ss.angle) * ss.speed;
+      ss.y += Math.sin(ss.angle) * ss.speed;
+      ss.opacity -= 0.025;
+      if (ss.opacity <= 0) {
+        shootingStars.splice(i, 1);
+      }
+    }
+
+    ctx.globalAlpha = 1;
+    animationFrame = requestAnimationFrame(animate);
+  };
+
+  const scheduleShootingStar = () => {
+    if (shootingTimer) {
+      window.clearTimeout(shootingTimer);
+    }
+    shootingTimer = window.setTimeout(() => {
+      spawnShootingStar();
+      scheduleShootingStar();
+    }, 2800 + Math.random() * 1200);
   };
 
   resize();
-  window.addEventListener("resize", resize);
-  requestAnimationFrame((timestamp) => {
-    lastTime = timestamp;
-    draw(timestamp);
+  window.addEventListener("resize", resize, { passive: true });
+  scheduleShootingStar();
+  animate();
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = null;
+      }
+    } else if (!animationFrame) {
+      animate();
+    }
   });
 });
