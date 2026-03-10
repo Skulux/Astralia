@@ -30,9 +30,10 @@
     </div>
   </header>
 
-  <nav class="astral-tabnav" aria-label="Homepage Bereiche">
-    {% for section in home_sections %}
-    <a href="#home-{{ section.id }}">{{ section.heading or section.id }}</a>
+  <nav class="astral-tabnav" aria-label="Hauptnavigation">
+    {% for label, endpoint in NAV_ITEMS %}
+      {% set is_active = request.endpoint == endpoint or (endpoint == 'shop' and request.endpoint == 'shop_detail') %}
+      <a class="{% if is_active %}active{% endif %}" href="{{ url_for(endpoint) }}">{{ label }}</a>
     {% endfor %}
   </nav>
 
