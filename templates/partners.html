@@ -1,23 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="page partners-page">
-  <header class="page-header partners-page__header">
-    <div>
-      <h1>Partner</h1>
-      <p class="muted">Gemeinsam mit diesen Partnern bringen wir neue Sternbilder an den Himmel von Astralia.</p>
-    </div>
+<section class="astral-home astral-subpage">
+  <div class="astral-home__topline"><span>✦ Partner</span></div>
+  <header class="astral-hero-panel">
+    <p class="astral-hero-panel__eyebrow">Alliance Network</p>
+    <h1 class="astral-logo-word astral-logo-word--subpage">Partner</h1>
+    <p class="astral-about-lead">Gemeinsam mit diesen Partnern bringen wir neue Sternbilder an den Himmel von Astralia.</p>
   </header>
-
-  <div class="partner-grid partner-grid--page" role="list">
-    {% for partner in partners %}
-    <a class="partner-card" href="{{ partner.url }}" target="_blank" rel="noopener" role="listitem" aria-label="{{ partner.name }}">
-      <img src="{{ partner.logo_url or partner.logo }}" alt="{{ partner.name or 'Partnerlogo' }}" loading="lazy">
-      <span class="partner-card__label" aria-hidden="true">{{ partner.name }}</span>
-      <span class="sr-only">{{ partner.name }}</span>
-    </a>
-    {% else %}
-    <p class="muted">Noch keine Partner hinterlegt.</p>
+  <nav class="astral-tabnav" aria-label="Hauptnavigation">
+    {% for label, endpoint in NAV_ITEMS %}
+      {% set is_active = request.endpoint == endpoint or (endpoint == 'shop' and request.endpoint == 'shop_detail') %}
+      <a class="{% if is_active %}active{% endif %}" href="{{ url_for(endpoint) }}">{{ label }}</a>
     {% endfor %}
-  </div>
+  </nav>
+
+  <section class="page partners-page">
+    <div class="partner-grid partner-grid--page" role="list">
+      {% for partner in partners %}
+      <a class="partner-card" href="{{ partner.url }}" target="_blank" rel="noopener" role="listitem" aria-label="{{ partner.name }}">
+        <img src="{{ partner.logo_url or partner.logo }}" alt="{{ partner.name or 'Partnerlogo' }}" loading="lazy">
+        <span class="partner-card__label" aria-hidden="true">{{ partner.name }}</span>
+        <span class="sr-only">{{ partner.name }}</span>
+      </a>
+      {% else %}
+      <p class="muted">Noch keine Partner hinterlegt.</p>
+      {% endfor %}
+    </div>
+  </section>
 </section>
 {% endblock %}
