@@ -13,7 +13,7 @@ Verantwortliche
 
 Angaben gemäß § 5 DDG
 
-Lumynaria - Angelina Schulze
+Astralia - Angelina Schulze
 
 c/o Online-Impressum.de #1358
 
