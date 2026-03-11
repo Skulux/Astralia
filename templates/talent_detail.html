@@ -28,10 +28,6 @@
         {% endif %}
         {% endif %}
       </div>
-      <div class="profile-team-box">
-        <img src="{{ asset_url(team.logo) }}" alt="{{ team.name }} Logo" class="profile-team-logo">
-        <span class="profile-team">{{ team.name }}</span>
-      </div>
 
       {% if talent.slug %}
       {% set status = live_status.get(talent.slug) %}

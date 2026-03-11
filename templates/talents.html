@@ -5,7 +5,7 @@
   <header class="astral-hero-panel">
     <p class="astral-hero-panel__eyebrow">Astralia Friendslist</p>
     <h1 class="astral-logo-word astral-logo-word--subpage">Talente</h1>
-    <p class="astral-about-lead">Wie eine klassische Friendslist – nur mit unseren Talenten, Streams und Teams.</p>
+    <p class="astral-about-lead">Wie eine klassische Friendslist – nur mit unseren Talenten und Streams.</p>
   </header>
   <nav class="astral-tabnav" aria-label="Hauptnavigation">
     {% for label, endpoint in NAV_ITEMS %}
@@ -15,7 +15,6 @@
   </nav>
 
   <section class="page talents-page talents-page--friends">
-    {% if no_teams_mode %}
     <section class="friendslist-panel">
       <header class="friendslist-panel__header">
         <h2>Alle Talente</h2>
@@ -44,38 +43,6 @@
         {% endfor %}
       </ul>
     </section>
-    {% else %}
-      {% for team in teams %}
-      <section class="friendslist-panel">
-        <header class="friendslist-panel__header" style="--team-color: {{ team.colors[0] if team.colors else '#f3c92d' }};">
-          <h2>{{ team.name }}</h2>
-          <span>{{ team.members|length }} Talente</span>
-        </header>
-        <ul class="friendslist">
-          {% for member in team.members %}
-          {% set thumb = member.profile_image %}
-          {% set status = live_status.get(member.slug) %}
-          {% set state = status.state if status else 'error' %}
-          {% set status_label = 'Live' if state == 'live' else 'Offline' if state == 'offline' else 'Unbekannt' %}
-          <li>
-            <a class="friend-row" href="{{ url_for('talent_detail', slug=member.slug) }}">
-              <span class="friend-row__avatar">
-                {% if thumb and thumb.startswith('http') %}
-                <img src="{{ thumb }}" alt="{{ member.name }} Portrait">
-                {% else %}
-                {% set asset = thumb or 'images/talents/members/' ~ member.slug ~ '.svg' %}
-                <img src="{{ asset_url(asset) }}" alt="{{ member.name }} Portrait">
-                {% endif %}
-              </span>
-              <span class="friend-row__name">{{ member.name | replace('\\', ' ') }}</span>
-              <span class="friend-row__status is-{{ state }}">{{ status_label }}</span>
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-      </section>
-      {% endfor %}
-    {% endif %}
   </section>
 </section>
 {% endblock %}

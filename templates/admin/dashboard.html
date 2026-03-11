@@ -1741,283 +1741,58 @@
     {% else %}
     <form class="admin-card" method="post" enctype="multipart/form-data">
       <input type="hidden" name="form-name" value="talents">
-      {% for team in teams %}
-      {% set team_index = loop.index0 %}
-      <fieldset class="admin-fieldset admin-team">
-        <legend>
-          <span class="admin-team__legend-title">{{ team.name|default('Unbenanntes Team', true) }}</span>
-          <span class="admin-team__legend-meta">ID: {{ team.id|default('—', true) }} · Mitglieder: {{ team.members | default([], true) | length }}</span>
-        </legend>
+      <p class="muted">Talente werden ohne Teams verwaltet. Team-Gruppierungen aus älteren Dateien werden ignoriert.</p>
+      <input type="hidden" name="talent-count" value="{{ talents|length }}">
 
-        <label class="toggle">
-          <input type="checkbox" name="team-{{ team_index }}-delete">
-          <span>Team entfernen</span>
-        </label>
-
+      {% for member in talents %}
+      {% set member_index = loop.index0 %}
+      <fieldset class="admin-fieldset admin-team__member">
+        <legend>Talent {{ loop.index }}{% if member.name %} — {{ member.name }}{% endif %}</legend>
+        <label class="toggle"><input type="checkbox" name="talent-{{ member_index }}-delete"><span>Talent entfernen</span></label>
         <div class="form-grid">
-          <label>
-            <span>Team-ID</span>
-            <input type="text" name="team-{{ team_index }}-id" value="{{ team.id|default('', true) }}">
-          </label>
-          <label>
-            <span>Name</span>
-            <input type="text" name="team-{{ team_index }}-name" value="{{ team.name|default('', true) }}">
-          </label>
-          <label>
-            <span>Slogan</span>
-            <input type="text" name="team-{{ team_index }}-slogan" value="{{ team.slogan|default('', true) }}">
-          </label>
-          <label>
-            <span>Farben (Hex, jeweils neue Zeile)</span>
-            <textarea name="team-{{ team_index }}-colors" rows="2">{{ team.colors | default([], true) | join('\n') }}</textarea>
-          </label>
-          <label>
-            <span>Logo (Pfad oder URL)</span>
-            <input type="text" name="team-{{ team_index }}-logo" value="{{ team.logo|default('', true) }}">
-          </label>
-          <label>
-            <span>Logo ersetzen (Upload)</span>
-            <input type="file" name="team-{{ team_index }}-logo-upload" accept="image/*">
-          </label>
+          <label><span>Slug</span><input type="text" name="talent-{{ member_index }}-slug" value="{{ member.slug|default('', true) }}"></label>
+          <label><span>Name</span><input type="text" name="talent-{{ member_index }}-name" value="{{ member.name|default('', true) }}"></label>
+          <label><span>Geburtstag</span><input type="text" name="talent-{{ member_index }}-birthday" value="{{ member.birthday|default('', true) }}"></label>
+          <label><span>Spezies / Herkunft</span><input type="text" name="talent-{{ member_index }}-species" value="{{ member.species|default('', true) }}"></label>
+          <label><span>Größe</span><input type="text" name="talent-{{ member_index }}-height" value="{{ member.height|default('', true) }}"></label>
+          <label><span>Motto</span><input type="text" name="talent-{{ member_index }}-motto" value="{{ member.motto|default('', true) }}"></label>
         </div>
-
-        <input type="hidden" name="team-{{ team_index }}-member-count" value="{{ team.members | default([], true) | length }}">
-
-        <div class="admin-members">
-          {% for member in team.members %}
-          {% set member_index = loop.index0 %}
-          <fieldset class="admin-fieldset admin-team__member">
-            <legend>Mitglied {{ loop.index }}{% if member.name %} — {{ member.name }}{% endif %}</legend>
-            <label class="toggle">
-              <input type="checkbox" name="team-{{ team_index }}-member-{{ member_index }}-delete">
-              <span>Mitglied entfernen</span>
-            </label>
-            <div class="form-grid">
-              <label>
-                <span>Slug</span>
-                <input type="text" name="team-{{ team_index }}-member-{{ member_index }}-slug" value="{{ member.slug|default('', true) }}">
-              </label>
-              <label>
-                <span>Name</span>
-                <input type="text" name="team-{{ team_index }}-member-{{ member_index }}-name" value="{{ member.name|default('', true) }}">
-              </label>
-              <label>
-                <span>Geburtstag</span>
-                <input type="text" name="team-{{ team_index }}-member-{{ member_index }}-birthday" value="{{ member.birthday|default('', true) }}">
-              </label>
-              <label>
-                <span>Spezies / Herkunft</span>
-                <input type="text" name="team-{{ team_index }}-member-{{ member_index }}-species" value="{{ member.species|default('', true) }}">
-              </label>
-              <label>
-                <span>Größe</span>
-                <input type="text" name="team-{{ team_index }}-member-{{ member_index }}-height" value="{{ member.height|default('', true) }}">
-              </label>
-              <label>
-                <span>Motto</span>
-                <input type="text" name="team-{{ team_index }}-member-{{ member_index }}-motto" value="{{ member.motto|default('', true) }}">
-              </label>
-            </div>
-            <label>
-              <span>Einführung</span>
-              <textarea name="team-{{ team_index }}-member-{{ member_index }}-introduction" rows="3">{{ member.introduction|default('', true) }}</textarea>
-            </label>
-            <label>
-              <span>Besonderheiten / Fähigkeiten</span>
-              <textarea name="team-{{ team_index }}-member-{{ member_index }}-specialties" rows="3">{{ member.specialties|default('', true) }}</textarea>
-            </label>
-            <label>
-              <span>Lieblingsdinge (Kommagetrennt oder pro Zeile)</span>
-              <textarea name="team-{{ team_index }}-member-{{ member_index }}-favorites" rows="2">{{ member.favorites | default([], true) | join('\n') }}</textarea>
-            </label>
-            <label>
-              <span>Social Links (Zeile: Label | URL | icon.svg)</span>
-              <textarea name="team-{{ team_index }}-member-{{ member_index }}-socials" rows="3">{% for link in member.socials or [] %}{{ link.label }} | {{ link.url }} | {{ link.icon }}{% if not loop.last %}
-{% endif %}{% endfor %}</textarea>
-            </label>
-            <div class="form-grid">
-              <label>
-                <span>Profilbild (Pfad oder URL)</span>
-                <input type="text" name="team-{{ team_index }}-member-{{ member_index }}-profile-image" value="{{ member.profile_image|default('', true) }}">
-              </label>
-              <label>
-                <span>Profilbild ersetzen</span>
-                <input type="file" name="team-{{ team_index }}-member-{{ member_index }}-profile-upload" accept="image/*">
-              </label>
-              <label>
-                <span>Fullbody (Pfad oder URL)</span>
-                <input type="text" name="team-{{ team_index }}-member-{{ member_index }}-fullbody-image" value="{{ member.fullbody_image|default('', true) }}">
-              </label>
-              <label>
-                <span>Fullbody ersetzen</span>
-                <input type="file" name="team-{{ team_index }}-member-{{ member_index }}-fullbody-upload" accept="image/*">
-              </label>
-            </div>
-          </fieldset>
-          {% endfor %}
+        <label><span>Einführung</span><textarea name="talent-{{ member_index }}-introduction" rows="3">{{ member.introduction|default('', true) }}</textarea></label>
+        <label><span>Besonderheiten / Fähigkeiten</span><textarea name="talent-{{ member_index }}-specialties" rows="3">{{ member.specialties|default('', true) }}</textarea></label>
+        <label><span>Lieblingsdinge (Kommagetrennt oder pro Zeile)</span><textarea name="talent-{{ member_index }}-favorites" rows="2">{{ member.favorites | default([], true) | join('\n') }}</textarea></label>
+        <label><span>Social Links (Zeile: Label | URL | icon.svg)</span><textarea name="talent-{{ member_index }}-socials" rows="3">{% for link in member.socials or [] %}{{ link.label }} | {{ link.url }} | {{ link.icon }}{% if not loop.last %}
+{% endif %}{% endfor %}</textarea></label>
+        <div class="form-grid">
+          <label><span>Profilbild (Pfad oder URL)</span><input type="text" name="talent-{{ member_index }}-profile-image" value="{{ member.profile_image|default('', true) }}"></label>
+          <label><span>Profilbild ersetzen</span><input type="file" name="talent-{{ member_index }}-profile-upload" accept="image/*"></label>
+          <label><span>Fullbody (Pfad oder URL)</span><input type="text" name="talent-{{ member_index }}-fullbody-image" value="{{ member.fullbody_image|default('', true) }}"></label>
+          <label><span>Fullbody ersetzen</span><input type="file" name="talent-{{ member_index }}-fullbody-upload" accept="image/*"></label>
         </div>
-
-        <fieldset class="admin-fieldset admin-team__member">
-          <legend>➕ Neues Mitglied hinzufügen</legend>
-          <div class="form-grid">
-            <label>
-              <span>Slug</span>
-              <input type="text" name="team-{{ team_index }}-new-slug">
-            </label>
-            <label>
-              <span>Name</span>
-              <input type="text" name="team-{{ team_index }}-new-name">
-            </label>
-            <label>
-              <span>Geburtstag</span>
-              <input type="text" name="team-{{ team_index }}-new-birthday">
-            </label>
-            <label>
-              <span>Spezies / Herkunft</span>
-              <input type="text" name="team-{{ team_index }}-new-species">
-            </label>
-            <label>
-              <span>Größe</span>
-              <input type="text" name="team-{{ team_index }}-new-height">
-            </label>
-            <label>
-              <span>Motto</span>
-              <input type="text" name="team-{{ team_index }}-new-motto">
-            </label>
-          </div>
-          <label>
-            <span>Einführung</span>
-            <textarea name="team-{{ team_index }}-new-introduction" rows="3"></textarea>
-          </label>
-          <label>
-            <span>Besonderheiten / Fähigkeiten</span>
-            <textarea name="team-{{ team_index }}-new-specialties" rows="3"></textarea>
-          </label>
-          <label>
-            <span>Lieblingsdinge (Kommagetrennt oder pro Zeile)</span>
-            <textarea name="team-{{ team_index }}-new-favorites" rows="2"></textarea>
-          </label>
-          <label>
-            <span>Social Links (Zeile: Label | URL | icon.svg)</span>
-            <textarea name="team-{{ team_index }}-new-socials" rows="3"></textarea>
-          </label>
-          <div class="form-grid">
-            <label>
-              <span>Profilbild (Pfad oder URL)</span>
-              <input type="text" name="team-{{ team_index }}-new-profile-image">
-            </label>
-            <label>
-              <span>Profilbild hochladen</span>
-              <input type="file" name="team-{{ team_index }}-new-profile-upload" accept="image/*">
-            </label>
-            <label>
-              <span>Fullbody (Pfad oder URL)</span>
-              <input type="text" name="team-{{ team_index }}-new-fullbody-image">
-            </label>
-            <label>
-              <span>Fullbody hochladen</span>
-              <input type="file" name="team-{{ team_index }}-new-fullbody-upload" accept="image/*">
-            </label>
-          </div>
-        </fieldset>
       </fieldset>
       {% endfor %}
 
-      <fieldset class="admin-fieldset admin-team admin-team--new">
-        <legend>➕ Neues Team anlegen</legend>
-        <p class="muted">Fülle die Stammdaten des Teams aus. Optional kannst du direkt das erste Mitglied hinzufügen.</p>
-
+      <fieldset class="admin-fieldset admin-team__member">
+        <legend>➕ Neues Talent hinzufügen</legend>
         <div class="form-grid">
-          <label>
-            <span>Team-ID</span>
-            <input type="text" name="team-new-id" placeholder="z. B. lumy">
-          </label>
-          <label>
-            <span>Name</span>
-            <input type="text" name="team-new-name" placeholder="Teamname">
-          </label>
-          <label>
-            <span>Slogan</span>
-            <input type="text" name="team-new-slogan" placeholder="Catchphrase oder Motto">
-          </label>
-          <label>
-            <span>Farben (Hex, jeweils neue Zeile)</span>
-            <textarea name="team-new-colors" rows="2" placeholder="#FFB6FF"></textarea>
-          </label>
-          <label>
-            <span>Logo (Pfad oder URL)</span>
-            <input type="text" name="team-new-logo" placeholder="/static/img/logo.png">
-          </label>
-          <label>
-            <span>Logo hochladen</span>
-            <input type="file" name="team-new-logo-upload" accept="image/*">
-          </label>
+          <label><span>Slug</span><input type="text" name="talent-new-slug"></label>
+          <label><span>Name</span><input type="text" name="talent-new-name"></label>
+          <label><span>Geburtstag</span><input type="text" name="talent-new-birthday"></label>
+          <label><span>Spezies / Herkunft</span><input type="text" name="talent-new-species"></label>
+          <label><span>Größe</span><input type="text" name="talent-new-height"></label>
+          <label><span>Motto</span><input type="text" name="talent-new-motto"></label>
         </div>
-
-        <fieldset class="admin-fieldset admin-team__member">
-          <legend>Optional: Erstes Mitglied hinzufügen</legend>
-          <div class="form-grid">
-            <label>
-              <span>Slug</span>
-              <input type="text" name="team-new-member-slug" placeholder="slug-name">
-            </label>
-            <label>
-              <span>Name</span>
-              <input type="text" name="team-new-member-name" placeholder="Anzeigename">
-            </label>
-            <label>
-              <span>Geburtstag</span>
-              <input type="text" name="team-new-member-birthday" placeholder="2000-01-01">
-            </label>
-            <label>
-              <span>Spezies / Herkunft</span>
-              <input type="text" name="team-new-member-species">
-            </label>
-            <label>
-              <span>Größe</span>
-              <input type="text" name="team-new-member-height">
-            </label>
-            <label>
-              <span>Motto</span>
-              <input type="text" name="team-new-member-motto">
-            </label>
-          </div>
-          <label>
-            <span>Einführung</span>
-            <textarea name="team-new-member-introduction" rows="3"></textarea>
-          </label>
-          <label>
-            <span>Besonderheiten / Fähigkeiten</span>
-            <textarea name="team-new-member-specialties" rows="3"></textarea>
-          </label>
-          <label>
-            <span>Lieblingsdinge (Kommagetrennt oder pro Zeile)</span>
-            <textarea name="team-new-member-favorites" rows="2"></textarea>
-          </label>
-          <label>
-            <span>Social Links (Zeile: Label | URL | icon.svg)</span>
-            <textarea name="team-new-member-socials" rows="3"></textarea>
-          </label>
-          <div class="form-grid">
-            <label>
-              <span>Profilbild (Pfad oder URL)</span>
-              <input type="text" name="team-new-member-profile-image">
-            </label>
-            <label>
-              <span>Profilbild hochladen</span>
-              <input type="file" name="team-new-member-profile-upload" accept="image/*">
-            </label>
-            <label>
-              <span>Fullbody (Pfad oder URL)</span>
-              <input type="text" name="team-new-member-fullbody-image">
-            </label>
-            <label>
-              <span>Fullbody hochladen</span>
-              <input type="file" name="team-new-member-fullbody-upload" accept="image/*">
-            </label>
-          </div>
-        </fieldset>
+        <label><span>Einführung</span><textarea name="talent-new-introduction" rows="3"></textarea></label>
+        <label><span>Besonderheiten / Fähigkeiten</span><textarea name="talent-new-specialties" rows="3"></textarea></label>
+        <label><span>Lieblingsdinge (Kommagetrennt oder pro Zeile)</span><textarea name="talent-new-favorites" rows="2"></textarea></label>
+        <label><span>Social Links (Zeile: Label | URL | icon.svg)</span><textarea name="talent-new-socials" rows="3"></textarea></label>
+        <div class="form-grid">
+          <label><span>Profilbild (Pfad oder URL)</span><input type="text" name="talent-new-profile-image"></label>
+          <label><span>Profilbild hochladen</span><input type="file" name="talent-new-profile-upload" accept="image/*"></label>
+          <label><span>Fullbody (Pfad oder URL)</span><input type="text" name="talent-new-fullbody-image"></label>
+          <label><span>Fullbody hochladen</span><input type="file" name="talent-new-fullbody-upload" accept="image/*"></label>
+        </div>
       </fieldset>
+
       <button class="button" type="submit">Talente speichern</button>
     </form>
     {% endif %}
