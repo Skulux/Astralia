@@ -1,0 +1,1801 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page admin-dashboard">
+  <header class="page-header admin-page-header">
+    <div>
+      <h1>Content Management</h1>
+      <p class="muted">Bearbeite die YAML-Inhalte über die folgenden Tabs. Änderungen werden sofort gespeichert.</p>
+    </div>
+    <a class="button button-secondary" href="{{ url_for('admin_logout') }}">Abmelden</a>
+  </header>
+
+  <nav class="admin-tabs">
+    {% if is_artworks_manager and not is_admin %}
+    <a class="admin-tab {% if tab == 'artworks' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='artworks') }}">Galerie</a>
+    {% else %}
+    <a class="admin-tab {% if tab == 'home' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='home') }}">Startseite</a>
+    <a class="admin-tab {% if tab == 'talents' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='talents') }}">Talente</a>
+    <a class="admin-tab {% if tab == 'projects' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='projects') }}">Projekte</a>
+    <a class="admin-tab {% if tab == 'services' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='services') }}">Services</a>
+    <a class="admin-tab {% if tab == 'partners' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='partners') }}">Partner</a>
+    <a class="admin-tab {% if tab == 'news' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='news') }}">News</a>
+    <a class="admin-tab {% if tab == 'about' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='about') }}">Über uns</a>
+    <a class="admin-tab {% if tab == 'shop' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='shop') }}">Shop</a>
+    <a class="admin-tab {% if tab == 'resources' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='resources') }}">Ressourcen</a>
+    <a class="admin-tab {% if tab == 'artworks' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='artworks') }}">Galerie</a>
+    <a class="admin-tab {% if tab == 'privacy' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='privacy') }}">Datenschutz</a>
+    <a class="admin-tab {% if tab == 'settings' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='settings') }}">Einstellungen</a>
+    {% endif %}
+  </nav>
+
+  <div class="admin-panels">
+    {% if tab == 'home' %}
+    <form class="admin-card" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="form-name" value="homepage">
+
+      <fieldset class="admin-fieldset">
+        <legend>Hero-Bereich</legend>
+        <p class="muted">Passe den Einleitungstext und die Buttons der Startseite an.</p>
+        <label>
+          <span>Untertitel</span>
+          <textarea name="home-hero-subtitle" rows="4">{{ homepage.hero.subtitle|default('', true) }}</textarea>
+        </label>
+        <p class="muted small">Unterstützt Zeilenumbrüche und <a href="https://www.markdownguide.org/basic-syntax/" target="_blank" rel="noopener">Markdown</a> für formatierte Texte.</p>
+        <label>
+          <span>Kicker / Beschreibung</span>
+          <input type="text" name="home-hero-kicker" value="{{ homepage.hero.kicker|default('', true) }}">
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Logo (Bild-URL)</span>
+            <input type="text" name="home-hero-logo" value="{{ homepage.hero.logo|default('', true) }}" placeholder="z. B. uploads/logo.png">
+          </label>
+          <label>
+            <span>Logo ersetzen (Upload)</span>
+            <input type="file" name="home-hero-logo-upload" accept="image/*">
+          </label>
+          <label>
+            <span>Hintergrundbild (Bild-URL)</span>
+            <input type="text" name="home-hero-background" value="{{ homepage.hero.background_image|default('', true) }}" placeholder="z. B. uploads/hero-bg.jpg">
+          </label>
+          <label>
+            <span>Hintergrundbild hochladen</span>
+            <input type="file" name="home-hero-background-upload" accept="image/*">
+          </label>
+        </div>
+        <p class="muted">
+          {% if homepage.hero.logo_url %}Aktuelles Logo: <a href="{{ homepage.hero.logo_url }}" target="_blank" rel="noopener">ansehen</a>.{% endif %}
+          {% if homepage.hero.background_url %} Aktuelles Hintergrundbild: <a href="{{ homepage.hero.background_url }}" target="_blank" rel="noopener">ansehen</a>.{% else %} Kein Hintergrundbild gesetzt – es wird der Standardverlauf verwendet.{% endif %}
+          Leer lassen, um das Standardlogo bzw. den Standardhintergrund zu verwenden.
+        </p>
+        <div class="form-grid">
+          <label>
+            <span>Primärer Button — Text</span>
+            <input type="text" name="home-hero-primary-label" value="{{ homepage.hero.primary_button.label|default('', true) }}">
+          </label>
+          <label>
+            <span>Primärer Button — Link (URL)</span>
+            <input type="text" name="home-hero-primary-url" value="{{ homepage.hero.primary_button.url|default('', true) }}">
+          </label>
+          <label>
+            <span>Sekundärer Button — Text</span>
+            <input type="text" name="home-hero-secondary-label" value="{{ homepage.hero.secondary_button.label|default('', true) }}">
+          </label>
+          <label>
+            <span>Sekundärer Button — Link (URL)</span>
+            <input type="text" name="home-hero-secondary-url" value="{{ homepage.hero.secondary_button.url|default('', true) }}">
+          </label>
+          <label>
+            <span>Tertiärer Button — Text</span>
+            <input type="text" name="home-hero-tertiary-label" value="{{ homepage.hero.tertiary_button.label|default('', true) }}">
+          </label>
+          <label>
+            <span>Tertiärer Button — Link (URL)</span>
+            <input type="text" name="home-hero-tertiary-url" value="{{ homepage.hero.tertiary_button.url|default('', true) }}">
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="admin-fieldset">
+        <legend>Abschnitte</legend>
+        <p class="muted">Lege Reihenfolge, Überschrift und Links der Startseiten-Abschnitte fest.</p>
+        {% for section in homepage.sections %}
+        <fieldset class="admin-fieldset">
+          <legend>{{ section.heading|default(section.id, true) }}</legend>
+          <input type="hidden" name="home-section-{{ loop.index0 }}-id" value="{{ section.id }}">
+          <label class="toggle">
+            <input type="checkbox" name="home-section-{{ loop.index0 }}-enabled" {% if section.enabled %}checked{% endif %}>
+            <span>Abschnitt anzeigen</span>
+          </label>
+          <div class="form-grid">
+            <label>
+              <span>Überschrift</span>
+              <input type="text" name="home-section-{{ loop.index0 }}-heading" value="{{ section.heading|default('', true) }}">
+            </label>
+            <label>
+              <span>CTA-Linktext</span>
+              <input type="text" name="home-section-{{ loop.index0 }}-cta-label" value="{{ section.cta_label|default('', true) }}">
+            </label>
+            <label>
+              <span>CTA-Link (URL)</span>
+              <input type="text" name="home-section-{{ loop.index0 }}-cta-url" value="{{ section.cta_url|default('', true) }}">
+            </label>
+            <label>
+              <span>Reihenfolge (1 = oben)</span>
+              <input type="number" name="home-section-{{ loop.index0 }}-order" value="{{ section.order|default(loop.index, true) }}" min="1">
+            </label>
+          </div>
+        </fieldset>
+        {% endfor %}
+      </fieldset>
+
+      <fieldset class="admin-fieldset">
+        <legend>Kalender-Events</legend>
+        <p class="muted">Markiere besondere Tage für den Wochenkalender auf der Startseite. Die Einträge werden direkt im Kalender mit Uhrzeit angezeigt – mehrere Events pro Tag werden automatisch gruppiert. Optional kannst du Uhrzeit, Link und Wiederholung hinterlegen.</p>
+        {% for event in homepage.calendar.events %}
+        <fieldset class="admin-fieldset">
+          <legend>Event {{ loop.index }}</legend>
+          <input type="hidden" name="home-calendar-{{ loop.index0 }}-id" value="{{ event.id }}">
+          <label class="toggle">
+            <input type="checkbox" name="home-calendar-{{ loop.index0 }}-delete">
+            <span>Event entfernen</span>
+          </label>
+          <div class="form-grid">
+            <label>
+              <span>Datum</span>
+              <input type="date" name="home-calendar-{{ loop.index0 }}-date" value="{{ event.date }}">
+            </label>
+            <label>
+              <span>Uhrzeit (optional)</span>
+              <input type="time" name="home-calendar-{{ loop.index0 }}-time" value="{{ event.time }}">
+            </label>
+            <label>
+              <span>Symbol</span>
+              <select class="admin-select" name="home-calendar-{{ loop.index0 }}-icon">
+                {% for key, icon in calendar_icons.items() %}
+                <option value="{{ key }}" {% if event.icon == key %}selected{% endif %}>{{ icon.label }}</option>
+                {% endfor %}
+              </select>
+            </label>
+            <label>
+              <span>Wiederholung</span>
+              <select class="admin-select" name="home-calendar-{{ loop.index0 }}-recurrence">
+                {% for key, label in calendar_recurrence_options.items() %}
+                <option value="{{ key }}" {% if event.recurrence == key %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </label>
+          </div>
+          <label>
+            <span>Titel / Beschreibung</span>
+            <input type="text" name="home-calendar-{{ loop.index0 }}-label" value="{{ event.label }}" placeholder="z. B. Community Watchparty">
+          </label>
+          <label>
+            <span>Optionaler Link</span>
+            <input type="url" name="home-calendar-{{ loop.index0 }}-url" value="{{ event.url }}" placeholder="https://">
+          </label>
+        </fieldset>
+        {% else %}
+        <p class="muted">Noch keine Ereignisse eingetragen.</p>
+        {% endfor %}
+
+        <fieldset class="admin-fieldset" data-default-open="true">
+          <legend>➕ Neues Event hinzufügen</legend>
+          <div class="form-grid">
+            <label>
+              <span>Datum</span>
+              <input type="date" name="home-calendar-new-date">
+            </label>
+            <label>
+              <span>Uhrzeit (optional)</span>
+              <input type="time" name="home-calendar-new-time">
+            </label>
+            <label>
+              <span>Symbol</span>
+              <select class="admin-select" name="home-calendar-new-icon">
+                {% for key, icon in calendar_icons.items() %}
+                <option value="{{ key }}">{{ icon.label }}</option>
+                {% endfor %}
+              </select>
+            </label>
+            <label>
+              <span>Wiederholung</span>
+              <select class="admin-select" name="home-calendar-new-recurrence">
+                {% for key, label in calendar_recurrence_options.items() %}
+                <option value="{{ key }}">{{ label }}</option>
+                {% endfor %}
+              </select>
+            </label>
+          </div>
+          <label>
+            <span>Titel / Beschreibung</span>
+            <input type="text" name="home-calendar-new-label" placeholder="z. B. Geburtstag von Nova">
+          </label>
+          <label>
+            <span>Optionaler Link</span>
+            <input type="url" name="home-calendar-new-url" placeholder="https://">
+          </label>
+        </fieldset>
+      </fieldset>
+
+      <button class="button" type="submit">Startseite speichern</button>
+    </form>
+    {% elif tab == 'news' %}
+    <form class="admin-card" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="form-name" value="news">
+      {% for item in news %}
+      <fieldset class="admin-fieldset">
+        <legend>News {{ loop.index }}{% if item.title %} — {{ item.title }}{% endif %}</legend>
+        <label class="toggle">
+          <input type="checkbox" name="news-{{ loop.index0 }}-delete">
+          <span>Eintrag entfernen</span>
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Titel</span>
+            <input type="text" name="news-{{ loop.index0 }}-title" value="{{ item.title|default('', true) }}">
+          </label>
+          <label>
+            <span>Slug (URL)</span>
+            <input type="text" name="news-{{ loop.index0 }}-slug" value="{{ item.slug|default('', true) }}" placeholder="z. B. roadmap-update">
+          </label>
+        </div>
+        <div class="form-grid">
+          <label>
+            <span>Datum (JJJJ-MM-TT)</span>
+            <input type="text" name="news-{{ loop.index0 }}-date" value="{{ item.date|default('', true) }}">
+          </label>
+          <label>
+            <span>Bild (URL)</span>
+            <input type="text" name="news-{{ loop.index0 }}-image" value="{{ item.image|default('', true) }}">
+          </label>
+        </div>
+        <label>
+          <span>Bild ersetzen (Upload)</span>
+          <input type="file" name="news-{{ loop.index0 }}-image-upload" accept="image/*">
+        </label>
+        <label>
+          <span>Kurzbeschreibung / Teaser</span>
+          <textarea name="news-{{ loop.index0 }}-summary" rows="4">{{ item.summary|default('', true) }}</textarea>
+        </label>
+        <div
+          class="content-builder"
+          data-content-builder
+          data-initial='{{ item.blocks|default([], true) | tojson }}'
+          data-upload-prefix="news-{{ loop.index0 }}-block"
+        >
+          <div class="content-builder__toolbar">
+            <span class="content-builder__title">Detailabschnitte</span>
+            <div class="content-builder__actions">
+              <button type="button" class="button button-secondary" data-builder-add="text">➕ Text</button>
+              <button type="button" class="button button-secondary" data-builder-add="image">➕ Bild</button>
+              <button type="button" class="button button-secondary" data-builder-add="gallery">➕ Galerie</button>
+              <button type="button" class="button button-secondary" data-builder-add="split">➕ Split</button>
+            </div>
+          </div>
+          <input type="hidden" name="news-{{ loop.index0 }}-blocks" value='{{ item.blocks|default([], true) | tojson }}'>
+          <div class="content-builder__items" data-builder-items></div>
+          <p class="content-builder__empty" data-builder-empty>Noch keine Abschnitte – nutze die ➕ Buttons, um Inhalte hinzuzufügen.</p>
+        </div>
+      </fieldset>
+      {% endfor %}
+
+      <fieldset class="admin-fieldset">
+        <legend>➕ Neue News hinzufügen</legend>
+        <label>
+          <span>Titel</span>
+          <input type="text" name="news-new-title">
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Slug (URL)</span>
+            <input type="text" name="news-new-slug" placeholder="z. B. fruehlingsupdate">
+          </label>
+          <label>
+            <span>Datum (JJJJ-MM-TT)</span>
+            <input type="text" name="news-new-date">
+          </label>
+        </div>
+        <label>
+          <span>Bild (URL)</span>
+          <input type="text" name="news-new-image">
+        </label>
+        <label>
+          <span>Bild hochladen</span>
+          <input type="file" name="news-new-image-upload" accept="image/*">
+        </label>
+        <label>
+          <span>Kurzbeschreibung / Teaser</span>
+          <textarea name="news-new-summary" rows="4"></textarea>
+        </label>
+        <div
+          class="content-builder"
+          data-content-builder
+          data-initial='[]'
+          data-upload-prefix="news-new-block"
+        >
+          <div class="content-builder__toolbar">
+            <span class="content-builder__title">Detailabschnitte</span>
+            <div class="content-builder__actions">
+              <button type="button" class="button button-secondary" data-builder-add="text">➕ Text</button>
+              <button type="button" class="button button-secondary" data-builder-add="image">➕ Bild</button>
+              <button type="button" class="button button-secondary" data-builder-add="gallery">➕ Galerie</button>
+              <button type="button" class="button button-secondary" data-builder-add="split">➕ Split</button>
+            </div>
+          </div>
+          <input type="hidden" name="news-new-blocks" value='[]'>
+          <div class="content-builder__items" data-builder-items></div>
+          <p class="content-builder__empty" data-builder-empty>Füge Abschnitte hinzu, um die Detailseite aufzubauen.</p>
+        </div>
+      </fieldset>
+
+      <button class="button" type="submit">News speichern</button>
+    </form>
+    {% elif tab == 'projects' %}
+    <form class="admin-card" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="form-name" value="projects">
+      {% for item in projects %}
+      <fieldset class="admin-fieldset">
+        <legend>Projekt {{ loop.index }}{% if item.title %} — {{ item.title }}{% endif %}</legend>
+        <label class="toggle">
+          <input type="checkbox" name="projects-{{ loop.index0 }}-delete">
+          <span>Eintrag entfernen</span>
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Titel</span>
+            <input type="text" name="projects-{{ loop.index0 }}-title" value="{{ item.title|default('', true) }}">
+          </label>
+          <label>
+            <span>Slug (URL)</span>
+            <input type="text" name="projects-{{ loop.index0 }}-slug" value="{{ item.slug|default('', true) }}" placeholder="z. B. matching-platform">
+          </label>
+        </div>
+        <label>
+          <span>Kurzbeschreibung</span>
+          <textarea name="projects-{{ loop.index0 }}-summary" rows="3">{{ item.summary|default(item.blurb, true) }}</textarea>
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Bild (URL)</span>
+            <input type="text" name="projects-{{ loop.index0 }}-image" value="{{ item.image|default('', true) }}">
+          </label>
+          <label>
+            <span>Projektlink</span>
+            <input type="text" name="projects-{{ loop.index0 }}-url" value="{{ item.url|default('', true) }}">
+          </label>
+        </div>
+        <label>
+          <span>Bild ersetzen (Upload)</span>
+          <input type="file" name="projects-{{ loop.index0 }}-image-upload" accept="image/*">
+        </label>
+        <label>
+          <span>Tags (Kommagetrennt oder pro Zeile)</span>
+          <textarea name="projects-{{ loop.index0 }}-tags" rows="2">{{ item.tags | default([], true) | join('\n') }}</textarea>
+        </label>
+        <div
+          class="content-builder"
+          data-content-builder
+          data-initial='{{ item.blocks|default([], true) | tojson }}'
+          data-upload-prefix="projects-{{ loop.index0 }}-block"
+        >
+          <div class="content-builder__toolbar">
+            <span class="content-builder__title">Detailabschnitte</span>
+            <div class="content-builder__actions">
+              <button type="button" class="button button-secondary" data-builder-add="text">➕ Text</button>
+              <button type="button" class="button button-secondary" data-builder-add="image">➕ Bild</button>
+              <button type="button" class="button button-secondary" data-builder-add="gallery">➕ Galerie</button>
+              <button type="button" class="button button-secondary" data-builder-add="split">➕ Split</button>
+            </div>
+          </div>
+          <input type="hidden" name="projects-{{ loop.index0 }}-blocks" value='{{ item.blocks|default([], true) | tojson }}'>
+          <div class="content-builder__items" data-builder-items></div>
+          <p class="content-builder__empty" data-builder-empty>Noch keine Abschnitte – füge Inhalte hinzu, um die Projektseite auszugestalten.</p>
+        </div>
+      </fieldset>
+      {% endfor %}
+
+      <fieldset class="admin-fieldset">
+        <legend>➕ Neues Projekt hinzufügen</legend>
+        <label>
+          <span>Titel</span>
+          <input type="text" name="projects-new-title">
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Slug (URL)</span>
+            <input type="text" name="projects-new-slug" placeholder="z. B. community-event">
+          </label>
+          <label>
+            <span>Projektlink</span>
+            <input type="text" name="projects-new-url">
+          </label>
+        </div>
+        <label>
+          <span>Kurzbeschreibung</span>
+          <textarea name="projects-new-summary" rows="3"></textarea>
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Bild (URL)</span>
+            <input type="text" name="projects-new-image">
+          </label>
+          <label>
+            <span>Bild hochladen</span>
+            <input type="file" name="projects-new-image-upload" accept="image/*">
+          </label>
+        </div>
+        <label>
+          <span>Tags (Kommagetrennt oder pro Zeile)</span>
+          <textarea name="projects-new-tags" rows="2"></textarea>
+        </label>
+        <div
+          class="content-builder"
+          data-content-builder
+          data-initial='[]'
+          data-upload-prefix="projects-new-block"
+        >
+          <div class="content-builder__toolbar">
+            <span class="content-builder__title">Detailabschnitte</span>
+            <div class="content-builder__actions">
+              <button type="button" class="button button-secondary" data-builder-add="text">➕ Text</button>
+              <button type="button" class="button button-secondary" data-builder-add="image">➕ Bild</button>
+              <button type="button" class="button button-secondary" data-builder-add="gallery">➕ Galerie</button>
+              <button type="button" class="button button-secondary" data-builder-add="split">➕ Split</button>
+            </div>
+          </div>
+          <input type="hidden" name="projects-new-blocks" value='[]'>
+          <div class="content-builder__items" data-builder-items></div>
+          <p class="content-builder__empty" data-builder-empty>Nutze die ➕ Buttons, um den Projektverlauf zu strukturieren.</p>
+        </div>
+      </fieldset>
+
+      <button class="button" type="submit">Projekte speichern</button>
+    </form>
+    {% elif tab == 'services' %}
+    <form class="admin-card" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="form-name" value="services">
+      {% for item in services %}
+      {% set service_index = loop.index0 %}
+      {% set existing_badges = item.badges or [] %}
+      {% set contact_ns = namespace(lines=[]) %}
+      {% set price_ns = namespace(lines=[]) %}
+      {% for contact in item.contacts|default([], true) %}
+        {% set line = contact.label|default('', true) ~ ' | ' ~ contact.url|default('', true) %}
+        {% if contact.icon %}
+          {% set line = line ~ ' | ' ~ contact.icon %}
+        {% endif %}
+        {% set contact_ns.lines = contact_ns.lines + [line] %}
+      {% endfor %}
+      {% for price in item.prices|default([], true) %}
+        {% set price_line = price.label|default('', true) %}
+        {% if price.price %}
+          {% set price_line = price_line ~ ' | ' ~ price.price %}
+        {% endif %}
+        {% if price.note %}
+          {% set price_line = price_line ~ ' | ' ~ price.note %}
+        {% endif %}
+        {% set price_ns.lines = price_ns.lines + [price_line] %}
+      {% endfor %}
+      <fieldset class="admin-fieldset">
+        <legend>Service {{ loop.index }}{% if item.name %} — {{ item.name }}{% endif %}</legend>
+        <label class="toggle">
+          <input type="checkbox" name="services-{{ service_index }}-delete">
+          <span>Eintrag entfernen</span>
+        </label>
+        <input type="hidden" name="services-{{ service_index }}-slug" value="{{ item.slug|default('', true) }}">
+        <label>
+          <span>Name</span>
+          <input type="text" name="services-{{ service_index }}-name" value="{{ item.name|default('', true) }}">
+        </label>
+        <label>
+          <span>Beschreibung</span>
+          <textarea name="services-{{ service_index }}-description" rows="4">{{ item.description|default('', true) }}</textarea>
+        </label>
+        <label>
+          <span>Angeboten von</span>
+          <input type="text" name="services-{{ service_index }}-offered-by" value="{{ item.offered_by|default('', true) }}">
+        </label>
+        <label>
+          <span>Status</span>
+          <select class="admin-select" name="services-{{ service_index }}-status">
+            <option value="open" {% if item.status|default('open') != 'closed' %}selected{% endif %}>Aktiv</option>
+            <option value="closed" {% if item.status|default('open') == 'closed' %}selected{% endif %}>Geschlossen</option>
+          </select>
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Bild (Pfad oder URL)</span>
+            <input type="text" name="services-{{ service_index }}-image" value="{{ item.image|default('', true) }}">
+          </label>
+          <label>
+            <span>Bild ersetzen (Upload)</span>
+            <input type="file" name="services-{{ service_index }}-image-upload" accept="image/*">
+          </label>
+        </div>
+        <label>
+          <span>Alt-Text</span>
+          <input type="text" name="services-{{ service_index }}-image-alt" value="{{ item.image_alt|default('', true) }}">
+        </label>
+        <div class="admin-checkbox-row">
+          <span>Badges</span>
+          <div class="admin-checkbox-row__options">
+            {% for key, badge in service_badge_options.items() %}
+            {% set is_checked = key in existing_badges %}
+            <label class="toggle toggle-inline">
+              <input type="checkbox" name="services-{{ service_index }}-badge-{{ key }}" {% if is_checked %}checked{% endif %}>
+              <span>{{ badge.label }}</span>
+            </label>
+            {% endfor %}
+          </div>
+        </div>
+        <label>
+          <span>Kontakte (pro Zeile: Label | URL | optional Icon)</span>
+          <textarea name="services-{{ service_index }}-contacts" rows="3">{{ contact_ns.lines|join('\n') }}</textarea>
+        </label>
+        <input type="hidden" name="services-{{ service_index }}-gallery-size" value="{{ item.gallery|length }}">
+        {% for media in item.gallery %}
+        <fieldset class="admin-fieldset admin-fieldset--nested">
+          <legend>Galeriebild {{ loop.index }}</legend>
+          <label class="toggle">
+            <input type="checkbox" name="services-{{ service_index }}-gallery-{{ loop.index0 }}-delete">
+            <span>Bild entfernen</span>
+          </label>
+          <div class="form-grid">
+            <label>
+              <span>Bild (Pfad oder URL)</span>
+              <input type="text" name="services-{{ service_index }}-gallery-{{ loop.index0 }}-image" value="{{ media.image|default('', true) }}">
+            </label>
+            <label>
+              <span>Bild ersetzen (Upload)</span>
+              <input type="file" name="services-{{ service_index }}-gallery-{{ loop.index0 }}-upload" accept="image/*">
+            </label>
+          </div>
+          {% if media.image %}
+          <p class="muted small">
+            {% if media.image_url %}<a href="{{ media.image_url }}" target="_blank" rel="noopener">Aktuelles Bild ansehen</a>{% else %}Aktuelles Bild: {{ media.image }}{% endif %}
+          </p>
+          {% endif %}
+          <label>
+            <span>Alt-Text</span>
+            <input type="text" name="services-{{ service_index }}-gallery-{{ loop.index0 }}-alt" value="{{ media.alt|default('', true) }}">
+          </label>
+        </fieldset>
+        {% else %}
+        <p class="muted">Noch keine Galerie-Bilder hinterlegt.</p>
+        {% endfor %}
+        <fieldset class="admin-fieldset admin-fieldset--nested" data-default-open="true">
+          <legend>➕ Neues Galeriebild hinzufügen</legend>
+          <div class="form-grid">
+            <label>
+              <span>Bild (Pfad oder URL)</span>
+              <input type="text" name="services-{{ service_index }}-gallery-new-image" placeholder="z. B. uploads/service-gallery.png">
+            </label>
+            <label>
+              <span>Bild hochladen</span>
+              <input type="file" name="services-{{ service_index }}-gallery-new-upload" accept="image/*">
+            </label>
+          </div>
+          <label>
+            <span>Alt-Text</span>
+            <input type="text" name="services-{{ service_index }}-gallery-new-alt" placeholder="Kurze Beschreibung des Bildes">
+          </label>
+          <p class="muted small">Fülle eines der Felder aus oder nutze den Upload, um ein neues Galeriebild hinzuzufügen.</p>
+        </fieldset>
+        <label>
+          <span>Preisliste (pro Zeile: Leistung | Preis | optional Notiz)</span>
+          <textarea name="services-{{ service_index }}-prices" rows="3">{{ price_ns.lines|join('\n') }}</textarea>
+        </label>
+      </fieldset>
+      {% endfor %}
+
+      <fieldset class="admin-fieldset">
+        <legend>➕ Neuen Service hinzufügen</legend>
+        <label>
+          <span>Name</span>
+          <input type="text" name="services-new-name">
+        </label>
+        <label>
+          <span>Beschreibung</span>
+          <textarea name="services-new-description" rows="4"></textarea>
+        </label>
+        <label>
+          <span>Angeboten von</span>
+          <input type="text" name="services-new-offered-by">
+        </label>
+        <label>
+          <span>Status</span>
+          <select class="admin-select" name="services-new-status">
+            <option value="open" selected>Aktiv</option>
+            <option value="closed">Geschlossen</option>
+          </select>
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Bild (Pfad oder URL)</span>
+            <input type="text" name="services-new-image">
+          </label>
+          <label>
+            <span>Bild hochladen</span>
+            <input type="file" name="services-new-image-upload" accept="image/*">
+          </label>
+        </div>
+        <label>
+          <span>Alt-Text</span>
+          <input type="text" name="services-new-image-alt">
+        </label>
+        <div class="admin-checkbox-row">
+          <span>Badges</span>
+          <div class="admin-checkbox-row__options">
+            {% for key, badge in service_badge_options.items() %}
+            <label class="toggle toggle-inline">
+              <input type="checkbox" name="services-new-badge-{{ key }}">
+              <span>{{ badge.label }}</span>
+            </label>
+            {% endfor %}
+          </div>
+        </div>
+        <label>
+          <span>Kontakte (pro Zeile: Label | URL | optional Icon)</span>
+          <textarea name="services-new-contacts" rows="3"></textarea>
+        </label>
+        <fieldset class="admin-fieldset admin-fieldset--nested">
+          <legend>➕ Galeriebild hinzufügen</legend>
+          <div class="form-grid">
+            <label>
+              <span>Bild (Pfad oder URL)</span>
+              <input type="text" name="services-new-gallery-image" placeholder="z. B. uploads/service-gallery.png">
+            </label>
+            <label>
+              <span>Bild hochladen</span>
+              <input type="file" name="services-new-gallery-upload" accept="image/*">
+            </label>
+          </div>
+          <label>
+            <span>Alt-Text</span>
+            <input type="text" name="services-new-gallery-alt" placeholder="Kurze Beschreibung des Bildes">
+          </label>
+          <p class="muted small">Optional: Lade direkt ein erstes Galeriebild für diesen Service hoch.</p>
+        </fieldset>
+        <label>
+          <span>Preisliste (pro Zeile: Leistung | Preis | optional Notiz)</span>
+          <textarea name="services-new-prices" rows="3"></textarea>
+        </label>
+      </fieldset>
+
+      <button class="button" type="submit">Services speichern</button>
+    </form>
+    {% elif tab == 'partners' %}
+    <form class="admin-card" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="form-name" value="partners">
+      {% for item in partners %}
+      <fieldset class="admin-fieldset">
+        <legend>Partner {{ loop.index }}{% if item.name %} — {{ item.name }}{% endif %}</legend>
+        <label class="toggle">
+          <input type="checkbox" name="partners-{{ loop.index0 }}-delete">
+          <span>Eintrag entfernen</span>
+        </label>
+        <label>
+          <span>Name</span>
+          <input type="text" name="partners-{{ loop.index0 }}-name" value="{{ item.name|default('', true) }}">
+        </label>
+        <label>
+          <span>Link (https://…)</span>
+          <input type="url" name="partners-{{ loop.index0 }}-url" value="{{ item.url|default('', true) }}">
+        </label>
+        <label>
+          <span>Logo (URL)</span>
+          <input type="text" name="partners-{{ loop.index0 }}-logo" value="{{ item.logo|default('', true) }}">
+        </label>
+        <label>
+          <span>Logo ersetzen (Upload)</span>
+          <input type="file" name="partners-{{ loop.index0 }}-logo-upload" accept="image/*">
+        </label>
+      </fieldset>
+      {% endfor %}
+
+      <fieldset class="admin-fieldset">
+        <legend>➕ Neuen Partner hinzufügen</legend>
+        <label>
+          <span>Name</span>
+          <input type="text" name="partners-new-name">
+        </label>
+        <label>
+          <span>Link (https://…)</span>
+          <input type="url" name="partners-new-url">
+        </label>
+        <label>
+          <span>Logo (URL)</span>
+          <input type="text" name="partners-new-logo">
+        </label>
+        <label>
+          <span>Logo hochladen</span>
+          <input type="file" name="partners-new-logo-upload" accept="image/*">
+        </label>
+      </fieldset>
+
+      <button class="button" type="submit">Partner speichern</button>
+    </form>
+    {% elif tab == 'resources' %}
+    <form class="admin-card" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="form-name" value="resources">
+      {% for item in resources %}
+      <fieldset class="admin-fieldset">
+        <legend>Ressource {{ loop.index }}{% if item.title %} — {{ item.title }}{% endif %}</legend>
+        <label class="toggle">
+          <input type="checkbox" name="resources-{{ loop.index0 }}-delete">
+          <span>Eintrag entfernen</span>
+        </label>
+        <label>
+          <span>Titel</span>
+          <input type="text" name="resources-{{ loop.index0 }}-title" value="{{ item.title|default('', true) }}">
+        </label>
+        <label>
+          <span>Beschreibung (optional)</span>
+          <textarea name="resources-{{ loop.index0 }}-description" rows="3">{{ item.description|default('', true) }}</textarea>
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Vorschaubild (Pfad oder URL)</span>
+            <input type="text" name="resources-{{ loop.index0 }}-image" value="{{ item.image|default('', true) }}">
+          </label>
+          <label>
+            <span>Vorschaubild ersetzen (Upload)</span>
+            <input type="file" name="resources-{{ loop.index0 }}-image-upload" accept="image/*">
+          </label>
+        </div>
+        <label>
+          <span>Alt-Text</span>
+          <input type="text" name="resources-{{ loop.index0 }}-image-alt" value="{{ item.image_alt|default('', true) }}">
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Download-Datei (Pfad oder URL)</span>
+            <input type="text" name="resources-{{ loop.index0 }}-file" value="{{ item.file|default('', true) }}">
+          </label>
+          <label>
+            <span>Datei ersetzen (Upload)</span>
+            <input type="file" name="resources-{{ loop.index0 }}-file-upload">
+          </label>
+        </div>
+        <label>
+          <span>Download-Button Text</span>
+          <input type="text" name="resources-{{ loop.index0 }}-file-label" value="{{ item.file_label|default('', true) }}" placeholder="Download">
+        </label>
+        {% if item.image_url or item.file_url %}
+        <p class="muted small">
+          {% if item.image_url %}Aktuelles Bild: <a href="{{ item.image_url }}" target="_blank" rel="noopener">ansehen</a>.{% endif %}
+          {% if item.file_url %} Aktuelle Datei: <a href="{{ item.file_url }}" target="_blank" rel="noopener">öffnen</a>.{% endif %}
+        </p>
+        {% endif %}
+      </fieldset>
+      {% endfor %}
+
+      <fieldset class="admin-fieldset">
+        <legend>➕ Neue Ressource hinzufügen</legend>
+        <label>
+          <span>Titel</span>
+          <input type="text" name="resources-new-title">
+        </label>
+        <label>
+          <span>Beschreibung (optional)</span>
+          <textarea name="resources-new-description" rows="3"></textarea>
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Vorschaubild (Pfad oder URL)</span>
+            <input type="text" name="resources-new-image">
+          </label>
+          <label>
+            <span>Vorschaubild hochladen</span>
+            <input type="file" name="resources-new-image-upload" accept="image/*">
+          </label>
+        </div>
+        <label>
+          <span>Alt-Text</span>
+          <input type="text" name="resources-new-image-alt">
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Download-Datei (Pfad oder URL)</span>
+            <input type="text" name="resources-new-file">
+          </label>
+          <label>
+            <span>Download-Datei hochladen</span>
+            <input type="file" name="resources-new-file-upload">
+          </label>
+        </div>
+        <label>
+          <span>Download-Button Text</span>
+          <input type="text" name="resources-new-file-label" placeholder="Download">
+        </label>
+      </fieldset>
+
+      <button class="button" type="submit">Ressourcen speichern</button>
+    </form>
+    {% elif tab == 'about' %}
+    {% set hero = about.get('hero', {}) %}
+    <form class="admin-card" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="form-name" value="about">
+
+      <fieldset class="admin-fieldset">
+        <legend>Hero Abschnitt</legend>
+        <label>
+          <span>Titel</span>
+          <input type="text" name="about-hero-title" value="{{ hero.get('title', '') }}">
+        </label>
+        <label>
+          <span>Lead</span>
+          <input type="text" name="about-hero-lead" value="{{ hero.get('lead', '') }}">
+        </label>
+        <label>
+          <span>Text</span>
+          <textarea name="about-hero-body" rows="4">{{ hero.get('body', '') }}</textarea>
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Bild (Pfad oder URL)</span>
+            <input type="text" name="about-hero-image" value="{{ hero.get('image', '') }}">
+          </label>
+          <label>
+            <span>Bild ersetzen (Upload)</span>
+            <input type="file" name="about-hero-image-upload" accept="image/*">
+          </label>
+        </div>
+        <label>
+          <span>Alt-Text</span>
+          <input type="text" name="about-hero-image-alt" value="{{ hero.get('image_alt', '') }}">
+        </label>
+        <label>
+          <span>Bildgröße (% Skalierung)</span>
+          <input
+            type="number"
+            name="about-hero-image-scale"
+            min="10"
+            max="300"
+            step="5"
+            value="{{ hero.get('image_scale', 100) }}"
+          >
+          <span class="muted small">Passe die Darstellung des Hero-Bildes zwischen 10 % und 300 % an.</span>
+        </label>
+      </fieldset>
+
+      {% set goals = about.get('goals', []) %}
+      <input type="hidden" name="about-goals-count" value="{{ goals|length }}">
+      {% for goal in goals %}
+      <fieldset class="admin-fieldset">
+        <legend>Ziel {{ loop.index }}{% if goal.title %} — {{ goal.title }}{% endif %}</legend>
+        <label class="toggle">
+          <input type="checkbox" name="about-goals-{{ loop.index0 }}-delete">
+          <span>Eintrag entfernen</span>
+        </label>
+        <label>
+          <span>Titel</span>
+          <input type="text" name="about-goals-{{ loop.index0 }}-title" value="{{ goal.title|default('', true) }}">
+        </label>
+        <label>
+          <span>Beschreibung</span>
+          <textarea name="about-goals-{{ loop.index0 }}-description" rows="3">{{ goal.description|default('', true) }}</textarea>
+        </label>
+      </fieldset>
+      {% endfor %}
+
+      <fieldset class="admin-fieldset">
+        <legend>➕ Neues Ziel hinzufügen</legend>
+        <label>
+          <span>Titel</span>
+          <input type="text" name="about-goals-new-title">
+        </label>
+        <label>
+          <span>Beschreibung</span>
+          <textarea name="about-goals-new-description" rows="3"></textarea>
+        </label>
+      </fieldset>
+
+      {% set offers = about.get('offer', []) %}
+      <input type="hidden" name="about-offer-count" value="{{ offers|length }}">
+      {% for item in offers %}
+      <fieldset class="admin-fieldset">
+        <legend>Angebot {{ loop.index }}{% if item.title %} — {{ item.title }}{% endif %}</legend>
+        <label class="toggle">
+          <input type="checkbox" name="about-offer-{{ loop.index0 }}-delete">
+          <span>Eintrag entfernen</span>
+        </label>
+        <label>
+          <span>Titel</span>
+          <input type="text" name="about-offer-{{ loop.index0 }}-title" value="{{ item.title|default('', true) }}">
+        </label>
+        <label>
+          <span>Beschreibung</span>
+          <textarea name="about-offer-{{ loop.index0 }}-description" rows="3">{{ item.description|default('', true) }}</textarea>
+        </label>
+      </fieldset>
+      {% endfor %}
+
+      <fieldset class="admin-fieldset">
+        <legend>➕ Neues Angebot hinzufügen</legend>
+        <label>
+          <span>Titel</span>
+          <input type="text" name="about-offer-new-title">
+        </label>
+        <label>
+          <span>Beschreibung</span>
+          <textarea name="about-offer-new-description" rows="3"></textarea>
+        </label>
+      </fieldset>
+
+      {% set faq_items = about.get('faq', []) %}
+      <input type="hidden" name="about-faq-count" value="{{ faq_items|length }}">
+      {% for item in faq_items %}
+      <fieldset class="admin-fieldset">
+        <legend>FAQ {{ loop.index }}{% if item.question %} — {{ item.question }}{% endif %}</legend>
+        <label class="toggle">
+          <input type="checkbox" name="about-faq-{{ loop.index0 }}-delete">
+          <span>Frage entfernen</span>
+        </label>
+        <label>
+          <span>Frage</span>
+          <input type="text" name="about-faq-{{ loop.index0 }}-question" value="{{ item.question|default('', true) }}">
+        </label>
+        <label>
+          <span>Antwort</span>
+          <textarea name="about-faq-{{ loop.index0 }}-answer" rows="4">{{ item.answer|default('', true) }}</textarea>
+        </label>
+      </fieldset>
+      {% endfor %}
+
+      <fieldset class="admin-fieldset">
+        <legend>➕ Neue FAQ hinzufügen</legend>
+        <label>
+          <span>Frage</span>
+          <input type="text" name="about-faq-new-question">
+        </label>
+        <label>
+          <span>Antwort</span>
+          <textarea name="about-faq-new-answer" rows="4"></textarea>
+        </label>
+      </fieldset>
+
+      {% set team_members = about.get('team', []) %}
+      <input type="hidden" name="about-team-count" value="{{ team_members|length }}">
+      {% for member in team_members %}
+      <fieldset class="admin-fieldset">
+        <legend>Teammitglied {{ loop.index }}{% if member.name %} — {{ member.name }}{% endif %}</legend>
+        <label class="toggle">
+          <input type="checkbox" name="about-team-{{ loop.index0 }}-delete">
+          <span>Mitglied entfernen</span>
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Name</span>
+            <input type="text" name="about-team-{{ loop.index0 }}-name" value="{{ member.name|default('', true) }}">
+          </label>
+          <label>
+            <span>Rolle</span>
+            <input type="text" name="about-team-{{ loop.index0 }}-role" value="{{ member.role|default('', true) }}">
+          </label>
+        </div>
+        <label>
+          <span>Beschreibung</span>
+          <textarea name="about-team-{{ loop.index0 }}-bio" rows="3">{{ member.bio|default('', true) }}</textarea>
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Profilbild (Pfad oder URL)</span>
+            <input type="text" name="about-team-{{ loop.index0 }}-image" value="{{ member.image|default('', true) }}">
+          </label>
+          <label>
+            <span>Profilbild ersetzen (Upload)</span>
+            <input type="file" name="about-team-{{ loop.index0 }}-image-upload" accept="image/*">
+          </label>
+        </div>
+      </fieldset>
+      {% endfor %}
+
+      <fieldset class="admin-fieldset">
+        <legend>➕ Neues Teammitglied hinzufügen</legend>
+        <div class="form-grid">
+          <label>
+            <span>Name</span>
+            <input type="text" name="about-team-new-name">
+          </label>
+          <label>
+            <span>Rolle</span>
+            <input type="text" name="about-team-new-role">
+          </label>
+        </div>
+        <label>
+          <span>Beschreibung</span>
+          <textarea name="about-team-new-bio" rows="3"></textarea>
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Profilbild (Pfad oder URL)</span>
+            <input type="text" name="about-team-new-image">
+          </label>
+          <label>
+            <span>Profilbild hochladen</span>
+            <input type="file" name="about-team-new-image-upload" accept="image/*">
+          </label>
+        </div>
+      </fieldset>
+
+      <button class="button" type="submit">Über-uns-Seite speichern</button>
+    </form>
+    {% elif tab == 'shop' %}
+    <form class="admin-card" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="form-name" value="shop">
+      {% for item in shop_items %}
+      {% set idx = loop.index0 %}
+      <fieldset class="admin-fieldset">
+        <legend>Produkt {{ loop.index }}{% if item.title %} — {{ item.title }}{% endif %}</legend>
+        <label class="toggle">
+          <input type="checkbox" name="shop-{{ idx }}-delete">
+          <span>Eintrag entfernen</span>
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Titel</span>
+            <input type="text" name="shop-{{ idx }}-title" value="{{ item.title|default('', true) }}">
+          </label>
+          <label>
+            <span>Slug</span>
+            <input type="text" name="shop-{{ idx }}-slug" value="{{ item.slug|default('', true) }}">
+          </label>
+        </div>
+        <div class="form-grid">
+          <label>
+            <span>Streamer / Creator</span>
+            <input type="text" name="shop-{{ idx }}-streamer" value="{{ item.streamer|default('', true) }}" placeholder="z. B. Lumina">
+          </label>
+          <label>
+            <span>Badge</span>
+            <input type="text" name="shop-{{ idx }}-badge" value="{{ item.badge|default('', true) }}" placeholder="z. B. Limited">
+          </label>
+        </div>
+        <label>
+          <span>Beschreibung</span>
+          <textarea name="shop-{{ idx }}-description" rows="3">{{ item.description|default('', true) }}</textarea>
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Preis (aktuell, €)</span>
+            <input type="number" step="0.01" min="0" name="shop-{{ idx }}-price" value="{{ '%.2f'|format(item.price_value) if item.price_value is not none else '' }}" placeholder="z. B. 29.00">
+          </label>
+          <label>
+            <span>Alter Preis (für Rabatt)</span>
+            <input type="number" step="0.01" min="0" name="shop-{{ idx }}-original-price" value="{{ '%.2f'|format(item.original_price_value) if item.original_price_value is not none else '' }}" placeholder="z. B. 35.00">
+          </label>
+          <label>
+            <span>Verfügbare Menge</span>
+            <input type="number" min="0" name="shop-{{ idx }}-stock" value="{{ item.stock if item.stock is not none else '' }}" placeholder="z. B. 50">
+          </label>
+        </div>
+        <div class="form-grid">
+          <label>
+            <span>Max. pro Bestellung</span>
+            <input type="number" min="1" name="shop-{{ idx }}-max-per-order" value="{{ item.max_per_order if item.max_per_order else '' }}" placeholder="z. B. 3">
+          </label>
+          <label>
+            <span>Verfügbarkeits-/Ankunftsinfo</span>
+            <input type="text" name="shop-{{ idx }}-arrival" value="{{ item.est_arrival|default('', true) }}" placeholder="Auslieferung ab Juni">
+          </label>
+          <label>
+            <span>Bestell-Link</span>
+            <input type="text" name="shop-{{ idx }}-purchase-url" value="{{ item.purchase_url|default('', true) }}" placeholder="https://">
+          </label>
+        </div>
+        <div class="form-grid">
+          <label>
+            <span>Effekt</span>
+            <select class="admin-select" name="shop-{{ idx }}-effect">
+              {% for effect_key, effect_meta in shop_effects.items() %}
+                {% if effect_key == '' %}
+                <option value="" {% if not item.effect %}selected{% endif %}>Kein Effekt</option>
+                {% else %}
+                <option value="{{ effect_key }}" {% if item.effect == effect_key %}selected{% endif %}>{{ effect_meta.label }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </label>
+        </div>
+        <div class="form-grid">
+          <label>
+            <span>Bild (Pfad oder URL)</span>
+            <input type="text" name="shop-{{ idx }}-image" value="{{ item.image|default('', true) }}">
+          </label>
+          <label>
+            <span>Bild ersetzen (Upload)</span>
+            <input type="file" name="shop-{{ idx }}-image-upload" accept="image/*">
+          </label>
+        </div>
+        {% set option_prefix = 'shop-' ~ idx ~ '-option' %}
+        <div class="shop-option-block">
+          <span class="shop-option-label">Varianten &amp; Extras</span>
+          <p class="muted small">Definiere auswählbare Varianten mit optionalem Aufpreis und Hinweis.</p>
+          <div
+            class="shop-option-list"
+            data-option-list
+            data-name="{{ option_prefix }}"
+            data-label-placeholder="Bezeichnung (z. B. Größe M)"
+            data-price-placeholder="Preis (leer = Basis)"
+            data-note-placeholder="Zusatzinfo (optional)"
+          >
+            {% if item.options %}
+              {% for option in item.options %}
+              <div class="shop-option-row" data-option-row>
+                <input type="text" name="{{ option_prefix }}-label" value="{{ option.label|default('', true) }}" placeholder="Bezeichnung (z. B. Größe M)">
+                <input type="number" step="0.01" min="0" name="{{ option_prefix }}-price" value="{{ '%.2f'|format(option.price_value) if option.price_value is not none else '' }}" placeholder="Preis (leer = Basis)">
+                <input type="text" name="{{ option_prefix }}-note" value="{{ option.note|default('', true) }}" placeholder="Zusatzinfo (optional)">
+                <button type="button" class="shop-option-remove" aria-label="Option entfernen">&times;</button>
+              </div>
+              {% endfor %}
+            {% else %}
+              <div class="shop-option-row" data-option-row>
+                <input type="text" name="{{ option_prefix }}-label" placeholder="Bezeichnung (z. B. Größe M)">
+                <input type="number" step="0.01" min="0" name="{{ option_prefix }}-price" placeholder="Preis (leer = Basis)">
+                <input type="text" name="{{ option_prefix }}-note" placeholder="Zusatzinfo (optional)">
+                <button type="button" class="shop-option-remove" aria-label="Option entfernen">&times;</button>
+              </div>
+            {% endif %}
+          </div>
+          <button type="button" class="button button-secondary shop-option-add" data-option-add="{{ option_prefix }}">➕ Variante hinzufügen</button>
+        </div>
+      </fieldset>
+      {% endfor %}
+
+      <fieldset class="admin-fieldset">
+        <legend>➕ Neues Produkt anlegen</legend>
+        <div class="form-grid">
+          <label>
+            <span>Titel</span>
+            <input type="text" name="shop-new-title" placeholder="Produktname">
+          </label>
+          <label>
+            <span>Slug</span>
+            <input type="text" name="shop-new-slug" placeholder="slug-name">
+          </label>
+        </div>
+        <div class="form-grid">
+          <label>
+            <span>Streamer / Creator</span>
+            <input type="text" name="shop-new-streamer" placeholder="Welcher Streamer">
+          </label>
+          <label>
+            <span>Badge</span>
+            <input type="text" name="shop-new-badge" placeholder="Optionales Label">
+          </label>
+        </div>
+        <label>
+          <span>Beschreibung</span>
+          <textarea name="shop-new-description" rows="3"></textarea>
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>Preis (aktuell, €)</span>
+            <input type="number" step="0.01" min="0" name="shop-new-price" placeholder="z. B. 29.00">
+          </label>
+          <label>
+            <span>Alter Preis (für Rabatt)</span>
+            <input type="number" step="0.01" min="0" name="shop-new-original-price" placeholder="z. B. 35.00">
+          </label>
+          <label>
+            <span>Verfügbare Menge</span>
+            <input type="number" min="0" name="shop-new-stock" placeholder="z. B. 50">
+          </label>
+        </div>
+        <div class="form-grid">
+          <label>
+            <span>Max. pro Bestellung</span>
+            <input type="number" min="1" name="shop-new-max-per-order" placeholder="z. B. 3">
+          </label>
+          <label>
+            <span>Verfügbarkeits-/Ankunftsinfo</span>
+            <input type="text" name="shop-new-arrival" placeholder="Versand innerhalb von 7 Tagen">
+          </label>
+          <label>
+            <span>Bestell-Link</span>
+            <input type="text" name="shop-new-purchase-url" placeholder="https://">
+          </label>
+        </div>
+        <div class="form-grid">
+          <label>
+            <span>Effekt</span>
+            <select class="admin-select" name="shop-new-effect">
+              {% for effect_key, effect_meta in shop_effects.items() %}
+                {% if effect_key == '' %}
+                <option value="" selected>Kein Effekt</option>
+                {% else %}
+                <option value="{{ effect_key }}">{{ effect_meta.label }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </label>
+        </div>
+        <div class="form-grid">
+          <label>
+            <span>Bild (Pfad oder URL)</span>
+            <input type="text" name="shop-new-image">
+          </label>
+          <label>
+            <span>Bild hochladen</span>
+            <input type="file" name="shop-new-image-upload" accept="image/*">
+          </label>
+        </div>
+        <div class="shop-option-block">
+          <span class="shop-option-label">Zusatzoptionen</span>
+          <p class="muted small">Füge über das ➕ beliebig viele Varianten hinzu.</p>
+          <div
+            class="shop-option-list"
+            data-option-list
+            data-name="shop-new-option"
+            data-label-placeholder="Bezeichnung (z. B. Größe M)"
+            data-price-placeholder="Preis (leer = Basis)"
+            data-note-placeholder="Zusatzinfo (optional)"
+          >
+            <div class="shop-option-row" data-option-row>
+              <input type="text" name="shop-new-option-label" placeholder="Bezeichnung (z. B. Größe M)">
+              <input type="number" step="0.01" min="0" name="shop-new-option-price" placeholder="Preis (leer = Basis)">
+              <input type="text" name="shop-new-option-note" placeholder="Zusatzinfo (optional)">
+              <button type="button" class="shop-option-remove" aria-label="Option entfernen">&times;</button>
+            </div>
+          </div>
+          <button type="button" class="button button-secondary shop-option-add" data-option-add="shop-new-option">➕ Variante hinzufügen</button>
+        </div>
+      </fieldset>
+
+    <button class="button" type="submit">Shop speichern</button>
+    </form>
+    {% elif tab == 'artworks' %}
+    <form class="admin-card" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="form-name" value="artworks">
+      <input type="hidden" name="artworks-count" value="{{ artworks.talents|length }}">
+      {% if not artworks_enabled %}
+      <p class="muted">Die öffentliche Galerie ist aktuell deaktiviert. Inhalte können dennoch bearbeitet werden.</p>
+      {% endif %}
+
+      <fieldset class="admin-fieldset">
+        <legend>Einleitung</legend>
+        <label>
+          <span>Intro-Text</span>
+          <textarea name="artworks-intro" rows="3" placeholder="Kurzer Einleitungstext für die Galerieseite">{{ artworks.intro|default('', true) }}</textarea>
+        </label>
+      </fieldset>
+
+      {% for talent in artworks.talents %}
+      {% set idx = loop.index0 %}
+      <fieldset class="admin-fieldset"{% if loop.first %} data-default-open="true"{% endif %}>
+        <legend>Talent {{ loop.index }}{% if talent.name %} — {{ talent.name }}{% endif %}</legend>
+        {% if is_admin %}
+        <label class="toggle">
+          <input type="checkbox" name="artworks-{{ idx }}-delete">
+          <span>Talent entfernen</span>
+        </label>
+        {% endif %}
+        <div class="form-grid">
+          <label>
+            <span>Name</span>
+            <input type="text" name="artworks-{{ idx }}-name" value="{{ talent.name|default('', true) }}">
+          </label>
+          <label>
+            <span>Slug</span>
+            <input type="text" name="artworks-{{ idx }}-slug" value="{{ talent.slug|default('', true) }}" {% if not is_admin %}readonly{% endif %}>
+            {% if not is_admin %}<span class="muted small">Slug kann nur vom Admin geändert werden.</span>{% endif %}
+          </label>
+        </div>
+        <div class="form-grid">
+          <label>
+            <span>Tagline</span>
+            <input type="text" name="artworks-{{ idx }}-tagline" value="{{ talent.tagline|default('', true) }}">
+          </label>
+          <label>
+            <span>Rotation (Millisekunden)</span>
+            <input type="number" name="artworks-{{ idx }}-interval" value="{{ talent.interval|default('', true) }}" min="1000" step="100">
+          </label>
+        </div>
+        <label>
+          <span>Beschreibung</span>
+          <textarea name="artworks-{{ idx }}-description" rows="4">{{ talent.description|default('', true) }}</textarea>
+        </label>
+
+        <input type="hidden" name="artworks-{{ idx }}-gallery-size" value="{{ talent.gallery|length }}">
+        {% for media in talent.gallery %}
+        <fieldset class="admin-fieldset">
+          <legend>Bild {{ loop.index }}</legend>
+          <label class="toggle">
+            <input type="checkbox" name="artworks-{{ idx }}-gallery-{{ loop.index0 }}-delete">
+            <span>Bild entfernen</span>
+          </label>
+          <div class="form-grid">
+            <label>
+              <span>Bild (Pfad oder URL)</span>
+              <input type="text" name="artworks-{{ idx }}-gallery-{{ loop.index0 }}-image" value="{{ media.image|default('', true) }}">
+            </label>
+            <label>
+              <span>Bild ersetzen (Upload)</span>
+              <input type="file" name="artworks-{{ idx }}-gallery-{{ loop.index0 }}-upload" accept="image/*">
+            </label>
+          </div>
+          {% if media.image %}
+          <p class="muted small">
+            {% if media.image_url %}<a href="{{ media.image_url }}" target="_blank" rel="noopener">Aktuelles Bild ansehen</a>{% else %}Aktuelles Bild: {{ media.image }}{% endif %}
+          </p>
+          {% endif %}
+          <label>
+            <span>Alternativtext</span>
+            <input type="text" name="artworks-{{ idx }}-gallery-{{ loop.index0 }}-alt" value="{{ media.alt|default('', true) }}">
+          </label>
+          <label>
+            <span>Beschreibung</span>
+            <textarea name="artworks-{{ idx }}-gallery-{{ loop.index0 }}-caption" rows="3">{{ media.caption|default('', true) }}</textarea>
+          </label>
+          <label>
+            <span>Credits</span>
+            <input type="text" name="artworks-{{ idx }}-gallery-{{ loop.index0 }}-credits" value="{{ media.credits|default('', true) }}">
+          </label>
+          <label>
+            <span>Credits-Link (optional)</span>
+            <input type="url" name="artworks-{{ idx }}-gallery-{{ loop.index0 }}-credits-url" value="{{ media.credits_url|default('', true) }}" placeholder="https://">
+          </label>
+          <label class="toggle">
+            <input type="checkbox" name="artworks-{{ idx }}-gallery-{{ loop.index0 }}-watermark" {% if media.watermark %}checked{% endif %}>
+            <span>Watermark „Astralia“ anzeigen</span>
+          </label>
+        </fieldset>
+        {% else %}
+        <p class="muted">Noch keine Bilder hinterlegt.</p>
+        {% endfor %}
+        {% set new_prefix = "artworks-" ~ idx ~ "-gallery-new" %}
+        <div class="artworks-gallery-new" data-artworks-gallery data-artworks-prefix="{{ new_prefix }}">
+          <input type="hidden" name="{{ new_prefix }}-count" value="0" data-artworks-new-count>
+          <div class="artworks-gallery-new__list" data-artworks-new-list></div>
+          <template data-artworks-new-template>
+            <fieldset class="admin-fieldset admin-fieldset--new-media" data-default-open="true">
+              <legend>Neues Bild</legend>
+              <div class="form-grid">
+                <label>
+                  <span>Bild (Pfad oder URL)</span>
+                  <input type="text" data-name-template="{{ new_prefix }}-__INDEX__-image" placeholder="z. B. uploads/artwork.png">
+                </label>
+                <label>
+                  <span>Bild hochladen</span>
+                  <input type="file" data-name-template="{{ new_prefix }}-__INDEX__-upload" accept="image/*">
+                </label>
+              </div>
+              <label>
+                <span>Alternativtext</span>
+                <input type="text" data-name-template="{{ new_prefix }}-__INDEX__-alt" placeholder="Kurze Beschreibung des Motivs">
+              </label>
+              <label>
+                <span>Beschreibung</span>
+                <textarea rows="3" data-name-template="{{ new_prefix }}-__INDEX__-caption" placeholder="Erläuterung zum Artwork"></textarea>
+              </label>
+              <label>
+                <span>Credits</span>
+                <input type="text" data-name-template="{{ new_prefix }}-__INDEX__-credits" placeholder="Illustration von …">
+              </label>
+              <label>
+                <span>Credits-Link (optional)</span>
+                <input type="url" data-name-template="{{ new_prefix }}-__INDEX__-credits-url" placeholder="https://">
+              </label>
+              <label class="toggle">
+                <input type="checkbox" data-name-template="{{ new_prefix }}-__INDEX__-watermark">
+                <span>Watermark „Astralia“ anzeigen</span>
+              </label>
+              <button type="button" class="button button-ghost button-small artworks-gallery-new__remove" data-artworks-remove>
+                <span aria-hidden="true">✕</span>
+                Entfernen
+              </button>
+            </fieldset>
+          </template>
+          <button type="button" class="button button-secondary button-icon" data-artworks-add>
+            <span class="button-icon__symbol" aria-hidden="true">➕</span>
+            Weiteres Bild hinzufügen
+          </button>
+        </div>
+      </fieldset>
+      {% else %}
+      <p class="muted">Noch keine Talente angelegt.</p>
+      {% endfor %}
+
+      <fieldset class="admin-fieldset" data-default-open="true">
+        <legend>➕ Neue Galerie-Sektion</legend>
+        <p class="muted small">Lege einen weiteren Galerie-Abschnitt an. Beim Speichern wird die Sektion angelegt.</p>
+        <div class="form-grid">
+          <label>
+            <span>Name</span>
+            <input type="text" name="artworks-new-name" placeholder="Name der Sektion">
+          </label>
+          {% if is_admin %}
+          <label>
+            <span>Slug</span>
+            <input type="text" name="artworks-new-slug" placeholder="z. B. nova">
+          </label>
+          {% endif %}
+        </div>
+        <div class="form-grid">
+          <label>
+            <span>Tagline</span>
+            <input type="text" name="artworks-new-tagline" placeholder="Kurzer Untertitel">
+          </label>
+          <label>
+            <span>Rotation (Millisekunden)</span>
+            <input type="number" name="artworks-new-interval" min="1000" step="100" placeholder="3000">
+          </label>
+        </div>
+        {% set new_section_prefix = "artworks-new-gallery" %}
+        <div class="artworks-gallery-new" data-artworks-gallery data-artworks-prefix="{{ new_section_prefix }}" data-artworks-auto-add="true">
+          <input type="hidden" name="{{ new_section_prefix }}-count" value="0" data-artworks-new-count>
+          <div class="artworks-gallery-new__list" data-artworks-new-list></div>
+          <template data-artworks-new-template>
+            <fieldset class="admin-fieldset admin-fieldset--new-media" data-default-open="true">
+              <legend>Neues Bild</legend>
+              <div class="form-grid">
+                <label>
+                  <span>Bild (Pfad oder URL)</span>
+                  <input type="text" data-name-template="{{ new_section_prefix }}-__INDEX__-image" placeholder="z. B. uploads/artwork.png">
+                </label>
+                <label>
+                  <span>Bild hochladen</span>
+                  <input type="file" data-name-template="{{ new_section_prefix }}-__INDEX__-upload" accept="image/*">
+                </label>
+              </div>
+              <label>
+                <span>Alternativtext</span>
+                <input type="text" data-name-template="{{ new_section_prefix }}-__INDEX__-alt" placeholder="Kurze Beschreibung des Motivs">
+              </label>
+              <label>
+                <span>Beschreibung</span>
+                <textarea rows="3" data-name-template="{{ new_section_prefix }}-__INDEX__-caption" placeholder="Erläuterung zum Artwork"></textarea>
+              </label>
+              <label>
+                <span>Credits</span>
+                <input type="text" data-name-template="{{ new_section_prefix }}-__INDEX__-credits" placeholder="Illustration von …">
+              </label>
+              <label>
+                <span>Credits-Link (optional)</span>
+                <input type="url" data-name-template="{{ new_section_prefix }}-__INDEX__-credits-url" placeholder="https://">
+              </label>
+              <label class="toggle">
+                <input type="checkbox" data-name-template="{{ new_section_prefix }}-__INDEX__-watermark">
+                <span>Watermark „Astralia“ anzeigen</span>
+              </label>
+              <button type="button" class="button button-ghost button-small artworks-gallery-new__remove" data-artworks-remove>
+                <span aria-hidden="true">✕</span>
+                Entfernen
+              </button>
+            </fieldset>
+          </template>
+          <button type="button" class="button button-secondary button-icon" data-artworks-add>
+            <span class="button-icon__symbol" aria-hidden="true">➕</span>
+            Weiteres Bild hinzufügen
+          </button>
+        </div>
+
+        <button class="button button-secondary" type="submit" name="artworks-add-section" value="1">➕ Sektion erstellen</button>
+      </fieldset>
+
+      <button class="button" type="submit">Galerie speichern</button>
+    </form>
+    {% elif tab == 'privacy' %}
+    <form class="admin-card" method="post">
+      <input type="hidden" name="form-name" value="privacy">
+
+      <fieldset class="admin-fieldset">
+        <legend>Datenschutzerklärung</legend>
+        <p class="muted">Der Inhalt unterstützt gängige Markdown-Syntax (Überschriften, Listen, Absätze).</p>
+        <textarea name="privacy-body" rows="18">{{ privacy|default('', true) }}</textarea>
+      </fieldset>
+
+      <footer class="admin-card__footer">
+        <button class="button" type="submit">Datenschutzerklärung speichern</button>
+      </footer>
+    </form>
+    {% elif tab == 'settings' %}
+    <form class="admin-card" method="post">
+      <input type="hidden" name="form-name" value="settings">
+
+      <fieldset class="admin-fieldset">
+        <legend>Allgemeine Angaben</legend>
+        <div class="form-grid">
+          <label>
+            <span>Seitenname</span>
+            <input type="text" name="settings-site-name" value="{{ settings.site_name|default('', true) }}">
+          </label>
+          <label>
+            <span>Claim / Tagline</span>
+            <input type="text" name="settings-site-tagline" value="{{ settings.site_tagline|default('', true) }}">
+          </label>
+          <label>
+            <span>Untertitel</span>
+            <input type="text" name="settings-site-subtitle" value="{{ settings.site_subtitle|default('', true) }}">
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="admin-fieldset">
+        <legend>Wartungsmodus</legend>
+        <p class="muted">Während der Wartung müssen Besucher sich über die allgemeine Login-Seite anmelden.</p>
+        <label class="toggle">
+          <input type="checkbox" name="settings-maintenance" {% if settings.maintenance_mode %}checked{% endif %}>
+          <span>Wartungsmodus aktivieren</span>
+        </label>
+      </fieldset>
+
+      <fieldset class="admin-fieldset">
+        <legend>Shop</legend>
+        <p class="muted">Blendet die Shop-Seite mitsamt Navigation ein oder aus.</p>
+        <label class="toggle">
+          <input type="checkbox" name="settings-shop" {% if settings.shop_enabled %}checked{% endif %}>
+          <span>Shop in der Navigation anzeigen</span>
+        </label>
+      </fieldset>
+
+      <fieldset class="admin-fieldset">
+        <legend>Galerie</legend>
+        <p class="muted">Steuert die öffentliche Galerieseite. Wenn deaktiviert, verschwindet der Menüpunkt und die Seite ist nicht erreichbar.</p>
+        <label class="toggle">
+          <input type="checkbox" name="settings-artworks-enabled" {% if settings.artworks_panel_enabled %}checked{% endif %}>
+          <span>Galerie-Bereich veröffentlichen</span>
+        </label>
+        {% if settings.artworks_panel_enabled %}
+        <p class="muted small">Talent-Zugang: <code>{{ url_for('gallery_login', _external=true) }}</code></p>
+        {% else %}
+        <p class="muted small">Aktiviere die Galerie, um den Talent-Login unter <code>{{ url_for('gallery_login', _external=true) }}</code> freizuschalten.</p>
+        {% endif %}
+      </fieldset>
+
+      <fieldset class="admin-fieldset">
+        <legend>Talente</legend>
+        <p class="muted">Optional alle Talente ohne Team-Überschriften anzeigen.</p>
+        <label class="toggle">
+          <input type="checkbox" name="settings-talents-no-teams" {% if settings.talents_no_teams %}checked{% endif %}>
+          <span>No Teams Mode aktivieren</span>
+        </label>
+      </fieldset>
+
+      <fieldset class="admin-fieldset">
+        <legend>Hintergrund – Sternenhimmel</legend>
+        <p class="muted small">Passe das animierte Hintergrundmuster an.</p>
+        <div class="form-grid">
+          <label>
+            <span>Dichte-Faktor</span>
+            <input
+              type="number"
+              min="500"
+              max="50000"
+              step="100"
+              name="settings-star-density"
+              value="{{ settings.starfield.density_divisor|default(9000, true) }}"
+            >
+            <span class="muted small">Kleinere Werte erzeugen mehr Sterne.</span>
+          </label>
+          <label>
+            <span>Minimum an Sternen</span>
+            <input
+              type="number"
+              min="10"
+              max="5000"
+              step="10"
+              name="settings-star-min-count"
+              value="{{ settings.starfield.min_count|default(90, true) }}"
+            >
+          </label>
+        </div>
+        <div class="form-grid">
+          <label>
+            <span>Minimale Geschwindigkeit</span>
+            <input
+              type="number"
+              min="0.001"
+              max="5"
+              step="0.01"
+              name="settings-star-speed-min"
+              value="{{ settings.starfield.speed_min|default(0.03, true) }}"
+            >
+          </label>
+          <label>
+            <span>Maximale Grundgeschwindigkeit</span>
+            <input
+              type="number"
+              min="0.001"
+              max="10"
+              step="0.01"
+              name="settings-star-speed-max"
+              value="{{ settings.starfield.speed_max|default(0.12, true) }}"
+            >
+          </label>
+          <label>
+            <span>Anteil schneller Sterne (%)</span>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="0.1"
+              name="settings-star-fast-percent"
+              value="{{ (settings.starfield.fast_fraction|default(0.2, true) * 100) | round(1) }}"
+            >
+          </label>
+          <label>
+            <span>Geschwindigkeitsfaktor (schnell)</span>
+            <input
+              type="number"
+              min="1"
+              max="10"
+              step="0.1"
+              name="settings-star-fast-multiplier"
+              value="{{ settings.starfield.fast_multiplier|default(2.5, true) }}"
+            >
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="admin-fieldset">
+        <legend>Footer – Über uns</legend>
+        <div class="form-grid">
+          <label>
+            <span>Überschrift</span>
+            <input type="text" name="settings-footer-about-heading" value="{{ settings.footer.about_heading|default('', true) }}">
+          </label>
+          <label>
+            <span>Text</span>
+            <textarea name="settings-footer-about-text" rows="3">{{ settings.footer.about_text|default('', true) }}</textarea>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="admin-fieldset">
+        <legend>Footer – Social Links</legend>
+        <p class="muted">Links werden automatisch in einem neuen Tab geöffnet.</p>
+        <label>
+          <span>Überschrift</span>
+          <input type="text" name="settings-footer-social-heading" value="{{ settings.footer.social_heading|default('', true) }}">
+        </label>
+        {% set socials = settings.footer.socials | default([], true) %}
+        {% for social in socials %}
+        <fieldset class="admin-fieldset">
+          <legend>Social {{ loop.index }}</legend>
+          <label class="toggle">
+            <input type="checkbox" name="settings-social-{{ loop.index0 }}-delete">
+            <span>Eintrag entfernen</span>
+          </label>
+          <div class="form-grid">
+            <label>
+              <span>Label</span>
+              <input type="text" name="settings-social-{{ loop.index0 }}-label" value="{{ social.label|default('', true) }}">
+            </label>
+            <label>
+              <span>URL</span>
+              <input type="text" name="settings-social-{{ loop.index0 }}-url" value="{{ social.url|default('', true) }}">
+            </label>
+          </div>
+        </fieldset>
+        {% endfor %}
+        <fieldset class="admin-fieldset">
+          <legend>➕ Neues Social hinzufügen</legend>
+          <div class="form-grid">
+            <label>
+              <span>Label</span>
+              <input type="text" name="settings-social-new-label">
+            </label>
+            <label>
+              <span>URL</span>
+              <input type="text" name="settings-social-new-url">
+            </label>
+          </div>
+        </fieldset>
+      </fieldset>
+
+      <fieldset class="admin-fieldset">
+        <legend>Footer – Rechtliches</legend>
+        <label>
+          <span>Überschrift</span>
+          <input type="text" name="settings-footer-legal-heading" value="{{ settings.footer.legal_heading|default('', true) }}">
+        </label>
+        {% set legal_links = settings.footer.legal_links | default([], true) %}
+        {% for legal in legal_links %}
+        <fieldset class="admin-fieldset">
+          <legend>Link {{ loop.index }}</legend>
+          <label class="toggle">
+            <input type="checkbox" name="settings-legal-{{ loop.index0 }}-delete">
+            <span>Eintrag entfernen</span>
+          </label>
+          <div class="form-grid">
+            <label>
+              <span>Label</span>
+              <input type="text" name="settings-legal-{{ loop.index0 }}-label" value="{{ legal.label|default('', true) }}">
+            </label>
+            <label>
+              <span>URL</span>
+              <input type="text" name="settings-legal-{{ loop.index0 }}-url" value="{{ legal.url|default('', true) }}">
+            </label>
+          </div>
+        </fieldset>
+        {% endfor %}
+        <fieldset class="admin-fieldset">
+          <legend>➕ Neuen Link hinzufügen</legend>
+          <div class="form-grid">
+            <label>
+              <span>Label</span>
+              <input type="text" name="settings-legal-new-label">
+            </label>
+            <label>
+              <span>URL</span>
+              <input type="text" name="settings-legal-new-url">
+            </label>
+          </div>
+        </fieldset>
+      </fieldset>
+
+      <fieldset class="admin-fieldset">
+        <legend>Footer – Hinweis</legend>
+        <p class="muted small">Verwende <code>{site_name}</code> und <code>{year}</code> als Platzhalter.</p>
+        <label>
+          <span>Fine Print</span>
+          <input type="text" name="settings-footer-fine-print" value="{{ settings.footer.fine_print|default('', true) }}">
+        </label>
+      </fieldset>
+
+      <button class="button" type="submit">Einstellungen speichern</button>
+    </form>
+    {% else %}
+    <form class="admin-card" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="form-name" value="talents">
+      <p class="muted">Talente werden ohne Teams verwaltet. Team-Gruppierungen aus älteren Dateien werden ignoriert.</p>
+      <input type="hidden" name="talent-count" value="{{ talents|length }}">
+
+      {% for member in talents %}
+      {% set member_index = loop.index0 %}
+      <fieldset class="admin-fieldset admin-team__member">
+        <legend>Talent {{ loop.index }}{% if member.name %} — {{ member.name }}{% endif %}</legend>
+        <label class="toggle"><input type="checkbox" name="talent-{{ member_index }}-delete"><span>Talent entfernen</span></label>
+        <div class="form-grid">
+          <label><span>Slug</span><input type="text" name="talent-{{ member_index }}-slug" value="{{ member.slug|default('', true) }}"></label>
+          <label><span>Name</span><input type="text" name="talent-{{ member_index }}-name" value="{{ member.name|default('', true) }}"></label>
+          <label><span>Geburtstag</span><input type="text" name="talent-{{ member_index }}-birthday" value="{{ member.birthday|default('', true) }}"></label>
+          <label><span>Spezies / Herkunft</span><input type="text" name="talent-{{ member_index }}-species" value="{{ member.species|default('', true) }}"></label>
+          <label><span>Größe</span><input type="text" name="talent-{{ member_index }}-height" value="{{ member.height|default('', true) }}"></label>
+          <label><span>Motto</span><input type="text" name="talent-{{ member_index }}-motto" value="{{ member.motto|default('', true) }}"></label>
+        </div>
+        <label><span>Einführung</span><textarea name="talent-{{ member_index }}-introduction" rows="3">{{ member.introduction|default('', true) }}</textarea></label>
+        <label><span>Besonderheiten / Fähigkeiten</span><textarea name="talent-{{ member_index }}-specialties" rows="3">{{ member.specialties|default('', true) }}</textarea></label>
+        <label><span>Lieblingsdinge (Kommagetrennt oder pro Zeile)</span><textarea name="talent-{{ member_index }}-favorites" rows="2">{{ member.favorites | default([], true) | join('\n') }}</textarea></label>
+        <label><span>Social Links (Zeile: Label | URL | icon.svg)</span><textarea name="talent-{{ member_index }}-socials" rows="3">{% for link in member.socials or [] %}{{ link.label }} | {{ link.url }} | {{ link.icon }}{% if not loop.last %}
+{% endif %}{% endfor %}</textarea></label>
+        <div class="form-grid">
+          <label><span>Profilbild (Pfad oder URL)</span><input type="text" name="talent-{{ member_index }}-profile-image" value="{{ member.profile_image|default('', true) }}"></label>
+          <label><span>Profilbild ersetzen</span><input type="file" name="talent-{{ member_index }}-profile-upload" accept="image/*"></label>
+          <label><span>Fullbody (Pfad oder URL)</span><input type="text" name="talent-{{ member_index }}-fullbody-image" value="{{ member.fullbody_image|default('', true) }}"></label>
+          <label><span>Fullbody ersetzen</span><input type="file" name="talent-{{ member_index }}-fullbody-upload" accept="image/*"></label>
+        </div>
+      </fieldset>
+      {% endfor %}
+
+      <fieldset class="admin-fieldset admin-team__member">
+        <legend>➕ Neues Talent hinzufügen</legend>
+        <div class="form-grid">
+          <label><span>Slug</span><input type="text" name="talent-new-slug"></label>
+          <label><span>Name</span><input type="text" name="talent-new-name"></label>
+          <label><span>Geburtstag</span><input type="text" name="talent-new-birthday"></label>
+          <label><span>Spezies / Herkunft</span><input type="text" name="talent-new-species"></label>
+          <label><span>Größe</span><input type="text" name="talent-new-height"></label>
+          <label><span>Motto</span><input type="text" name="talent-new-motto"></label>
+        </div>
+        <label><span>Einführung</span><textarea name="talent-new-introduction" rows="3"></textarea></label>
+        <label><span>Besonderheiten / Fähigkeiten</span><textarea name="talent-new-specialties" rows="3"></textarea></label>
+        <label><span>Lieblingsdinge (Kommagetrennt oder pro Zeile)</span><textarea name="talent-new-favorites" rows="2"></textarea></label>
+        <label><span>Social Links (Zeile: Label | URL | icon.svg)</span><textarea name="talent-new-socials" rows="3"></textarea></label>
+        <div class="form-grid">
+          <label><span>Profilbild (Pfad oder URL)</span><input type="text" name="talent-new-profile-image"></label>
+          <label><span>Profilbild hochladen</span><input type="file" name="talent-new-profile-upload" accept="image/*"></label>
+          <label><span>Fullbody (Pfad oder URL)</span><input type="text" name="talent-new-fullbody-image"></label>
+          <label><span>Fullbody hochladen</span><input type="file" name="talent-new-fullbody-upload" accept="image/*"></label>
+        </div>
+      </fieldset>
+
+      <button class="button" type="submit">Talente speichern</button>
+    </form>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

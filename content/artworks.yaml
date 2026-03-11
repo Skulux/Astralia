@@ -1,0 +1,52 @@
+intro: "Eine stetig wachsende Sammlung mit Lieblingsmotiven unserer Talente.\r\nJede\
+  \ Illustration erzählt einen anderen Blick auf das Lumynaria-Universum."
+talents:
+- slug: skulux-art
+  name: Skulux
+  tagline: ''
+  description: ''
+  gallery:
+  - image: uploads/artwork-skulux-art-1-240e340eacde471fa6aa03f279a9d9d4.jpg
+    caption: Halloween 2025
+    credits: Ria Satori
+    credits_url: https://x.com/Riasatori
+    watermark: false
+  - image: uploads/artwork-skulux-art-new-1-38678e6a65ad4b67ab01fc8e75665179.jpg
+    caption: Sakura Schoolgirl
+    credits: Rui Mitsuki
+    credits_url: https://vgen.co/RUIuncia
+    watermark: false
+  - image: uploads/artwork-skulux-art-new-2-9a2dce5737254713b962c169c8196d65.png
+    credits: Lunary
+    credits_url: https://vgen.co/Lunarydraws
+    watermark: false
+  - image: uploads/artwork-skulux-art-new-3-7be8b2acadda44f3bb735b27ce6564d8.png
+    caption: Skulux &  Symphoniea
+    credits: Kuinmelen
+    credits_url: https://vgen.co/Kuinmelen
+    watermark: false
+  - image: uploads/artwork-skulux-art-new-1-fdbcece2c7024555a8e55c6eabfd7a4c.jpg
+    caption: Tarotkarten Lesen
+    credits: Ria Satori
+    credits_url: https://x.com/Riasatori
+    watermark: false
+  - image: uploads/artwork-skulux-art-new-2-5228b51c733a420bb12a344c79ba00d0.jpg
+    caption: Valentinstag mit Skulux &Symphoniea
+    credits: Ria Satori
+    credits_url: https://x.com/Riasatori
+    watermark: false
+  interval: 2500
+- slug: symphoniea-art
+  name: Symphoniea
+  tagline: ''
+  description: ''
+  gallery:
+  - image: uploads/artwork-symphoniea-art-new-1-1603f1f2be0f4532a63d2e80af6405e9.png
+    caption: Halloween 2025 | Skulux & Yutaro
+    credits: https://vgen.co/Ye
+    watermark: false
+  - image: uploads/artwork-symphoniea-art-new-1-80e22e1d0dc74902ad612f97111ad560.png
+    caption: Dämmerung | Yutaro & Symphoniea
+    credits: https://vgen.co/Ye
+    watermark: false
+  interval: 2500

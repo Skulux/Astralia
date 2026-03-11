@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% set minimal_layout = True %}
+
+{% block content %}
+<section class="error-page" aria-labelledby="error-title">
+  <p class="error-page__code" aria-hidden="true">404</p>
+  <h1 id="error-title" class="error-page__title">Ups, dieses Sternentor ist verschlossen.</h1>
+  <p class="error-page__text">Die Seite, die du suchst, hat sich offenbar in einem Wurmloch versteckt oder nie existiert.</p>
+  <p class="error-page__hint">Keine Sorge &mdash; unser kosmischer Kompass bringt dich mit einem Klick zurück in vertraute Galaxien.</p>
+  <a class="button" href="{{ url_for('index') }}">Zurück zur Startseite</a>
+</section>
+{% endblock %}

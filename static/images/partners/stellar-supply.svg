@@ -1,0 +1,20 @@
+<svg width="320" height="180" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="stellarGradient" x1="32" y1="32" x2="288" y2="148" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22d3ee" />
+      <stop offset="1" stop-color="#8b5cf6" />
+    </linearGradient>
+    <radialGradient id="stellarBurst" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(160 90) rotate(90) scale(120 180)">
+      <stop offset="0" stop-color="#0f172a" stop-opacity="0" />
+      <stop offset="1" stop-color="#0f172a" stop-opacity="0.85" />
+    </radialGradient>
+  </defs>
+  <rect width="320" height="180" rx="28" fill="#0b1220" />
+  <rect x="12" y="12" width="296" height="156" rx="24" fill="#0f172a" />
+  <rect x="32" y="32" width="256" height="116" rx="20" fill="url(#stellarBurst)" />
+  <path d="M80 124L116 56L160 128L204 52L240 124" stroke="url(#stellarGradient)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="116" cy="56" r="10" fill="#22d3ee" />
+  <circle cx="160" cy="128" r="11" fill="#38bdf8" />
+  <circle cx="204" cy="52" r="10" fill="#c084fc" />
+  <text x="50%" y="148" text-anchor="middle" fill="#f8fafc" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="24" font-weight="600">Stellar Supply</text>
+</svg>

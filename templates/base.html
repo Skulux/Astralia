@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  {% set meta = page_meta or {} %}
+  {% set meta_title = meta.title or SITE_NAME ~ ' — ' ~ SITE_SUBTITLE %}
+  {% set meta_description = meta.description or DEFAULT_META_DESCRIPTION %}
+  {% set meta_image = meta.image or DEFAULT_SOCIAL_IMAGE %}
+  {% set canonical_url = meta.canonical or request.base_url %}
+  <title>{{ meta_title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ meta_description }}">
+  {% if meta.robots %}<meta name="robots" content="{{ meta.robots }}">{% endif %}
+  <link rel="canonical" href="{{ canonical_url }}">
+  <link rel="icon" type="image/png" href="{{ asset_url('images/favicon.png') }}">
+
+  <!-- Open Graph / Twitter for rich link previews -->
+  <meta property="og:title" content="{{ meta.og_title or meta_title }}">
+  <meta property="og:description" content="{{ meta_description }}">
+  <meta property="og:type" content="{{ meta.og_type or 'website' }}">
+  <meta property="og:image" content="{{ meta_image }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:site_name" content="{{ SITE_NAME }}">
+  <meta property="og:locale" content="de_DE">
+  {% if meta.published_time %}<meta property="article:published_time" content="{{ meta.published_time }}">{% endif %}
+  {% if meta.modified_time %}<meta property="article:modified_time" content="{{ meta.modified_time }}">{% endif %}
+  {% if meta.section %}<meta property="article:section" content="{{ meta.section }}">{% endif %}
+  <meta name="twitter:card" content="{{ meta.twitter_card or 'summary_large_image' }}">
+  <meta name="twitter:title" content="{{ meta.twitter_title or meta_title }}">
+  <meta name="twitter:description" content="{{ meta.twitter_description or meta_description }}">
+  <meta name="twitter:image" content="{{ meta.twitter_image or meta_image }}">
+
+  {% set structured_items = [] %}
+  {% if ORGANIZATION_SCHEMA %}
+    {% set structured_items = structured_items + [ORGANIZATION_SCHEMA] %}
+  {% endif %}
+  {% if meta.structured_data %}
+    {% set structured_items = structured_items + meta.structured_data %}
+  {% endif %}
+  {% if structured_items %}
+  <script type="application/ld+json">{{ structured_items | tojson(indent=2) }}</script>
+  {% endif %}
+
+  {% block extra_meta %}{% endblock %}
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Marcellus&family=Orbitron:wght@500;700;800&family=Rajdhani:wght@500;700&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset_url('css/styles.css') }}">
+  <script defer src="{{ asset_url('js/main.js') }}"></script>
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="{% if minimal_layout %}layout-minimal{% endif %}">
+  <div class="spacebackdrop" aria-hidden="true">
+    <canvas id="starfield"></canvas>
+    <span class="spacebackdrop__rings"></span>
+  </div>
+  {% if not minimal_layout %}
+
+  {% if MAINTENANCE_MODE %}
+  <div class="maintenance-banner">
+    <div class="maintenance-banner__inner">
+      <span class="maintenance-banner__status">Wartungsmodus aktiv</span>
+      {% if session.get('maintenance_access') or session.get('is_admin') %}
+      <a class="maintenance-banner__action" href="{{ url_for('maintenance_logout', next=request.path) }}">Zugang beenden</a>
+      {% else %}
+      <a class="maintenance-banner__action" href="{{ url_for('maintenance_login', next=request.path) }}">Zum Login</a>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+  {% endif %}
+
+  <main class="main{% if minimal_layout %} main--minimal{% endif %}">
+    {% if not minimal_layout %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-container">
+        {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  {% if not minimal_layout %}
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div>
+        {% if FOOTER.about_heading %}<h4>{{ FOOTER.about_heading }}</h4>{% endif %}
+        {% if FOOTER.about_text %}<p>{{ FOOTER.about_text | nl2br }}</p>{% endif %}
+      </div>
+      <div>
+        {% if FOOTER.social_heading %}<h4>{{ FOOTER.social_heading }}</h4>{% endif %}
+        <ul class="list">
+          {% for item in FOOTER.socials %}
+            <li><a href="{{ item.url }}" target="_blank" rel="noopener">{{ item.label }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div>
+        {% if FOOTER.legal_heading %}<h4>{{ FOOTER.legal_heading }}</h4>{% endif %}
+        <ul class="list">
+          {% for item in FOOTER.legal_links %}
+            <li><a href="{{ item.url }}">{{ item.label }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div>
+        <h4>Verwaltung</h4>
+        <ul class="list">
+          <li><a href="{{ url_for('admin_login') }}">Admin Login</a></li>
+          {% if SHOW_GALLERY_LOGIN %}
+          <li><a href="{{ url_for('gallery_login') }}">Galerie Login</a></li>
+          {% endif %}
+          {% if SHOW_GALLERY_LOGIN or session.get('artworks_manager') or session.get('is_admin') %}
+          <li><a href="{{ url_for('internal_resources') }}">Interne Ressourcen</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+    {% if FOOTER.fine_print %}<p class="fineprint">{{ FOOTER.fine_print }}</p>{% endif %}
+  </footer>
+  {% endif %}
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="astral-home astral-subpage">
+  <div class="astral-home__topline"><span>✦ Talente</span></div>
+  <header class="astral-hero-panel">
+    <p class="astral-hero-panel__eyebrow">Astralia Friendslist</p>
+    <h1 class="astral-logo-word astral-logo-word--subpage">Talente</h1>
+    <p class="astral-about-lead">Wie eine klassische Friendslist – nur mit unseren Talenten und Streams.</p>
+  </header>
+  <nav class="astral-tabnav" aria-label="Hauptnavigation">
+    {% for label, endpoint in NAV_ITEMS %}
+      {% set is_active = request.endpoint == endpoint or (endpoint == 'shop' and request.endpoint == 'shop_detail') %}
+      <a class="{% if is_active %}active{% endif %}" href="{{ url_for(endpoint) }}">{{ label }}</a>
+    {% endfor %}
+  </nav>
+
+  <section class="page talents-page talents-page--friends">
+    <section class="friendslist-panel">
+      <header class="friendslist-panel__header">
+        <h2>Alle Talente</h2>
+        <span>{{ all_members|length }} Einträge</span>
+      </header>
+      <ul class="friendslist">
+        {% for member in all_members %}
+        {% set thumb = member.profile_image %}
+        {% set status = live_status.get(member.slug) %}
+        {% set state = status.state if status else 'error' %}
+        {% set status_label = 'Live' if state == 'live' else 'Offline' if state == 'offline' else 'Unbekannt' %}
+        <li>
+          <a class="friend-row" href="{{ url_for('talent_detail', slug=member.slug) }}">
+            <span class="friend-row__avatar">
+              {% if thumb and thumb.startswith('http') %}
+              <img src="{{ thumb }}" alt="{{ member.name }} Portrait">
+              {% else %}
+              {% set asset = thumb or 'images/talents/members/' ~ member.slug ~ '.svg' %}
+              <img src="{{ asset_url(asset) }}" alt="{{ member.name }} Portrait">
+              {% endif %}
+            </span>
+            <span class="friend-row__name">{{ member.name | replace('\\', ' ') }}</span>
+            <span class="friend-row__status is-{{ state }}">{{ status_label }}</span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </section>
+</section>
+{% endblock %}

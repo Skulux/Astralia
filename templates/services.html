@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="astral-home astral-subpage">
+  <div class="astral-home__topline"><span>✦ Services</span></div>
+  <header class="astral-hero-panel">
+    <p class="astral-hero-panel__eyebrow">Support Network</p>
+    <h1 class="astral-logo-word astral-logo-word--subpage">Services</h1>
+    <p class="astral-about-lead">Kuratiertes Angebot an Unterstützung, Ressourcen und Partnerleistungen aus dem Astralia-Kosmos.</p>
+  </header>
+  <nav class="astral-tabnav" aria-label="Hauptnavigation">
+    {% for label, endpoint in NAV_ITEMS %}
+      {% set is_active = request.endpoint == endpoint or (endpoint == 'shop' and request.endpoint == 'shop_detail') %}
+      <a class="{% if is_active %}active{% endif %}" href="{{ url_for(endpoint) }}">{{ label }}</a>
+    {% endfor %}
+  </nav>
+
+  <section class="astral-widget services-page services-page--portal">
+    <div class="services-grid">
+      {% for service in services %}
+      <article class="service-card {% if service.is_closed %}service-card--closed{% endif %}">
+        {% if service.image %}
+        <div class="service-card__media">
+          <img src="{{ service.image }}" alt="{{ service.image_alt or '' }}">
+        </div>
+        {% endif %}
+        <div class="service-card__body">
+          <div class="service-card__heading">
+            <h2 class="service-card__title">{{ service.name or 'Unbenannter Service' }}</h2>
+            <div class="service-card__badge-row">
+              {% for badge in service.badges %}
+              <span class="service-badge {{ badge.class }}">{{ badge.label }}</span>
+              {% endfor %}
+              {% if service.is_closed %}
+              <span class="service-status service-status--closed">Geschlossen</span>
+              {% endif %}
+            </div>
+          </div>
+          {% if service.offered_by %}
+          <p class="service-card__offered">Angeboten von <strong>{{ service.offered_by }}</strong></p>
+          {% endif %}
+          <p class="service-card__description">{{ service.description | default('', true) | nl2br }}</p>
+          {% if service.is_closed %}
+          <p class="service-card__status-note">Der Service ist derzeit geschlossen. Bitte prüfe später erneut oder sieh dir die Details an.</p>
+          {% endif %}
+          {% if service.contacts %}
+          <div class="service-card__contacts" role="group" aria-label="Kontaktmöglichkeiten">
+            {% for contact in service.contacts %}
+            {% if service.is_closed %}
+            <span class="button button-secondary service-card__contact service-card__contact--disabled" aria-disabled="true">
+              <span class="service-card__contact-label">{{ contact.label }}</span>
+            </span>
+            {% else %}
+            <a class="button button-secondary service-card__contact" href="{{ contact.url }}" target="_blank" rel="noopener">
+              <span class="service-card__contact-label">{{ contact.label }}</span>
+            </a>
+            {% endif %}
+            {% endfor %}
+          </div>
+          {% endif %}
+          <footer class="service-card__footer">
+            <a class="button service-card__cta" href="{{ url_for('service_detail', slug=service.slug) }}">Details ansehen</a>
+          </footer>
+        </div>
+      </article>
+      {% else %}
+      <p class="muted">Noch keine Services hinterlegt.</p>
+      {% endfor %}
+    </div>
+  </section>
+</section>
+{% endblock %}

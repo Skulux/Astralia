@@ -1,0 +1,15 @@
+[Unit]
+Description=Lumyseite Gunicorn Service
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/srv/lumyseite
+Environment="FLASK_ENV=production"
+Environment="PYTHONUNBUFFERED=1"
+ExecStart=/srv/lumyseite/.venv/bin/gunicorn -c gunicorn.conf.py wsgi:application
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

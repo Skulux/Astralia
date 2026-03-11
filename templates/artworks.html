@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page artworks-page">
+  <header class="artworks-header">
+    <h1>Galerie</h1>
+    {% if intro %}
+    <p>{{ intro | nl2br }}</p>
+    {% else %}
+    <p class="muted">Entdecke ausgewählte Illustrationen unserer Talente.</p>
+    {% endif %}
+  </header>
+  {% if talents %}
+    {% for talent in talents %}
+    <section class="artworks-talent" id="artworks-{{ talent.slug }}">
+      <header class="artworks-talent__header">
+        <h2>{{ talent.name }}</h2>
+        {% if talent.tagline %}
+        <p class="artworks-talent__tagline">{{ talent.tagline }}</p>
+        {% endif %}
+        {% if talent.description %}
+        <p class="artworks-talent__description">{{ talent.description | nl2br }}</p>
+        {% endif %}
+      </header>
+      <div class="artworks-gallery" data-rotate-gallery{% if talent.interval %} data-interval="{{ talent.interval }}"{% endif %}>
+        <div class="artworks-gallery__viewport" data-artworks-viewport>
+          {% for media in talent.gallery %}
+          <figure class="artworks-slide {% if loop.first %}is-active{% endif %}" data-gallery-item>
+            <div class="artworks-slide__media" data-artworks-media>
+              <img src="{{ media.image }}" alt="{{ media.alt }}" loading="lazy" decoding="async" draggable="false">
+              {% if media.watermark %}
+              <span class="artworks-slide__watermark" aria-hidden="true">Astralia</span>
+              {% endif %}
+              <div class="artworks-slide__guard" aria-hidden="true"></div>
+            </div>
+            {% if media.caption or media.credits %}
+            <figcaption class="artworks-slide__caption">
+              {% if media.caption %}
+              <p>{{ media.caption | nl2br }}</p>
+              {% endif %}
+              {% if media.credits %}
+              <p class="artworks-slide__credits">
+                Credits:
+                {% if media.credits_url %}
+                <a href="{{ media.credits_url }}" target="_blank" rel="noopener">{{ media.credits }}</a>
+                {% else %}
+                {{ media.credits }}
+                {% endif %}
+              </p>
+              {% endif %}
+            </figcaption>
+            {% endif %}
+          </figure>
+          {% endfor %}
+        </div>
+        {% if talent.gallery|length > 1 %}
+        <div class="artworks-gallery__dots">
+          {% for media in talent.gallery %}
+          <button type="button" class="artworks-gallery__dot {% if loop.first %}is-active{% endif %}" data-gallery-dot aria-label="Bild {{ loop.index }}"></button>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </section>
+    {% endfor %}
+  {% else %}
+  <p class="artworks-empty">Noch keine Galerie-Inhalte hinterlegt. Schau bald wieder vorbei!</p>
+  {% endif %}
+</section>
+{% endblock %}

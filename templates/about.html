@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="astral-home astral-about">
+  <div class="astral-home__topline">
+    <span>✦ Über Astralia</span>
+  </div>
+
+  <header class="astral-hero-panel astral-about-hero">
+    <p class="astral-hero-panel__eyebrow">Community Transmission</p>
+    <h1 class="astral-logo-word astral-logo-word--subpage">{{ hero.title or 'Über uns' }}</h1>
+    {% if hero.lead %}
+    <p class="astral-about-lead">{{ hero.lead | nl2br }}</p>
+    {% endif %}
+    {% if hero.body %}
+    <div class="astral-hero-copy">{{ hero.body | nl2br }}</div>
+    {% endif %}
+  </header>
+
+  <nav class="astral-tabnav" aria-label="Hauptnavigation">
+    {% for label, endpoint in NAV_ITEMS %}
+      {% set is_active = request.endpoint == endpoint or (endpoint == 'shop' and request.endpoint == 'shop_detail') %}
+      <a class="{% if is_active %}active{% endif %}" href="{{ url_for(endpoint) }}">{{ label }}</a>
+    {% endfor %}
+  </nav>
+
+  <div class="about-portal-grid">
+    {% if hero.image %}
+    {% set hero_scale = hero.image_scale|int(100) %}
+    <section class="astral-widget about-portal-media" style="--hero-visual-scale: {{ '%.3f' % (hero_scale / 100) }}">
+      <h2>Signalbild</h2>
+      <div class="about-hero-visual">
+        {% if hero.image.startswith('http') %}
+        <img src="{{ hero.image }}" alt="{{ hero.image_alt or 'Illustration' }}">
+        {% else %}
+        <img src="{{ asset_url(hero.image) }}" alt="{{ hero.image_alt or 'Illustration' }}">
+        {% endif %}
+      </div>
+    </section>
+    {% endif %}
+
+    {% if goals %}
+    <section class="astral-widget">
+      <h2>Unsere Ziele</h2>
+      <div class="about-cards about-cards--portal">
+        {% for item in goals %}
+        <article class="about-card">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description | nl2br }}</p>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    {% if offers %}
+    <section class="astral-widget">
+      <h2>Unser Angebot</h2>
+      <div class="about-cards about-cards--portal">
+        {% for item in offers %}
+        <article class="about-card">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description | nl2br }}</p>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    {% if faq %}
+    <section class="astral-widget">
+      <h2>FAQ</h2>
+      <div class="faq-list">
+        {% for item in faq %}
+        <details class="faq-item">
+          <summary>{{ item.question }}</summary>
+          <p>{{ item.answer | nl2br }}</p>
+        </details>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    {% if team %}
+    <section class="astral-widget about-portal-team">
+      <h2>Management-Team</h2>
+      <div class="about-team-grid">
+        {% for member in team %}
+        <article class="team-card">
+          <div class="team-avatar">
+            {% if member.image and member.image.startswith('http') %}
+            <img src="{{ member.image }}" alt="{{ member.name }} Portrait">
+            {% else %}
+            {% set avatar = member.image or 'images/talents/members/' ~ member.name|lower|replace(' ', '') ~ '.svg' %}
+            <img src="{{ asset_url(avatar) }}" alt="{{ member.name }} Portrait">
+            {% endif %}
+          </div>
+          <div class="team-info">
+            <h3>{{ member.name }}</h3>
+            {% if member.role %}<p class="team-role">{{ member.role | nl2br }}</p>{% endif %}
+            {% if member.bio %}<p class="team-bio">{{ member.bio | nl2br }}</p>{% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

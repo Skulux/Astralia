@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page resources-page">
+  <header class="page-header">
+    <div>
+      <h1>Interne Ressourcen</h1>
+      <p class="muted">Hier findest du Materialien und Vorlagen, die nur für das Team bestimmt sind.</p>
+    </div>
+  </header>
+
+  {% if resources %}
+  <div class="cards resources-grid">
+    {% for item in resources %}
+    <article class="card resource-card">
+      {% if item.image_url %}
+      <img src="{{ item.image_url }}" alt="{{ item.image_alt or '' }}">
+      {% endif %}
+      <div class="card-body">
+        <h3>{{ item.title }}</h3>
+        {% if item.description %}<p>{{ item.description | nl2br }}</p>{% endif %}
+        {% if item.file_url %}
+        <a class="btn small" href="{{ item.file_url }}" target="_blank" rel="noopener">{{ item.file_label }}</a>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="muted">Aktuell sind keine Ressourcen hinterlegt. Bitte schaue später erneut vorbei.</p>
+  {% endif %}
+</section>
+{% endblock %}

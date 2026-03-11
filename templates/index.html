@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% block content %}
+{% set hero = homepage.hero %}
+<section class="astral-home">
+  <div class="astral-home__topline">
+    <span>✦ {{ SITE_NAME }}</span>
+  </div>
+
+  <header class="astral-hero-panel">
+    <p class="astral-hero-panel__eyebrow">VIRTUAL TALENT CONSTELLATION</p>
+    <h1 class="astral-logo-word">ASTRALIA</h1>
+    {% if hero.kicker %}<p class="astral-hero-panel__sub">{{ hero.kicker }}</p>{% endif %}
+    <div class="astral-hero-panel__stats">
+      <span>🔴 {{ live_profiles|length }} Live jetzt</span>
+      <span>{{ all_talents|length }} Mitglieder</span>
+    </div>
+    {% if hero.subtitle_html %}
+    <div class="astral-hero-copy">{{ hero.subtitle_html }}</div>
+    {% endif %}
+    <div class="astral-actions">
+      {% if hero.primary_button.label and hero.primary_button.url %}
+      <a class="btn" href="{{ hero.primary_button.url }}">{{ hero.primary_button.label }}</a>
+      {% endif %}
+      {% if hero.secondary_button.label and hero.secondary_button.url %}
+      <a class="btn ghost" href="{{ hero.secondary_button.url }}">{{ hero.secondary_button.label }}</a>
+      {% endif %}
+      {% if hero.tertiary_button.label and hero.tertiary_button.url %}
+      <a class="btn ghost" href="{{ hero.tertiary_button.url }}" target="_blank" rel="noopener">{{ hero.tertiary_button.label }}</a>
+      {% endif %}
+    </div>
+  </header>
+
+  <nav class="astral-tabnav" aria-label="Hauptnavigation">
+    {% for label, endpoint in NAV_ITEMS %}
+      {% set is_active = request.endpoint == endpoint or (endpoint == 'shop' and request.endpoint == 'shop_detail') %}
+      <a class="{% if is_active %}active{% endif %}" href="{{ url_for(endpoint) }}">{{ label }}</a>
+    {% endfor %}
+  </nav>
+
+  <div class="astral-grid">
+    <aside class="astral-col astral-col--left">
+      <section id="home-live" class="astral-widget">
+        <h2>{{ section_lookup.get('live', {}).get('heading', 'Jetzt Online') }}</h2>
+        <ul class="astral-list">
+          {% for talent in online_now %}
+          <li><span class="dot-live"></span><a href="https://www.twitch.tv/{{ talent.slug }}" target="_blank" rel="noopener">{{ talent.name | replace('\\', '') }}</a></li>
+          {% else %}
+          <li>Aktuell niemand live</li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <section id="home-partners" class="astral-widget">
+        <h2>{{ section_lookup.get('partners', {}).get('heading', 'Partner') }}</h2>
+        <ul class="astral-list">
+          {% for partner in partners[:6] %}
+          <li><a href="{{ partner.url or '#' }}" {% if partner.url %}target="_blank" rel="noopener"{% endif %}>{{ partner.name }}</a></li>
+          {% else %}
+          <li>Keine Partner eingetragen.</li>
+          {% endfor %}
+        </ul>
+      </section>
+    </aside>
+
+    <main class="astral-col astral-col--center">
+      <section id="home-projects" class="astral-widget astral-featured">
+        <h2>{{ section_lookup.get('projects', {}).get('heading', 'Projekte') }}</h2>
+        <div class="astral-live-grid">
+          {% for item in projects[:3] %}
+          <article class="astral-live-card">
+            <a href="{{ url_for('project_detail', slug=item.slug) }}">
+              <img src="{{ item.image_url or item.image }}" alt="{{ item.title }}">
+              <strong>{{ item.title }}</strong>
+              <small>{{ item.summary or '' }}</small>
+            </a>
+          </article>
+          {% else %}
+          <article class="astral-live-card astral-live-card--empty">Keine Projekte verfügbar.</article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="astral-widget">
+        <h2>Live Streams</h2>
+        <div class="astral-live-grid">
+          {% for talent in live_profiles[:6] %}
+          <article class="astral-live-card">
+            <a href="https://www.twitch.tv/{{ talent.slug }}" target="_blank" rel="noopener">
+              <img src="{{ talent.profile_image_url }}" alt="{{ talent.name }}">
+              <strong>{{ talent.name | replace('\\', '') }}</strong>
+              <small>{{ talent.game or talent.title }}</small>
+            </a>
+          </article>
+          {% else %}
+          <article class="astral-live-card astral-live-card--empty">Noch keine aktiven Streams</article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section id="home-news" class="astral-widget">
+        <h2>{{ section_lookup.get('news', {}).get('heading', 'Neuigkeiten') }}</h2>
+        <table class="astral-forum-table">
+          <thead>
+            <tr><th>Thema</th><th>Antworten</th><th>Aufrufe</th><th>Zuletzt</th></tr>
+          </thead>
+          <tbody>
+            {% for item in news %}
+            <tr>
+              <td><a href="{{ url_for('news_detail', slug=item.slug) }}">{{ item.title }}</a></td>
+              <td>{{ (loop.index * 7) + 12 }}</td>
+              <td>{{ (loop.index * 200) + 900 }}</td>
+              <td>vor {{ loop.index }} Std.</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4">Keine Beiträge verfügbar.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <aside class="astral-col astral-col--right">
+      <section id="home-calendar" class="astral-widget">
+        <h2>{{ section_lookup.get('calendar', {}).get('heading', 'Kommende Events') }}</h2>
+        <ul class="astral-list">
+          {% for event in upcoming_events %}
+          <li>
+            <strong>{{ event.label or 'Event' }}</strong>
+            <small>{{ event.date }}{% if event.time_display %} · {{ event.time_display }}{% endif %}</small>
+          </li>
+          {% else %}
+          <li>Keine Events geplant.</li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <section class="astral-widget">
+        <h2>Socials</h2>
+        <ul class="astral-list">
+          {% for link in FOOTER.socials %}
+          <li><a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}</a></li>
+          {% else %}
+          <li>Keine Social-Links konfiguriert.</li>
+          {% endfor %}
+        </ul>
+      </section>
+    </aside>
+  </div>
+</section>
+{% endblock %}

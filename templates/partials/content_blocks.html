@@ -1,0 +1,65 @@
+{% macro render(blocks) %}
+  {% if blocks %}
+  <div class="content-blocks">
+    {% for block in blocks %}
+      {% if block.type == 'text' %}
+      <section class="content-block content-block--text">
+        {% if block.heading %}<h2 class="content-block__heading">{{ block.heading }}</h2>{% endif %}
+        {% set text_body = block.body or block.text %}
+        {% if text_body %}
+        <div class="content-block__body">{{ text_body | markdown }}</div>
+        {% endif %}
+      </section>
+      {% elif block.type == 'image' %}
+      <section class="content-block content-block--image">
+        {% if block.heading %}<h2 class="content-block__heading">{{ block.heading }}</h2>{% endif %}
+        {% set image_src = block.image_url or block.image %}
+        {% if image_src %}
+        <figure class="content-block__figure">
+          <img src="{{ image_src }}" alt="{{ block.alt }}">
+          {% if block.caption %}<figcaption>{{ block.caption }}</figcaption>{% endif %}
+        </figure>
+        {% endif %}
+      </section>
+      {% elif block.type == 'gallery' %}
+      <section class="content-block content-block--gallery">
+        {% if block.heading %}<h2 class="content-block__heading">{{ block.heading }}</h2>{% endif %}
+        <div class="content-gallery">
+          {% for media in block.images %}
+            {% set gallery_src = media.image_url or media.image %}
+            {% if gallery_src %}
+            <figure class="content-gallery__item">
+              <img src="{{ gallery_src }}" alt="{{ media.alt }}">
+              {% if media.caption %}<figcaption>{{ media.caption }}</figcaption>{% endif %}
+            </figure>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+      {% elif block.type == 'split' %}
+      {% set layout = block.layout if block.layout in ['text-left', 'text-right', 'image-top', 'text-top'] else 'text-left' %}
+      <section class="content-block content-block--split content-split content-split--{{ layout }}">
+        {% if block.heading %}<h2 class="content-block__heading">{{ block.heading }}</h2>{% endif %}
+        <div class="content-split__grid">
+          <div class="content-split__text">
+            {% if block.text_heading %}<h3 class="content-split__subheading">{{ block.text_heading }}</h3>{% endif %}
+            {% set split_body = block.text_body or block.text %}
+            {% if split_body %}
+            <div class="content-block__body">{{ split_body | markdown }}</div>
+            {% endif %}
+          </div>
+          {% set split_image = block.image_url or block.image %}
+          {% if split_image %}
+          <figure class="content-split__media">
+            {% if block.image_heading %}<h3 class="content-split__subheading">{{ block.image_heading }}</h3>{% endif %}
+            <img src="{{ split_image }}" alt="{{ block.image_alt }}">
+            {% if block.image_caption %}<figcaption>{{ block.image_caption }}</figcaption>{% endif %}
+          </figure>
+          {% endif %}
+        </div>
+      </section>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endmacro %}

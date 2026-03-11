@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% import "partials/content_blocks.html" as content_blocks %}
+{% block content %}
+<section class="astral-home astral-subpage news-dossier">
+  <div class="astral-home__topline"><span>✦ News-Dossier</span></div>
+
+  <header class="astral-hero-panel news-dossier__hero">
+    <p class="astral-hero-panel__eyebrow">Transmission Archive</p>
+    <h1 class="astral-logo-word astral-logo-word--subpage">{{ article.title }}</h1>
+    {% if article.date %}
+    <p class="news-dossier__date">{{ article.date }}</p>
+    {% endif %}
+    {% if article.summary %}
+    <div class="news-dossier__summary">{{ article.summary | markdown }}</div>
+    {% endif %}
+  </header>
+
+  <nav class="astral-tabnav" aria-label="Hauptnavigation">
+    {% for label, endpoint in NAV_ITEMS %}
+      {% set is_active = request.endpoint == endpoint or (endpoint == 'shop' and request.endpoint == 'shop_detail') %}
+      <a class="{% if is_active %}active{% endif %}" href="{{ url_for(endpoint) }}">{{ label }}</a>
+    {% endfor %}
+  </nav>
+
+  <section class="page news-dossier__frame">
+    <a class="news-dossier__back" href="{{ url_for('news') }}">← Zurück zu allen Neuigkeiten</a>
+
+    <div class="news-dossier__layout">
+      <article class="news-dossier__main">
+        {% set hero_image = article.image_url or article.image %}
+        {% if hero_image %}
+        <figure class="news-dossier__media">
+          <img src="{{ hero_image }}" alt="{{ article.title }}">
+        </figure>
+        {% endif %}
+
+        <section class="news-dossier__panel">
+          <h2>Update</h2>
+          {% if article.body %}
+          <div class="news-dossier__copy">{{ article.body | markdown }}</div>
+          {% elif article.summary %}
+          <div class="news-dossier__copy">{{ article.summary | markdown }}</div>
+          {% else %}
+          <p class="news-dossier__empty">Für diesen Eintrag liegen derzeit keine zusätzlichen Inhalte vor.</p>
+          {% endif %}
+        </section>
+
+        {% if article.blocks %}
+        <section class="news-dossier__panel news-dossier__panel--blocks">
+          <h2>Details</h2>
+          {{ content_blocks.render(article.blocks) }}
+        </section>
+        {% endif %}
+      </article>
+    </div>
+
+    {% if related %}
+    <section class="news-dossier__related">
+      <h2>Weitere Neuigkeiten</h2>
+      <div class="cards news-dossier__related-grid">
+        {% for item in related %}
+        <article class="card news-dossier__related-card">
+          {% set card_image = item.image_url or item.image %}
+          {% if card_image %}<img src="{{ card_image }}" alt="{{ item.title or 'Newsbild' }}">{% endif %}
+          <div class="card-body">
+            <h3>{{ item.title }}</h3>
+            {% if item.date %}<p class="muted">{{ item.date }}</p>{% endif %}
+            {% if item.summary %}<div class="card-summary">{{ item.summary | markdown }}</div>{% endif %}
+            <a class="btn small" href="{{ url_for('news_detail', slug=item.slug) }}">Zum Artikel</a>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+  </section>
+</section>
+{% endblock %}
