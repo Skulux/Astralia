@@ -1,136 +1,152 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="page service-detail">
-  <div class="service-detail__intro">
-    <a class="service-detail__back" href="{{ url_for('services') }}">← Zurück zu allen Services</a>
-  </div>
+<section class="astral-home astral-subpage service-dossier">
+  <div class="astral-home__topline"><span>✦ Service-Dossier</span></div>
 
-  <header class="service-detail__header">
-    <div class="service-detail__heading">
-      <h1 class="service-detail__title">{{ service.name or 'Unbenannter Service' }}</h1>
-      <div class="service-detail__badges">
-        {% for badge in service.badges %}
-        <span class="service-badge {{ badge.class }}">{{ badge.label }}</span>
-        {% endfor %}
-        {% if service.is_closed %}
-        <span class="service-status service-status--closed">Geschlossen</span>
-        {% endif %}
-      </div>
-      {% if service.offered_by %}
-      <p class="service-detail__offered">Angeboten von <strong>{{ service.offered_by }}</strong></p>
-      {% endif %}
-      {% if service.is_closed %}
-      <p class="service-detail__status-note">Dieser Service nimmt derzeit keine neuen Anfragen entgegen. Wir informieren dich, sobald wieder Kapazitäten frei werden.</p>
-      {% endif %}
-    </div>
-    {% if service.image %}
-    <div class="service-detail__media">
-      <img src="{{ service.image }}" alt="{{ service.image_alt or '' }}">
-    </div>
+  <header class="astral-hero-panel service-dossier__hero">
+    <p class="astral-hero-panel__eyebrow">Service Intelligence</p>
+    <h1 class="astral-logo-word astral-logo-word--subpage">{{ service.name or 'Unbenannter Service' }}</h1>
+    {% if service.offered_by %}
+    <p class="service-dossier__subline">Angeboten von <strong>{{ service.offered_by }}</strong></p>
     {% endif %}
   </header>
 
-  <div class="service-detail__layout">
-    <article class="service-detail__section">
-      <h2>Beschreibung</h2>
-      <p>{{ service.description | default('Es liegen derzeit keine weiteren Informationen vor.', true) | nl2br }}</p>
-    </article>
+  <nav class="astral-tabnav" aria-label="Hauptnavigation">
+    {% for label, endpoint in NAV_ITEMS %}
+      {% set is_active = request.endpoint == endpoint or (endpoint == 'shop' and request.endpoint == 'shop_detail') %}
+      <a class="{% if is_active %}active{% endif %}" href="{{ url_for(endpoint) }}">{{ label }}</a>
+    {% endfor %}
+  </nav>
 
-    {% if service.prices %}
-    <section class="service-detail__section">
-      <h2>Preisliste</h2>
-      <div class="service-detail__prices">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Leistung</th>
-              <th scope="col">Preis</th>
-              <th scope="col">Hinweis</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for price in service.prices %}
-            <tr>
-              <th scope="row">{{ price.label or 'Option' }}</th>
-              <td>{{ price.price_display or price.price or 'Auf Anfrage' }}</td>
-              <td>{{ price.note or '–' }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </section>
-    {% endif %}
+  <section class="page service-dossier__frame">
+    <a class="service-dossier__back" href="{{ url_for('services') }}">← Zurück zu allen Services</a>
 
-    {% if service.gallery %}
-    <section class="service-detail__section">
-      <h2>Impressionen</h2>
-      <div class="service-gallery" data-rotate-gallery data-interval="6000">
-        <div class="service-gallery__viewport">
-          {% for media in service.gallery %}
-          <figure class="service-gallery__slide {% if loop.first %}is-active{% endif %}" data-gallery-item>
-            <img src="{{ media.image }}" alt="{{ media.alt or '' }}">
-            {% if media.alt %}
-            <figcaption>{{ media.alt }}</figcaption>
+    <div class="service-dossier__layout">
+      <article class="service-dossier__main">
+        {% if service.image %}
+        <figure class="service-dossier__media">
+          <img src="{{ service.image }}" alt="{{ service.image_alt or '' }}">
+        </figure>
+        {% endif %}
+
+        <section class="service-dossier__panel">
+          <h2>Beschreibung</h2>
+          <p>{{ service.description | default('Es liegen derzeit keine weiteren Informationen vor.', true) | nl2br }}</p>
+        </section>
+
+        {% if service.prices %}
+        <section class="service-dossier__panel">
+          <h2>Preisliste</h2>
+          <div class="service-dossier__prices">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Leistung</th>
+                  <th scope="col">Preis</th>
+                  <th scope="col">Hinweis</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for price in service.prices %}
+                <tr>
+                  <th scope="row">{{ price.label or 'Option' }}</th>
+                  <td>{{ price.price_display or price.price or 'Auf Anfrage' }}</td>
+                  <td>{{ price.note or '–' }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+        {% endif %}
+
+        {% if service.gallery %}
+        <section class="service-dossier__panel">
+          <h2>Impressionen</h2>
+          <div class="service-gallery service-dossier__gallery" data-rotate-gallery data-interval="6000">
+            <div class="service-gallery__viewport">
+              {% for media in service.gallery %}
+              <figure class="service-gallery__slide {% if loop.first %}is-active{% endif %}" data-gallery-item>
+                <img src="{{ media.image }}" alt="{{ media.alt or '' }}">
+                {% if media.alt %}
+                <figcaption>{{ media.alt }}</figcaption>
+                {% endif %}
+              </figure>
+              {% endfor %}
+            </div>
+            {% if service.gallery|length > 1 %}
+            <div class="service-gallery__dots">
+              {% for media in service.gallery %}
+              <button type="button" class="service-gallery__dot {% if loop.first %}is-active{% endif %}" data-gallery-dot aria-label="Bild {{ loop.index }}"></button>
+              {% endfor %}
+            </div>
             {% endif %}
-          </figure>
-          {% endfor %}
-        </div>
-        {% if service.gallery|length > 1 %}
-        <div class="service-gallery__dots">
-          {% for media in service.gallery %}
-          <button type="button" class="service-gallery__dot {% if loop.first %}is-active{% endif %}" data-gallery-dot aria-label="Bild {{ loop.index }}"></button>
-          {% endfor %}
-        </div>
+          </div>
+        </section>
         {% endif %}
-      </div>
-    </section>
-    {% endif %}
+      </article>
 
-    {% if service.contacts %}
-    <section class="service-detail__section">
-      <h2>Kontakt</h2>
-      <div class="service-detail__contacts" role="group" aria-label="Kontaktmöglichkeiten">
-        {% for contact in service.contacts %}
-        {% if service.is_closed %}
-        <span class="button button-secondary service-card__contact service-card__contact--disabled" aria-disabled="true">
-          <span class="service-card__contact-label">{{ contact.label }}</span>
-        </span>
-        {% else %}
-        <a class="button button-secondary service-card__contact" href="{{ contact.url }}" target="_blank" rel="noopener">
-          <span class="service-card__contact-label">{{ contact.label }}</span>
-        </a>
+      <aside class="service-dossier__rail">
+        <section class="service-dossier__panel">
+          <h2>Status & Tags</h2>
+          <div class="service-dossier__badges">
+            {% for badge in service.badges %}
+            <span class="service-badge {{ badge.class }}">{{ badge.label }}</span>
+            {% endfor %}
+            {% if service.is_closed %}
+            <span class="service-status service-status--closed">Geschlossen</span>
+            {% endif %}
+          </div>
+          {% if service.is_closed %}
+          <p class="service-dossier__note">Dieser Service nimmt derzeit keine neuen Anfragen entgegen.</p>
+          {% endif %}
+        </section>
+
+        {% if service.contacts %}
+        <section class="service-dossier__panel">
+          <h2>Kontakt</h2>
+          <div class="service-dossier__contacts" role="group" aria-label="Kontaktmöglichkeiten">
+            {% for contact in service.contacts %}
+            {% if service.is_closed %}
+            <span class="button button-secondary service-card__contact service-card__contact--disabled" aria-disabled="true">
+              <span class="service-card__contact-label">{{ contact.label }}</span>
+            </span>
+            {% else %}
+            <a class="button button-secondary service-card__contact" href="{{ contact.url }}" target="_blank" rel="noopener">
+              <span class="service-card__contact-label">{{ contact.label }}</span>
+            </a>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <p class="service-dossier__note">Es gibt keinen direkten Kauf-Button – nutze die Wege oben für Anfragen.</p>
+        </section>
         {% endif %}
+      </aside>
+    </div>
+
+    {% if related %}
+    <section class="service-dossier__related">
+      <h2>Weitere Services</h2>
+      <div class="cards service-dossier__related-grid">
+        {% for item in related %}
+        <article class="card service-dossier__related-card">
+          <div class="card-body">
+            <h3>{{ item.name or 'Service' }}</h3>
+            {% if item.badges %}
+            <div class="service-card__badge-row">
+              {% for badge in item.badges %}
+              <span class="service-badge {{ badge.class }}">{{ badge.label }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+            <p>{{ item.description | default('Mehr Details auf der Service-Seite.', true) | nl2br }}</p>
+            <a class="btn small" href="{{ url_for('service_detail', slug=item.slug) }}">Zum Service</a>
+          </div>
+        </article>
         {% endfor %}
       </div>
-      <p class="service-detail__contact-note">Es gibt keinen direkten Kauf-Button – bitte nutze die oben aufgeführten Wege, um dein Anliegen zu besprechen.</p>
-      {% if service.is_closed %}
-      <p class="service-detail__contact-note service-detail__contact-note--muted">Da der Service geschlossen ist, dienen die Kontakte nur der Übersicht.</p>
-      {% endif %}
     </section>
     {% endif %}
-  </div>
-
-  {% if related %}
-  <section class="service-detail__related">
-    <h2>Weitere Services</h2>
-    <div class="service-detail__related-grid">
-      {% for item in related %}
-      <article class="service-detail__related-card">
-        <h3>{{ item.name or 'Service' }}</h3>
-        {% if item.badges %}
-        <div class="service-card__badge-row">
-          {% for badge in item.badges %}
-          <span class="service-badge {{ badge.class }}">{{ badge.label }}</span>
-          {% endfor %}
-        </div>
-        {% endif %}
-        <p>{{ item.description | default('Mehr Details auf der Service-Seite.', true) | nl2br }}</p>
-        <a class="button button-secondary" href="{{ url_for('service_detail', slug=item.slug) }}">Zum Service</a>
-      </article>
-      {% endfor %}
-    </div>
   </section>
-  {% endif %}
 </section>
 {% endblock %}

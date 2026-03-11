@@ -344,9 +344,9 @@ NETIM_MAIL_DEFAULTS = {
     "MAIL_PORT": 465,
     "MAIL_USE_TLS": False,
     "MAIL_USE_SSL": True,
-    "MAIL_USERNAME": "project@lumynaria.de",
+    "MAIL_USERNAME": "project@astralia.de",
     "MAIL_PASSWORD": "your_mail_password",
-    "MAIL_DEFAULT_SENDER": "Lumynaria <noreply@lumynaria.de>",
+    "MAIL_DEFAULT_SENDER": "Astralia <noreply@astralia.de>",
 }
 
 
@@ -381,7 +381,7 @@ app.config.setdefault("BROTLI_QUALITY", 6)
 app.config.setdefault("BROTLI_MIN_SIZE", 1400)
 
 mail = Mail(app)
-CONTACT_RECIPIENT = os.environ.get("CONTACT_RECIPIENT", "contact@lumynaria.de")
+CONTACT_RECIPIENT = os.environ.get("CONTACT_RECIPIENT", "contact@astralia.de")
 DECAPI_BASE_URL = "https://decapi.me/twitch"
 
 
@@ -1173,7 +1173,7 @@ CALENDAR_RECURRENCE_OPTIONS = {
 }
 
 DEFAULT_SITE_SETTINGS = {
-    "site_name": "Lumynaria",
+    "site_name": "Astralia.Live",
     "site_tagline": "Voices from the silence of the cosmos, carried by the light of forgotten stars",
     "site_subtitle": "German VTuber Hub",
     "maintenance_mode": False,
@@ -1181,7 +1181,7 @@ DEFAULT_SITE_SETTINGS = {
     "artworks_panel_enabled": True,
     "talents_no_teams": False,
     "meta": {
-        "default_description": "Lumynaria ist der deutsche VTuber Hub für Events, Projekte und Talente im Streaming-Universum.",
+        "default_description": "Astralia ist der deutsche VTuber Hub für Events, Projekte und Talente im Streaming-Universum.",
         "default_image": "images/logo.png",
         "organization": {
             "type": "Organization",
@@ -1274,7 +1274,7 @@ DEFAULT_HOMEPAGE_SETTINGS = {
         },
         "tertiary_button": {
             "label": "Zum Discord",
-            "url": "https://dc.lumynaria.de",
+            "url": "https://dc.astralia.de",
         },
     },
     "sections": DEFAULT_HOMEPAGE_SECTIONS,
@@ -2885,35 +2885,73 @@ def apply_brotli_compression(response):
     return response
 
 
+
+def _extract_talent_members(raw_data):
+    """Return a flat list of members from old/new talents.yaml structures."""
+
+    if isinstance(raw_data, dict):
+        if isinstance(raw_data.get("members"), list):
+            return [item for item in raw_data.get("members", []) if isinstance(item, dict)]
+        source = raw_data.get("teams", [])
+    else:
+        source = raw_data
+
+    members = []
+    if isinstance(source, list):
+        for item in source:
+            if isinstance(item, dict) and isinstance(item.get("members"), list):
+                members.extend(member for member in item.get("members", []) if isinstance(member, dict))
+            elif isinstance(item, dict):
+                members.append(item)
+    return members
+
+
 @lru_cache(maxsize=1)
 def get_talent_data():
     raw = load_yaml("talents.yaml")
-    teams = raw.get("teams", []) if isinstance(raw, dict) else raw
-    normalized = []
+    members = _extract_talent_members(raw)
+    normalized_members = []
     member_index = {}
-    for team in teams or []:
-        team_copy = deepcopy(team)
-        members = team_copy.get("members", [])
-        for member in members:
-            member.setdefault("colors", team_copy.get("colors", []))
 
-            default_asset = f"images/talents/members/{member['slug']}.svg"
-            profile_image = member.get("profile_image") or member.get("avatar") or default_asset
-            member["profile_image"] = profile_image or default_asset
+    for member in members:
+        member_copy = deepcopy(member)
+        slug = (member_copy.get("slug") or "").strip()
+        if not slug:
+            continue
 
-            fullbody_image = member.get("fullbody_image") or member.get("fullbody")
-            if not fullbody_image:
-                fullbody_image = member["profile_image"]
-            member["fullbody_image"] = fullbody_image
+        default_asset = f"images/talents/members/{slug}.svg"
+        profile_image = member_copy.get("profile_image") or member_copy.get("avatar") or default_asset
+        member_copy["profile_image"] = profile_image or default_asset
 
-            member.pop("avatar", None)
-            member.pop("fullbody", None)
+        fullbody_image = member_copy.get("fullbody_image") or member_copy.get("fullbody")
+        if not fullbody_image:
+            fullbody_image = member_copy["profile_image"]
+        member_copy["fullbody_image"] = fullbody_image
 
-            entry = deepcopy(member)
-            entry["team"] = {k: v for k, v in team_copy.items() if k != "members"}
-            member_index[entry["slug"]] = entry
-        normalized.append(team_copy)
-    return normalized, member_index
+        member_copy.setdefault("colors", ["#f3c92d", "#57d6ff"])
+        member_copy.pop("avatar", None)
+        member_copy.pop("fullbody", None)
+
+        entry = deepcopy(member_copy)
+        entry["team"] = {
+            "id": "astralia",
+            "name": "Astralia",
+            "slogan": "",
+            "logo": "images/logo.png",
+            "colors": ["#f3c92d", "#57d6ff"],
+        }
+        normalized_members.append(member_copy)
+        member_index[slug] = entry
+
+    pseudo_team = {
+        "id": "astralia",
+        "name": "Astralia",
+        "slogan": "",
+        "logo": "images/logo.png",
+        "colors": ["#f3c92d", "#57d6ff"],
+        "members": normalized_members,
+    }
+    return [pseudo_team], member_index
 
 
 @app.route("/admin/login", methods=["GET", "POST"])
@@ -3109,7 +3147,7 @@ def admin_dashboard():
     if not isinstance(about_data, dict):
         about_data = {}
     talents_raw = load_yaml("talents.yaml") or {}
-    teams_data = talents_raw.get("teams", []) if isinstance(talents_raw, dict) else talents_raw
+    talents_data = _extract_talent_members(talents_raw)
     shop_items = get_shop_items()
     homepage_data = get_homepage_settings()
     homepage_display = _prepare_homepage_for_display(homepage_data)
@@ -3915,170 +3953,95 @@ def admin_dashboard():
             return redirect(url_for("admin_dashboard", tab="about"))
 
         if form_name == "talents":
-            updated_teams = []
-            for idx, team in enumerate(teams_data):
-                team_prefix = f"team-{idx}"
-                if request.form.get(f"{team_prefix}-delete") == "on":
+            updated_members = []
+            member_count_raw = request.form.get("talent-count", len(talents_data))
+            try:
+                member_count = int(member_count_raw)
+            except (TypeError, ValueError):
+                member_count = len(talents_data)
+
+            for idx in range(member_count):
+                prefix = f"talent-{idx}"
+                if request.form.get(f"{prefix}-delete") == "on":
                     continue
-                team_id = request.form.get(f"{team_prefix}-id", team.get("id", "")).strip()
-                team_name = request.form.get(f"{team_prefix}-name", team.get("name", "")).strip()
-                team_slogan = request.form.get(f"{team_prefix}-slogan", team.get("slogan", "")).strip()
-                colors_text = request.form.get(f"{team_prefix}-colors", "")
-                logo_path = request.form.get(f"{team_prefix}-logo", team.get("logo", "")).strip()
-                logo_upload = request.files.get(f"{team_prefix}-logo-upload")
-                saved_logo = _save_upload(logo_upload, f"team-{team_id or idx}-logo") if logo_upload else None
-                if saved_logo:
-                    logo_path = saved_logo
+                slug = request.form.get(f"{prefix}-slug", "").strip()
+                if not slug:
+                    continue
 
-                member_count_raw = request.form.get(
-                    f"{team_prefix}-member-count", len(team.get("members", []))
-                )
-                try:
-                    member_count = int(member_count_raw)
-                except (TypeError, ValueError):
-                    member_count = len(team.get("members", []))
+                name = request.form.get(f"{prefix}-name", "").strip() or slug.title()
+                birthday = request.form.get(f"{prefix}-birthday", "").strip()
+                species = request.form.get(f"{prefix}-species", "").strip()
+                height = request.form.get(f"{prefix}-height", "").strip()
+                motto = request.form.get(f"{prefix}-motto", "").strip()
+                introduction = request.form.get(f"{prefix}-introduction", "").strip()
+                specialties = request.form.get(f"{prefix}-specialties", "").strip()
+                favorites = _parse_collection(request.form.get(f"{prefix}-favorites", ""))
+                socials = _parse_socials(request.form.get(f"{prefix}-socials", ""))
+                profile_image = request.form.get(f"{prefix}-profile-image", "").strip()
+                fullbody_image = request.form.get(f"{prefix}-fullbody-image", "").strip()
 
-                updated_team = {
-                    "id": team_id,
-                    "name": team_name,
-                    "slogan": team_slogan,
-                    "logo": logo_path,
-                    "colors": _parse_collection(colors_text) or team.get("colors", []),
-                    "members": [],
-                }
-
-                for member_idx in range(member_count):
-                    member_prefix = f"{team_prefix}-member-{member_idx}"
-                    slug = request.form.get(f"{member_prefix}-slug", "").strip()
-                    if not slug or request.form.get(f"{member_prefix}-delete") == "on":
-                        continue
-                    name = request.form.get(f"{member_prefix}-name", "").strip()
-                    birthday = request.form.get(f"{member_prefix}-birthday", "").strip()
-                    species = request.form.get(f"{member_prefix}-species", "").strip()
-                    height = request.form.get(f"{member_prefix}-height", "").strip()
-                    motto = request.form.get(f"{member_prefix}-motto", "").strip()
-                    introduction = request.form.get(f"{member_prefix}-introduction", "").strip()
-                    specialties = request.form.get(f"{member_prefix}-specialties", "").strip()
-                    favorites_text = request.form.get(f"{member_prefix}-favorites", "")
-                    socials_text = request.form.get(f"{member_prefix}-socials", "")
-                    profile_image = request.form.get(f"{member_prefix}-profile-image", "").strip()
-                    fullbody_image = request.form.get(f"{member_prefix}-fullbody-image", "").strip()
-
-                    profile_upload = request.files.get(f"{member_prefix}-profile-upload")
-                    saved_profile = _save_upload(profile_upload, f"{slug}-profile") if profile_upload else None
+                profile_upload = request.files.get(f"{prefix}-profile-upload")
+                if profile_upload:
+                    saved_profile = _save_upload(profile_upload, f"{slug}-profile")
                     if saved_profile:
                         profile_image = saved_profile
 
-                    fullbody_upload = request.files.get(f"{member_prefix}-fullbody-upload")
-                    saved_fullbody = _save_upload(fullbody_upload, f"{slug}-fullbody") if fullbody_upload else None
+                fullbody_upload = request.files.get(f"{prefix}-fullbody-upload")
+                if fullbody_upload:
+                    saved_fullbody = _save_upload(fullbody_upload, f"{slug}-fullbody")
                     if saved_fullbody:
                         fullbody_image = saved_fullbody
 
-                    member_entry = {
+                updated_members.append(
+                    {
                         "slug": slug,
-                        "name": name or slug.title(),
+                        "name": name,
                         "birthday": birthday,
                         "species": species,
                         "height": height,
                         "profile_image": profile_image,
                         "fullbody_image": fullbody_image or profile_image,
-                        "favorites": _parse_collection(favorites_text),
+                        "favorites": favorites,
                         "specialties": specialties,
                         "motto": motto,
-                        "socials": _parse_socials(socials_text),
+                        "socials": socials,
                         "introduction": introduction,
                     }
-                    updated_team["members"].append(member_entry)
+                )
 
-                new_slug = request.form.get(f"{team_prefix}-new-slug", "").strip()
-                if new_slug:
-                    new_profile = request.form.get(f"{team_prefix}-new-profile-image", "").strip()
-                    new_fullbody = request.form.get(f"{team_prefix}-new-fullbody-image", "").strip()
-                    new_profile_upload = request.files.get(f"{team_prefix}-new-profile-upload")
-                    new_fullbody_upload = request.files.get(f"{team_prefix}-new-fullbody-upload")
-                    saved_profile = _save_upload(new_profile_upload, f"{new_slug}-profile") if new_profile_upload else None
-                    saved_fullbody = _save_upload(new_fullbody_upload, f"{new_slug}-fullbody") if new_fullbody_upload else None
+            new_slug = request.form.get("talent-new-slug", "").strip()
+            if new_slug:
+                new_profile = request.form.get("talent-new-profile-image", "").strip()
+                new_fullbody = request.form.get("talent-new-fullbody-image", "").strip()
+                new_profile_upload = request.files.get("talent-new-profile-upload")
+                if new_profile_upload:
+                    saved_profile = _save_upload(new_profile_upload, f"{new_slug}-profile")
                     if saved_profile:
                         new_profile = saved_profile
+                new_fullbody_upload = request.files.get("talent-new-fullbody-upload")
+                if new_fullbody_upload:
+                    saved_fullbody = _save_upload(new_fullbody_upload, f"{new_slug}-fullbody")
                     if saved_fullbody:
                         new_fullbody = saved_fullbody
 
-                    new_member = {
+                updated_members.append(
+                    {
                         "slug": new_slug,
-                        "name": request.form.get(f"{team_prefix}-new-name", new_slug.title()).strip() or new_slug.title(),
-                        "birthday": request.form.get(f"{team_prefix}-new-birthday", "").strip(),
-                        "species": request.form.get(f"{team_prefix}-new-species", "").strip(),
-                        "height": request.form.get(f"{team_prefix}-new-height", "").strip(),
+                        "name": request.form.get("talent-new-name", new_slug.title()).strip() or new_slug.title(),
+                        "birthday": request.form.get("talent-new-birthday", "").strip(),
+                        "species": request.form.get("talent-new-species", "").strip(),
+                        "height": request.form.get("talent-new-height", "").strip(),
                         "profile_image": new_profile,
                         "fullbody_image": new_fullbody or new_profile,
-                        "favorites": _parse_collection(request.form.get(f"{team_prefix}-new-favorites", "")),
-                        "specialties": request.form.get(f"{team_prefix}-new-specialties", "").strip(),
-                        "motto": request.form.get(f"{team_prefix}-new-motto", "").strip(),
-                        "socials": _parse_socials(request.form.get(f"{team_prefix}-new-socials", "")),
-                        "introduction": request.form.get(f"{team_prefix}-new-introduction", "").strip(),
-                    }
-                    updated_team["members"].append(new_member)
-
-                updated_teams.append(updated_team)
-
-            new_team_id = request.form.get("team-new-id", "").strip()
-            new_team_name = request.form.get("team-new-name", "").strip()
-            new_team_slogan = request.form.get("team-new-slogan", "").strip()
-            new_team_colors = _parse_collection(request.form.get("team-new-colors", ""))
-            new_team_logo = request.form.get("team-new-logo", "").strip()
-            new_team_logo_upload = request.files.get("team-new-logo-upload")
-            if new_team_logo_upload:
-                saved_logo = _save_upload(new_team_logo_upload, f"team-{new_team_id or new_team_name or 'new'}-logo")
-                if saved_logo:
-                    new_team_logo = saved_logo
-
-            new_member_slug = request.form.get("team-new-member-slug", "").strip()
-            new_member_profile = request.form.get("team-new-member-profile-image", "").strip()
-            new_member_fullbody = request.form.get("team-new-member-fullbody-image", "").strip()
-            new_member_profile_upload = request.files.get("team-new-member-profile-upload")
-            new_member_fullbody_upload = request.files.get("team-new-member-fullbody-upload")
-            if new_member_profile_upload:
-                saved_profile = _save_upload(new_member_profile_upload, f"{new_member_slug or 'team-new'}-profile")
-                if saved_profile:
-                    new_member_profile = saved_profile
-            if new_member_fullbody_upload:
-                saved_fullbody = _save_upload(new_member_fullbody_upload, f"{new_member_slug or 'team-new'}-fullbody")
-                if saved_fullbody:
-                    new_member_fullbody = saved_fullbody
-
-            new_team_members = []
-            if new_member_slug:
-                new_team_members.append(
-                    {
-                        "slug": new_member_slug,
-                        "name": request.form.get("team-new-member-name", new_member_slug.title()).strip()
-                        or new_member_slug.title(),
-                        "birthday": request.form.get("team-new-member-birthday", "").strip(),
-                        "species": request.form.get("team-new-member-species", "").strip(),
-                        "height": request.form.get("team-new-member-height", "").strip(),
-                        "profile_image": new_member_profile,
-                        "fullbody_image": new_member_fullbody or new_member_profile,
-                        "favorites": _parse_collection(request.form.get("team-new-member-favorites", "")),
-                        "specialties": request.form.get("team-new-member-specialties", "").strip(),
-                        "motto": request.form.get("team-new-member-motto", "").strip(),
-                        "socials": _parse_socials(request.form.get("team-new-member-socials", "")),
-                        "introduction": request.form.get("team-new-member-introduction", "").strip(),
+                        "favorites": _parse_collection(request.form.get("talent-new-favorites", "")),
+                        "specialties": request.form.get("talent-new-specialties", "").strip(),
+                        "motto": request.form.get("talent-new-motto", "").strip(),
+                        "socials": _parse_socials(request.form.get("talent-new-socials", "")),
+                        "introduction": request.form.get("talent-new-introduction", "").strip(),
                     }
                 )
 
-            if any([new_team_id, new_team_name, new_team_slogan, new_team_logo, new_team_members]):
-                updated_teams.append(
-                    {
-                        "id": new_team_id,
-                        "name": new_team_name or (new_team_id.title() if new_team_id else "Neues Team"),
-                        "slogan": new_team_slogan,
-                        "logo": new_team_logo,
-                        "colors": new_team_colors or [],
-                        "members": new_team_members,
-                    }
-                )
-
-            save_yaml("talents.yaml", {"teams": updated_teams})
+            save_yaml("talents.yaml", {"members": updated_members})
             get_talent_data.cache_clear()
             flash("Talente aktualisiert.", "success")
             return redirect(url_for("admin_dashboard", tab="talents"))
@@ -4626,7 +4589,7 @@ def admin_dashboard():
         services=services_data,
         service_badge_options=SERVICE_BADGES,
         about=about_data,
-        teams=teams_data,
+        talents=talents_data,
         settings=settings_data,
         shop_items=shop_items,
         shop_effects=SHOP_EFFECTS,
@@ -4785,6 +4748,17 @@ def index():
     homepage_config = _prepare_homepage_for_display(get_homepage_settings())
     sections = [section for section in homepage_config.get("sections", []) if section.get("enabled", True)]
     sections.sort(key=lambda item: item.get("order", 0))
+    section_lookup = {section.get("id"): section for section in sections if section.get("id")}
+    all_talents = sorted(
+        [
+            {"slug": slug, "name": (member.get("name") or slug)}
+            for slug, member in member_index.items()
+        ],
+        key=lambda item: item["name"].lower(),
+    )
+    online_now = live_profiles[:6]
+    calendar_events = homepage_config.get("calendar", {}).get("events", [])
+    upcoming_events = calendar_events[:5] if isinstance(calendar_events, list) else []
     hero_meta = homepage_config.get("hero", {})
     hero_image = hero_meta.get("background_url") or hero_meta.get("logo_url")
     meta_description = hero_meta.get("subtitle") or hero_meta.get("kicker")
@@ -4800,7 +4774,11 @@ def index():
         partners=partners,
         homepage=homepage_config,
         home_sections=sections,
+        section_lookup=section_lookup,
         live_profiles=live_profiles,
+        all_talents=all_talents,
+        online_now=online_now,
+        upcoming_events=upcoming_events,
         page_meta=page_meta,
     )
 
@@ -4838,12 +4816,11 @@ def talents():
     teams, _ = get_talent_data()
     settings = get_settings()
     site_name = settings.get("site_name") or DEFAULT_SITE_SETTINGS["site_name"]
-    no_teams_mode = settings.get("talents_no_teams", False)
+    no_teams_mode = True
     live_status = _get_live_status_map()
     all_members = []
-    if no_teams_mode:
-        for team in teams:
-            all_members.extend(team.get("members", []))
+    for team in teams:
+        all_members.extend(team.get("members", []))
     page_meta = build_seo_metadata(
         title="Talente",
         description=f"Lerne die Talente von {site_name} kennen.",
@@ -4971,7 +4948,7 @@ def services():
     services_list = get_services()
     page_meta = build_seo_metadata(
         title="Services",
-        description="Produktions- und Community-Angebote von Lumynaria im Überblick.",
+        description="Produktions- und Community-Angebote von Astralia im Überblick.",
         canonical=url_for("services", _external=True),
     )
     return render_template("services.html", services=services_list, page_meta=page_meta)
@@ -5004,7 +4981,7 @@ def news():
     data = get_news_entries()
     page_meta = build_seo_metadata(
         title="News",
-        description="Aktuelle Neuigkeiten und Events aus dem Lumynaria-Kosmos.",
+        description="Aktuelle Neuigkeiten und Events aus dem Astralia-Kosmos.",
         canonical=url_for("news", _external=True),
     )
     return render_template("news.html", posts=data, page_meta=page_meta)
@@ -5062,7 +5039,7 @@ def shop():
     items = get_shop_items()
     page_meta = build_seo_metadata(
         title="Shop",
-        description="Merch und digitale Goodies von Lumynaria.",
+        description="Merch und digitale Goodies von Astralia.",
         canonical=url_for("shop", _external=True),
     )
     return render_template("shop.html", items=items, page_meta=page_meta)
@@ -5125,12 +5102,12 @@ def contact():
             flash("Bitte fülle alle Felder aus.", "error")
         else:
             msg = Message(
-                subject=f"[Lumynaria Kontakt] {form_data['subject']}",
+                subject=f"[Astralia Kontakt] {form_data['subject']}",
                 recipients=[CONTACT_RECIPIENT],
                 reply_to=form_data["email"],
             )
             msg.body = (
-                "Neue Kontaktanfrage von Lumynaria.de\n\n"
+                "Neue Kontaktanfrage von Astralia.de\n\n"
                 f"Name: {form_data['name']}\n"
                 f"E-Mail: {form_data['email']}\n"
                 f"Betreff: {form_data['subject']}\n\n"

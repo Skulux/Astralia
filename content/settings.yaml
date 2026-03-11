@@ -1,4 +1,4 @@
-site_name: Lumynaria
+site_name: Astralia.Live
 site_tagline: Voices from the silence of the cosmos, carried by the light of forgotten
   stars
 site_subtitle: German VTuber Hub
@@ -6,22 +6,22 @@ maintenance_mode: false
 shop_enabled: false
 artworks_panel_enabled: false
 meta:
-  default_description: Lumynaria ist der deutsche VTuber Hub für Events, Projekte
+  default_description: Astralia ist der deutsche VTuber Hub für Events, Projekte
     und Talente im Streaming-Universum.
   default_image: images/logo.png
   organization:
     type: Organization
     logo: images/logo.png
 footer:
-  about_heading: Lumynaria
+  about_heading: Astralia.Live
   about_text: "Ein kreatives Netzwerk für deutschsprachige VTuberinnen, Künstlerinnen\
     \ und Streamer*innen.\r\nFrei, unabhängig und gemeinschaftlich."
   social_heading: Socials
   socials:
   - label: Twitch
-    url: https://www.twitch.tv/vlumynaria
+    url: https://www.twitch.tv/vastralia
   - label: X (Twitter)
-    url: https://x.com/VLumynaria
+    url: https://x.com/VAstralia
   legal_heading: Rechtliches
   legal_links:
   - label: Impressum

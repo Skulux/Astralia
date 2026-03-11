@@ -1,56 +1,91 @@
 {% extends "base.html" %}
 {% import "partials/content_blocks.html" as content_blocks %}
 {% block content %}
-<section class="page project-detail">
-  <div class="project-detail__intro">
-    <a class="project-detail__back" href="{{ url_for('projects') }}">← Zurück zu allen Projekten</a>
-  </div>
-  <article class="project-detail__content">
-    <header class="project-detail__header">
-      <div class="project-detail__heading">
-        <h1 class="project-detail__title">{{ project.title }}</h1>
-        {% if project.tags %}
-        <div class="project-detail__tags">
-          {% for tag in project.tags %}<span>{{ tag }}</span>{% endfor %}
-        </div>
-        {% endif %}
-        {% if project.summary %}
-        <div class="project-detail__summary">{{ project.summary | markdown }}</div>
-        {% endif %}
-        {% if project.url %}
-        <a class="btn" href="{{ project.url }}" target="_blank" rel="noopener">Projekt besuchen</a>
-        {% endif %}
-      </div>
-      {% set hero_image = project.image_url or project.image %}
-      {% if hero_image %}
-      <figure class="project-detail__hero">
-        <img src="{{ hero_image }}" alt="{{ project.title }}">
-      </figure>
-      {% endif %}
-    </header>
-    {% if project.blurb %}
-    <div class="project-detail__body">{{ project.blurb | markdown }}</div>
-    {% endif %}
-    {{ content_blocks.render(project.blocks) }}
-  </article>
+<section class="astral-home astral-subpage project-dossier">
+  <div class="astral-home__topline"><span>✦ Projekt-Dossier</span></div>
 
-  {% if related %}
-  <section class="project-related">
-    <h2>Weitere Projekte</h2>
-    <div class="cards">
-      {% for item in related %}
-      <article class="card">
-        {% set card_image = item.image_url or item.image %}
-        {% if card_image %}<img src="{{ card_image }}" alt="{{ item.title or 'Projektbild' }}">{% endif %}
-        <div class="card-body">
-          <h3>{{ item.title }}</h3>
-          {% if item.summary %}<div class="card-summary">{{ item.summary | markdown }}</div>{% endif %}
-          <a class="btn small" href="{{ url_for('project_detail', slug=item.slug) }}">Mehr erfahren</a>
-        </div>
+  <header class="astral-hero-panel project-dossier__hero">
+    <p class="astral-hero-panel__eyebrow">Constellation Archive</p>
+    <h1 class="astral-logo-word astral-logo-word--subpage">{{ project.title }}</h1>
+    {% if project.summary %}
+    <div class="project-dossier__summary">{{ project.summary | markdown }}</div>
+    {% endif %}
+  </header>
+
+  <nav class="astral-tabnav" aria-label="Hauptnavigation">
+    {% for label, endpoint in NAV_ITEMS %}
+      {% set is_active = request.endpoint == endpoint or (endpoint == 'shop' and request.endpoint == 'shop_detail') %}
+      <a class="{% if is_active %}active{% endif %}" href="{{ url_for(endpoint) }}">{{ label }}</a>
+    {% endfor %}
+  </nav>
+
+  <section class="page project-dossier__frame">
+    <a class="project-dossier__back" href="{{ url_for('projects') }}">← Zurück zur Projektübersicht</a>
+
+    <div class="project-dossier__layout">
+      <article class="project-dossier__main">
+        {% set hero_image = project.image_url or project.image %}
+        {% if hero_image %}
+        <figure class="project-dossier__media">
+          <img src="{{ hero_image }}" alt="{{ project.title }}">
+        </figure>
+        {% endif %}
+
+        <section class="project-dossier__panel">
+          <h2>Mission-Details</h2>
+          {% if project.blurb %}
+          <div class="project-dossier__copy">{{ project.blurb | markdown }}</div>
+          {% elif project.summary %}
+          <div class="project-dossier__copy">{{ project.summary | markdown }}</div>
+          {% else %}
+          <p class="project-dossier__empty">Für dieses Projekt liegen derzeit keine weiteren Details vor.</p>
+          {% endif %}
+        </section>
+
+        {% if project.blocks %}
+        <section class="project-dossier__panel project-dossier__panel--blocks">
+          <h2>Einblicke</h2>
+          {{ content_blocks.render(project.blocks) }}
+        </section>
+        {% endif %}
       </article>
-      {% endfor %}
+
+      <aside class="project-dossier__rail">
+        <section class="project-dossier__panel">
+          <h2>Quick Facts</h2>
+          {% if project.tags %}
+          <div class="project-dossier__tags">
+            {% for tag in project.tags %}<span>{{ tag }}</span>{% endfor %}
+          </div>
+          {% else %}
+          <p class="project-dossier__empty">Noch keine Tags hinterlegt.</p>
+          {% endif %}
+
+          {% if project.url %}
+          <a class="btn project-dossier__visit" href="{{ project.url }}" target="_blank" rel="noopener">Projekt besuchen</a>
+          {% endif %}
+        </section>
+      </aside>
     </div>
+
+    {% if related %}
+    <section class="project-dossier__related">
+      <h2>Weitere Projekte</h2>
+      <div class="cards project-dossier__related-grid">
+        {% for item in related %}
+        <article class="card project-dossier__related-card">
+          {% set card_image = item.image_url or item.image %}
+          {% if card_image %}<img src="{{ card_image }}" alt="{{ item.title or 'Projektbild' }}">{% endif %}
+          <div class="card-body">
+            <h3>{{ item.title }}</h3>
+            {% if item.summary %}<div class="card-summary">{{ item.summary | markdown }}</div>{% endif %}
+            <a class="btn small" href="{{ url_for('project_detail', slug=item.slug) }}">Mehr erfahren</a>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
   </section>
-  {% endif %}
 </section>
 {% endblock %}

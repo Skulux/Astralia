@@ -1,25 +1,37 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="page">
-  <h1>Kontakt</h1>
-  <p>Fragen, Bewerbungen oder Kollab-Anfragen? Schreibt uns gern.</p>
+<section class="astral-home astral-subpage">
+  <div class="astral-home__topline"><span>✦ Kontakt</span></div>
+  <header class="astral-hero-panel">
+    <p class="astral-hero-panel__eyebrow">Open Channel</p>
+    <h1 class="astral-logo-word astral-logo-word--subpage">Kontakt</h1>
+    <p class="astral-about-lead">Fragen, Bewerbungen oder Kollab-Anfragen? Schreibt uns gern.</p>
+  </header>
+  <nav class="astral-tabnav" aria-label="Hauptnavigation">
+    {% for label, endpoint in NAV_ITEMS %}
+      {% set is_active = request.endpoint == endpoint or (endpoint == 'shop' and request.endpoint == 'shop_detail') %}
+      <a class="{% if is_active %}active{% endif %}" href="{{ url_for(endpoint) }}">{{ label }}</a>
+    {% endfor %}
+  </nav>
 
-  <form class="form" method="post" action="{{ url_for('contact') }}">
-    <div class="grid2">
-      <label>Dein Name
-        <input type="text" name="name" value="{{ form_data.name | default('') }}" required>
+  <section class="page">
+    <form class="form" method="post" action="{{ url_for('contact') }}">
+      <div class="grid2">
+        <label>Dein Name
+          <input type="text" name="name" value="{{ form_data.name | default('') }}" required>
+        </label>
+        <label>E-Mail
+          <input type="email" name="email" value="{{ form_data.email | default('') }}" required>
+        </label>
+      </div>
+      <label>Betreff
+        <input type="text" name="subject" value="{{ form_data.subject | default('') }}" required>
       </label>
-      <label>E-Mail
-        <input type="email" name="email" value="{{ form_data.email | default('') }}" required>
+      <label>Nachricht
+        <textarea name="message" rows="6" required>{{ form_data.message | default('') }}</textarea>
       </label>
-    </div>
-    <label>Betreff
-      <input type="text" name="subject" value="{{ form_data.subject | default('') }}" required>
-    </label>
-    <label>Nachricht
-      <textarea name="message" rows="6" required>{{ form_data.message | default('') }}</textarea>
-    </label>
-    <button class="btn" type="submit">Senden</button>
-  </form>
+      <button class="btn" type="submit">Senden</button>
+    </form>
+  </section>
 </section>
 {% endblock %}
