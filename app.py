@@ -344,9 +344,9 @@ NETIM_MAIL_DEFAULTS = {
     "MAIL_PORT": 465,
     "MAIL_USE_TLS": False,
     "MAIL_USE_SSL": True,
-    "MAIL_USERNAME": "project@astralia.de",
+    "MAIL_USERNAME": "project@lumynaria.de",
     "MAIL_PASSWORD": "your_mail_password",
-    "MAIL_DEFAULT_SENDER": "Astralia <noreply@astralia.de>",
+    "MAIL_DEFAULT_SENDER": "Astralia <noreply@lumynaria.de>",
 }
 
 
@@ -381,7 +381,7 @@ app.config.setdefault("BROTLI_QUALITY", 6)
 app.config.setdefault("BROTLI_MIN_SIZE", 1400)
 
 mail = Mail(app)
-CONTACT_RECIPIENT = os.environ.get("CONTACT_RECIPIENT", "contact@astralia.de")
+CONTACT_RECIPIENT = os.environ.get("CONTACT_RECIPIENT", "contact@astralia.live")
 DECAPI_BASE_URL = "https://decapi.me/twitch"
 
 
@@ -5167,4 +5167,4 @@ def not_found(error):  # pragma: no cover - relies on Flask internals
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8073, debug=True)
+    app.run(host="0.0.0.0", port=8074, debug=False)
