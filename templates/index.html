@@ -101,18 +101,16 @@
         <h2>{{ section_lookup.get('news', {}).get('heading', 'Neuigkeiten') }}</h2>
         <table class="astral-forum-table">
           <thead>
-            <tr><th>Thema</th><th>Antworten</th><th>Aufrufe</th><th>Zuletzt</th></tr>
+            <tr><th>Thema</th><th>Beschreibung</th></tr>
           </thead>
           <tbody>
             {% for item in news %}
             <tr>
               <td><a href="{{ url_for('news_detail', slug=item.slug) }}">{{ item.title }}</a></td>
-              <td>{{ (loop.index * 7) + 12 }}</td>
-              <td>{{ (loop.index * 200) + 900 }}</td>
-              <td>vor {{ loop.index }} Std.</td>
+              <td>{{ (item.summary or item.body or '') | striptags | truncate(100, True, '…') }}</td>
             </tr>
             {% else %}
-            <tr><td colspan="4">Keine Beiträge verfügbar.</td></tr>
+            <tr><td colspan="2">Keine Beiträge verfügbar.</td></tr>
             {% endfor %}
           </tbody>
         </table>
