@@ -13,18 +13,19 @@
     {% endfor %}
   </nav>
 
-  <section class="page">
-    <div class="cards">
+  <section class="page projects-page">
+    <div class="projects-page__chalkline" aria-hidden="true">✦ Active Upload Queue // Astralia Projects</div>
+    <div class="cards projects-page__grid">
       {% for p in projects %}
-        <article class="card">
+        <article class="card projects-page__card">
           {% set image_src = p.image_url or p.image %}
           {% if image_src %}
-          <img src="{{ image_src }}" alt="{{ p.title or 'Projektbild' }}">
+          <img class="projects-page__image" src="{{ image_src }}" alt="{{ p.title or 'Projektbild' }}">
           {% endif %}
-          <div class="card-body">
+          <div class="card-body projects-page__body">
             <h3>{{ p.title }}</h3>
             {% if p.summary %}<div class="card-summary">{{ p.summary | markdown }}</div>{% endif %}
-            <div class="tags">
+            <div class="tags projects-page__tags">
               {% for t in p.tags %}<span>{{ t }}</span>{% endfor %}
             </div>
             <a class="btn small" href="{{ url_for('project_detail', slug=p.slug) }}">Mehr erfahren</a>
