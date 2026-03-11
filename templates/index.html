@@ -1,178 +1,150 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="hero">
-  {% set hero = homepage.hero %}
-  <div class="hero-inner">
-    <h1 class="hero-title hero-title--logo">
-      <span class="sr-only">{{ SITE_NAME }}</span>
-      <img
-        class="hero-banner"
-        src="{{ hero.logo_url }}"
-        alt="{{ SITE_NAME }}"
-      >
-    </h1>
-    {% set hero_bg_url = hero.background_url %}
-    {% set subtitle_html = hero.subtitle_html %}
-    {% if subtitle_html %}
-    <div class="hero-subtitle">{{ subtitle_html }}</div>
-    {% elif hero.subtitle %}
-    <p class="hero-subtitle">{{ hero.subtitle }}</p>
-    {% endif %}
-    {% if hero.kicker %}<p class="hero-kicker">{{ hero.kicker }}</p>{% endif %}
-    {% set hero_buttons = [] %}
-    {% if hero.secondary_button.label and hero.secondary_button.url %}
-      {% set _ = hero_buttons.append({"url": hero.secondary_button.url, "label": hero.secondary_button.label, "ghost": True}) %}
-    {% endif %}
-    {% if hero.primary_button.label and hero.primary_button.url %}
-      {% set _ = hero_buttons.append({"url": hero.primary_button.url, "label": hero.primary_button.label, "ghost": False}) %}
-    {% endif %}
-    {% if hero.tertiary_button.label and hero.tertiary_button.url %}
-      {% set _ = hero_buttons.append({
-        "url": hero.tertiary_button.url,
-        "label": hero.tertiary_button.label,
-        "ghost": True,
-        "external": True,
-      }) %}
-    {% endif %}
-    <div class="hero-actions">
-      {% for button in hero_buttons %}
-      <a
-        class="btn{% if button.ghost %} ghost{% endif %}"
-        href="{{ button.url }}"
-        {% if button.external %}target="_blank" rel="noopener"{% endif %}
-      >
-        {{ button.label }}
-      </a>
-      {% endfor %}
-    </div>
+{% set hero = homepage.hero %}
+<section class="astral-home">
+  <div class="astral-home__topline">
+    <span>✦ {{ SITE_NAME }}</span>
   </div>
-  <div class="hero-bg{% if hero_bg_url %} hero-bg--custom{% endif %}" aria-hidden="true"{% if hero_bg_url %} style="--hero-bg-image: url({{ hero_bg_url | tojson }});"{% endif %}></div>
-</section>
 
-{% for section in home_sections %}
-  {% set section_id = section.id %}
-  {% if section_id in ['live', 'projects', 'news', 'calendar', 'partners'] %}
-    {% set classes = 'section' %}
-    {% if section_id == 'partners' %}
-      {% set classes = classes ~ ' section-partners' %}
+  <header class="astral-hero-panel">
+    <p class="astral-hero-panel__eyebrow">VIRTUAL TALENT CONSTELLATION</p>
+    <h1 class="astral-logo-word">ASTRALIA</h1>
+    {% if hero.kicker %}<p class="astral-hero-panel__sub">{{ hero.kicker }}</p>{% endif %}
+    <div class="astral-hero-panel__stats">
+      <span>🔴 {{ live_profiles|length }} Live jetzt</span>
+      <span>{{ all_talents|length }} Mitglieder</span>
+    </div>
+    {% if hero.subtitle_html %}
+    <div class="astral-hero-copy">{{ hero.subtitle_html }}</div>
     {% endif %}
-    {% if not (section_id == 'partners' and not partners) %}
-    <section class="{{ classes }}" {% if section_id == 'live' %}data-live-section{% endif %}>
-      <div class="section-head">
-        {% if section.heading %}<h2>{{ section.heading }}</h2>{% endif %}
-        {% if section.cta_label and section.cta_url %}
-        <a class="see-all" href="{{ section.cta_url }}">{{ section.cta_label }}</a>
-        {% endif %}
-      </div>
-
-      {% if section_id == 'live' %}
-      <div class="live-now-grid">
-        <div class="live-now-viewport">
-          {% if live_profiles %}
-          <div class="live-now-track">
-            {% for talent in live_profiles %}
-            <article class="live-now-card is-live">
-              <a class="live-now-card__link" href="https://www.twitch.tv/{{ talent.slug }}" target="_blank" rel="noopener">
-                <span class="live-now-card__name">{{ talent.name | replace('\\', '') }}</span>
-                <span class="live-now-card__media">
-                  <img src="{{ talent.profile_image_url }}" alt="{{ talent.name | replace('\\', '') }} Profilbild" loading="lazy">
-                </span>
-                <span class="live-now-card__meta">
-                  <span class="live-now-card__meta-box live-now-card__meta-box--title live-now-card__title">{{ talent.title }}</span>
-                  {% if talent.game %}
-                  <span class="live-now-card__meta-box live-now-card__meta-box--game live-now-card__game">{{ talent.game }}</span>
-                  {% endif %}
-                </span>
-              </a>
-            </article>
-            {% endfor %}
-          </div>
-          {% else %}
-          <p class="live-now-empty">Aktuell ist niemand Live</p>
-          {% endif %}
-        </div>
-      </div>
-      {% elif section_id == 'projects' %}
-      <div class="cards">
-        {% for p in projects %}
-          <article class="card">
-            {% set image_src = p.image_url or p.image %}
-            {% if image_src %}
-            <img src="{{ image_src }}" alt="{{ p.title or 'Projektbild' }}">
-            {% endif %}
-            <div class="card-body">
-              <h3>{{ p.title }}</h3>
-              {% if p.summary %}<div class="card-summary">{{ p.summary | markdown }}</div>{% endif %}
-              <div class="tags">
-                {% for t in p.tags %}<span>{{ t }}</span>{% endfor %}
-              </div>
-              <a class="btn small" href="{{ url_for('project_detail', slug=p.slug) }}">Mehr erfahren</a>
-            </div>
-          </article>
-        {% endfor %}
-      </div>
-      {% elif section_id == 'news' %}
-      <div class="cards">
-        {% for n in news %}
-          <article class="card">
-            {% set news_img = n.image_url or n.image %}
-            {% if news_img %}
-            <img src="{{ news_img }}" alt="{{ n.title or 'Newsbild' }}">
-            {% endif %}
-            <div class="card-body">
-              <h3>{{ n.title }}</h3>
-              {% if n.date %}<p class="muted">{{ n.date }}</p>{% endif %}
-              {% if n.summary %}<div class="card-summary">{{ n.summary | markdown }}</div>{% endif %}
-              <a class="btn small" href="{{ url_for('news_detail', slug=n.slug) }}">Zum Artikel</a>
-            </div>
-          </article>
-        {% endfor %}
-      </div>
-      {% elif section_id == 'calendar' %}
-      <div
-        class="home-calendar"
-        data-calendar
-        data-calendar-events='{{ homepage.calendar.events | tojson }}'
-      >
-        <div class="home-calendar__header">
-          <button
-            class="home-calendar__nav"
-            type="button"
-            data-calendar-prev
-            aria-label="Vorherige Woche"
-          >
-            ‹
-          </button>
-          <div class="home-calendar__range" data-calendar-range></div>
-          <button
-            class="home-calendar__nav"
-            type="button"
-            data-calendar-next
-            aria-label="Nächste Woche"
-          >
-            ›
-          </button>
-        </div>
-        <div class="home-calendar__grid" data-calendar-grid></div>
-      </div>
-      {% elif section_id == 'partners' %}
-      <div class="partner-grid" role="list">
-        {% for partner in partners %}
-        <a class="partner-card" href="{{ partner.url }}" target="_blank" rel="noopener" role="listitem" aria-label="{{ partner.name }}">
-          <img src="{{ partner.logo_url or partner.logo }}" alt="{{ partner.name or 'Partnerlogo' }}" loading="lazy">
-          <span class="partner-card__label" aria-hidden="true">{{ partner.name }}</span>
-          <span class="sr-only">{{ partner.name }}</span>
-        </a>
-        {% endfor %}
-      </div>
+    <div class="astral-actions">
+      {% if hero.primary_button.label and hero.primary_button.url %}
+      <a class="btn" href="{{ hero.primary_button.url }}">{{ hero.primary_button.label }}</a>
       {% endif %}
-    </section>
-    {% endif %}
-  {% endif %}
-{% endfor %}
-{% endblock %}
+      {% if hero.secondary_button.label and hero.secondary_button.url %}
+      <a class="btn ghost" href="{{ hero.secondary_button.url }}">{{ hero.secondary_button.label }}</a>
+      {% endif %}
+      {% if hero.tertiary_button.label and hero.tertiary_button.url %}
+      <a class="btn ghost" href="{{ hero.tertiary_button.url }}" target="_blank" rel="noopener">{{ hero.tertiary_button.label }}</a>
+      {% endif %}
+    </div>
+  </header>
 
-{% block extra_scripts %}
-  {{ super() }}
-  <script defer src="{{ asset_url('js/calendar.js') }}"></script>
+  <nav class="astral-tabnav" aria-label="Hauptnavigation">
+    {% for label, endpoint in NAV_ITEMS %}
+      {% set is_active = request.endpoint == endpoint or (endpoint == 'shop' and request.endpoint == 'shop_detail') %}
+      <a class="{% if is_active %}active{% endif %}" href="{{ url_for(endpoint) }}">{{ label }}</a>
+    {% endfor %}
+  </nav>
+
+  <div class="astral-grid">
+    <aside class="astral-col astral-col--left">
+      <section id="home-live" class="astral-widget">
+        <h2>{{ section_lookup.get('live', {}).get('heading', 'Jetzt Online') }}</h2>
+        <ul class="astral-list">
+          {% for talent in online_now %}
+          <li><span class="dot-live"></span><a href="https://www.twitch.tv/{{ talent.slug }}" target="_blank" rel="noopener">{{ talent.name | replace('\\', '') }}</a></li>
+          {% else %}
+          <li>Aktuell niemand live</li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <section id="home-partners" class="astral-widget">
+        <h2>{{ section_lookup.get('partners', {}).get('heading', 'Partner') }}</h2>
+        <ul class="astral-list">
+          {% for partner in partners[:6] %}
+          <li><a href="{{ partner.url or '#' }}" {% if partner.url %}target="_blank" rel="noopener"{% endif %}>{{ partner.name }}</a></li>
+          {% else %}
+          <li>Keine Partner eingetragen.</li>
+          {% endfor %}
+        </ul>
+      </section>
+    </aside>
+
+    <main class="astral-col astral-col--center">
+      <section id="home-projects" class="astral-widget astral-featured">
+        <h2>{{ section_lookup.get('projects', {}).get('heading', 'Projekte') }}</h2>
+        <div class="astral-live-grid">
+          {% for item in projects[:3] %}
+          <article class="astral-live-card">
+            <a href="{{ url_for('project_detail', slug=item.slug) }}">
+              <img src="{{ item.image_url or item.image }}" alt="{{ item.title }}">
+              <strong>{{ item.title }}</strong>
+              <small>{{ item.summary or '' }}</small>
+            </a>
+          </article>
+          {% else %}
+          <article class="astral-live-card astral-live-card--empty">Keine Projekte verfügbar.</article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="astral-widget">
+        <h2>Live Streams</h2>
+        <div class="astral-live-grid">
+          {% for talent in live_profiles[:6] %}
+          <article class="astral-live-card">
+            <a href="https://www.twitch.tv/{{ talent.slug }}" target="_blank" rel="noopener">
+              <img src="{{ talent.profile_image_url }}" alt="{{ talent.name }}">
+              <strong>{{ talent.name | replace('\\', '') }}</strong>
+              <small>{{ talent.game or talent.title }}</small>
+            </a>
+          </article>
+          {% else %}
+          <article class="astral-live-card astral-live-card--empty">Noch keine aktiven Streams</article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section id="home-news" class="astral-widget">
+        <h2>{{ section_lookup.get('news', {}).get('heading', 'Neuigkeiten') }}</h2>
+        <table class="astral-forum-table">
+          <thead>
+            <tr><th>Thema</th><th>Antworten</th><th>Aufrufe</th><th>Zuletzt</th></tr>
+          </thead>
+          <tbody>
+            {% for item in news %}
+            <tr>
+              <td><a href="{{ url_for('news_detail', slug=item.slug) }}">{{ item.title }}</a></td>
+              <td>{{ (loop.index * 7) + 12 }}</td>
+              <td>{{ (loop.index * 200) + 900 }}</td>
+              <td>vor {{ loop.index }} Std.</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4">Keine Beiträge verfügbar.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <aside class="astral-col astral-col--right">
+      <section id="home-calendar" class="astral-widget">
+        <h2>{{ section_lookup.get('calendar', {}).get('heading', 'Kommende Events') }}</h2>
+        <ul class="astral-list">
+          {% for event in upcoming_events %}
+          <li>
+            <strong>{{ event.label or 'Event' }}</strong>
+            <small>{{ event.date }}{% if event.time_display %} · {{ event.time_display }}{% endif %}</small>
+          </li>
+          {% else %}
+          <li>Keine Events geplant.</li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <section class="astral-widget">
+        <h2>Socials</h2>
+        <ul class="astral-list">
+          {% for link in FOOTER.socials %}
+          <li><a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}</a></li>
+          {% else %}
+          <li>Keine Social-Links konfiguriert.</li>
+          {% endfor %}
+        </ul>
+      </section>
+    </aside>
+  </div>
+</section>
 {% endblock %}

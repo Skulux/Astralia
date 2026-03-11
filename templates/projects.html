@@ -1,24 +1,37 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="page">
-  <h1>Projekte</h1>
-  <div class="cards">
-    {% for p in projects %}
-      <article class="card">
-        {% set image_src = p.image_url or p.image %}
-        {% if image_src %}
-        <img src="{{ image_src }}" alt="{{ p.title or 'Projektbild' }}">
-        {% endif %}
-        <div class="card-body">
-          <h3>{{ p.title }}</h3>
-          {% if p.summary %}<div class="card-summary">{{ p.summary | markdown }}</div>{% endif %}
-          <div class="tags">
-            {% for t in p.tags %}<span>{{ t }}</span>{% endfor %}
-          </div>
-          <a class="btn small" href="{{ url_for('project_detail', slug=p.slug) }}">Mehr erfahren</a>
-        </div>
-      </article>
+<section class="astral-home astral-subpage">
+  <div class="astral-home__topline"><span>✦ Projekte</span></div>
+  <header class="astral-hero-panel">
+    <p class="astral-hero-panel__eyebrow">Mission Board</p>
+    <h1 class="astral-logo-word astral-logo-word--subpage">Projekte</h1>
+  </header>
+  <nav class="astral-tabnav" aria-label="Hauptnavigation">
+    {% for label, endpoint in NAV_ITEMS %}
+      {% set is_active = request.endpoint == endpoint or (endpoint == 'shop' and request.endpoint == 'shop_detail') %}
+      <a class="{% if is_active %}active{% endif %}" href="{{ url_for(endpoint) }}">{{ label }}</a>
     {% endfor %}
-  </div>
+  </nav>
+
+  <section class="page projects-page">
+    <div class="cards projects-page__grid">
+      {% for p in projects %}
+        <article class="card projects-page__card">
+          {% set image_src = p.image_url or p.image %}
+          {% if image_src %}
+          <img class="projects-page__image" src="{{ image_src }}" alt="{{ p.title or 'Projektbild' }}">
+          {% endif %}
+          <div class="card-body projects-page__body">
+            <h3>{{ p.title }}</h3>
+            {% if p.summary %}<div class="card-summary">{{ p.summary | markdown }}</div>{% endif %}
+            <div class="tags projects-page__tags">
+              {% for t in p.tags %}<span>{{ t }}</span>{% endfor %}
+            </div>
+            <a class="btn small" href="{{ url_for('project_detail', slug=p.slug) }}">Mehr erfahren</a>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
 </section>
 {% endblock %}

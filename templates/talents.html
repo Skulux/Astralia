@@ -1,78 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="page talents-page">
-  <header class="talents-header">
-    <h1>Talente</h1>
-    <p class="muted">Sechs Crews, 30 Stimmen. Klickt ein Portrait und taucht in die Profile ein.</p>
+<section class="astral-home astral-subpage">
+  <div class="astral-home__topline"><span>✦ Talente</span></div>
+  <header class="astral-hero-panel">
+    <p class="astral-hero-panel__eyebrow">Astralia Friendslist</p>
+    <h1 class="astral-logo-word astral-logo-word--subpage">Talente</h1>
+    <p class="astral-about-lead">Wie eine klassische Friendslist – nur mit unseren Talenten und Streams.</p>
   </header>
+  <nav class="astral-tabnav" aria-label="Hauptnavigation">
+    {% for label, endpoint in NAV_ITEMS %}
+      {% set is_active = request.endpoint == endpoint or (endpoint == 'shop' and request.endpoint == 'shop_detail') %}
+      <a class="{% if is_active %}active{% endif %}" href="{{ url_for(endpoint) }}">{{ label }}</a>
+    {% endfor %}
+  </nav>
 
-  <div class="talents-grid">
-    {% if no_teams_mode %}
-    <section class="talent-team talent-team--single">
-      <h2 class="team-name">Talente</h2>
-      <div class="team-member-strip">
+  <section class="page talents-page talents-page--friends">
+    <section class="friendslist-panel">
+      <header class="friendslist-panel__header">
+        <h2>Alle Talente</h2>
+        <span>{{ all_members|length }} Einträge</span>
+      </header>
+      <ul class="friendslist">
         {% for member in all_members %}
         {% set thumb = member.profile_image %}
         {% set status = live_status.get(member.slug) %}
         {% set state = status.state if status else 'error' %}
-        {% set status_label = status.message if status else 'Status derzeit nicht verfügbar.' %}
-        <a class="talent-thumb" href="{{ url_for('talent_detail', slug=member.slug) }}">
-          <span class="talent-thumb__media">
-            <span class="talent-live-indicator {{ 'is-live' if state == 'live' else 'is-offline' if state == 'offline' else 'is-error' }}">
-              <span class="talent-live-indicator__dot" aria-hidden="true"></span>
-              <span class="talent-live-indicator__label">{{ status_label }}</span>
+        {% set status_label = 'Live' if state == 'live' else 'Offline' if state == 'offline' else 'Unbekannt' %}
+        <li>
+          <a class="friend-row" href="{{ url_for('talent_detail', slug=member.slug) }}">
+            <span class="friend-row__avatar">
+              {% if thumb and thumb.startswith('http') %}
+              <img src="{{ thumb }}" alt="{{ member.name }} Portrait">
+              {% else %}
+              {% set asset = thumb or 'images/talents/members/' ~ member.slug ~ '.svg' %}
+              <img src="{{ asset_url(asset) }}" alt="{{ member.name }} Portrait">
+              {% endif %}
             </span>
-            {% if thumb and thumb.startswith('http') %}
-            <img src="{{ thumb }}" alt="{{ member.name }} Portrait">
-            {% else %}
-            {% set asset = thumb or 'images/talents/members/' ~ member.slug ~ '.svg' %}
-            <img src="{{ asset_url(asset) }}" alt="{{ member.name }} Portrait">
-            {% endif %}
-          </span>
-          <span class="talent-name" aria-hidden="true">{{ member.name | break_name }}</span>
-          <span class="sr-only">{{ member.name | replace('\\', '') }}</span>
-        </a>
+            <span class="friend-row__name">{{ member.name | replace('\\', ' ') }}</span>
+            <span class="friend-row__status is-{{ state }}">{{ status_label }}</span>
+          </a>
+        </li>
         {% endfor %}
-      </div>
+      </ul>
     </section>
-    {% else %}
-    {% for team in teams %}
-    <section class="talent-team">
-      <h2 class="team-name" style="--team-color: {{ team.colors[0] if team.colors else '#dacfff' }};">{{ team.name }}</h2>
-      <div class="team-logo-wrap">
-        <img src="{{ asset_url(team.logo) }}" alt="{{ team.name }} Logo" class="team-logo-image">
-      </div>
-      <div class="team-member-strip">
-        {% for member in team.members %}
-        {% set thumb = member.profile_image %}
-        {% set status = live_status.get(member.slug) %}
-        {% set state = status.state if status else 'error' %}
-        {% set status_label = status.message if status else 'Status derzeit nicht verfügbar.' %}
-        <a class="talent-thumb" href="{{ url_for('talent_detail', slug=member.slug) }}">
-          <span class="talent-thumb__media">
-            <span class="talent-live-indicator {{ 'is-live' if state == 'live' else 'is-offline' if state == 'offline' else 'is-error' }}">
-              <span class="talent-live-indicator__dot" aria-hidden="true"></span>
-              <span class="talent-live-indicator__label">{{ status_label }}</span>
-            </span>
-            {% if thumb and thumb.startswith('http') %}
-            <img src="{{ thumb }}" alt="{{ member.name }} Portrait">
-            {% else %}
-            {% set asset = thumb or 'images/talents/members/' ~ member.slug ~ '.svg' %}
-            <img src="{{ asset_url(asset) }}" alt="{{ member.name }} Portrait">
-            {% endif %}
-          </span>
-          <span class="talent-name" aria-hidden="true">{{ member.name | break_name }}</span>
-          <span class="sr-only">{{ member.name | replace('\\', '') }}</span>
-        </a>
-        {% endfor %}
-      </div>
-    </section>
-    {% endfor %}
-    {% endif %}
-  </div>
+  </section>
 </section>
-{% endblock %}
-
-{% block extra_scripts %}
-  {{ super() }}
 {% endblock %}

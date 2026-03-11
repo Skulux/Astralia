@@ -1,11 +1,11 @@
 :root{
-    --bg:#0e0b13; --panel:#151223; --panel-2:#1b1830; --ink:#e8e5ff; --ink-strong:#ffffff; --muted:#bdb8e6;
-  --accent:#b393ff; --accent-2:#f0a9ff; --glow:#c1aaff; --border:#2b2542;
+    --bg:#060912; --panel:#0f1a2e; --panel-2:#152444; --ink:#dbe8ff; --ink-strong:#ffffff; --muted:#99abd3;
+  --accent:#6ec1ff; --accent-2:#b18cff; --glow:#88d6ff; --border:#2f4f88;
   --background:
     radial-gradient(820px 600px at 12% 18%, rgba(103, 76, 190, .32), rgba(14, 11, 19, 0) 70%) fixed,
     radial-gradient(780px 560px at 88% 26%, rgba(76, 134, 220, .26), rgba(14, 11, 19, 0) 68%) fixed,
     radial-gradient(860px 640px at 18% 78%, rgba(188, 98, 230, .24), rgba(14, 11, 19, 0) 72%) fixed,
-    radial-gradient(1200px 800px at 44% 52%, #181428 0%, #0e0b13 60%) fixed;
+    radial-gradient(1200px 800px at 44% 52%, #101b33 0%, #060912 60%) fixed;
   --surface-header:rgba(14,11,19,.7);
   --surface-card:linear-gradient(180deg,rgba(27,24,48,.8),rgba(21,18,35,.9));
   --surface-team:linear-gradient(180deg,rgba(27,24,48,.9),rgba(21,18,35,.92));
@@ -318,6 +318,78 @@ a:hover{text-decoration:underline}
 .project-related{display:grid;gap:20px;margin-top:12px}
 .article-related .cards,
 .project-related .cards{gap:18px}
+
+
+/* Project detail: spacey mission dossier */
+.project-detail-page{display:grid;gap:18px}
+.project-detail-page__hero{margin-bottom:6px}
+.project-detail-page__hero .astral-logo-word{margin-bottom:.35rem}
+.project-detail-page__lead{max-width:820px;color:#aac8ea}
+
+.project-detail-page__shell{
+  border-radius:18px;
+  border:1px solid rgba(126,91,214,.92);
+  background:
+    radial-gradient(130% 120% at 0% 0%, rgba(148,95,255,.16), transparent 56%),
+    radial-gradient(120% 130% at 100% 0%, rgba(88,171,255,.13), transparent 60%),
+    linear-gradient(180deg, rgba(16,13,42,.95), rgba(8,9,24,.98));
+  box-shadow:inset 0 0 0 1px rgba(214,188,255,.12),0 22px 48px rgba(4,4,16,.58);
+}
+
+.project-detail-page__intro{gap:12px;flex-wrap:wrap}
+.project-detail-page__intro .btn{border-radius:10px !important}
+
+.project-detail-page__content{gap:24px}
+
+.project-detail-page__header{
+  gap:22px;
+  border-radius:18px;
+  border:1px solid rgba(134,98,226,.74);
+  background:
+    linear-gradient(180deg, rgba(30,24,70,.95), rgba(14,12,40,.98) 45%, rgba(9,10,28,.99)),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 28px);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 18px 34px rgba(5,5,15,.55);
+}
+
+.project-detail-page__heading{gap:16px}
+.project-detail-page__heading .project-detail__title{font-size:1.5rem}
+
+.project-detail-page__tags span{
+  background:linear-gradient(180deg, rgba(34,43,86,.82), rgba(22,27,59,.9));
+  border:1px solid rgba(166,211,255,.44);
+  color:#d9e9ff;
+  font-size:.75rem;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+.project-detail-page__media{
+  border-radius:16px;
+  border:1px solid rgba(148,201,255,.38);
+  overflow:hidden;
+  box-shadow:0 20px 38px rgba(5,5,18,.66);
+}
+.project-detail-page__media img{width:100%;max-height:420px;object-fit:cover;border-radius:0}
+
+.project-detail-page__body,
+.project-detail-page .content-block{
+  border-radius:16px;
+  border:1px solid rgba(114,82,201,.72);
+  background:linear-gradient(180deg, rgba(23,19,55,.92), rgba(11,11,31,.96));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.05),0 16px 30px rgba(5,5,15,.5);
+}
+
+.project-detail-page__body{padding:22px;color:#c8d9f6;line-height:1.75}
+.project-detail-page .content-block__heading{font-family:"Orbitron",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#eef4ff}
+
+.project-detail-page__related{padding-top:6px}
+.project-detail-page__related h2{margin:0}
+
+@media (max-width:720px){
+  .project-detail-page__shell{padding:20px 16px}
+  .project-detail-page__header{padding:18px}
+  .project-detail-page__body{padding:18px}
+}
 
 .content-blocks{display:grid;gap:32px}
 .content-block{background:var(--panel);border:1px solid var(--border);border-radius:24px;padding:28px;display:grid;gap:16px;box-shadow:0 18px 38px rgba(10,6,22,.32)}
@@ -857,3 +929,856 @@ a:hover{text-decoration:underline}
 .shop-option-remove{width:38px;height:38px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.05);color:#fff;font-size:1.1rem;display:grid;place-items:center;cursor:pointer;transition:background .2s ease,transform .2s ease}
 .shop-option-remove:hover{background:rgba(255,255,255,.12);transform:translateY(-2px)}
 .shop-option-block .button-secondary{justify-self:start}
+
+/* Astralia.Live redesign v2: full retro forum / myspace galaxy */
+:root{
+  --bg:#04070f;
+  --panel:#0c1429;
+  --panel-2:#111f3f;
+  --ink:#d8e7ff;
+  --muted:#9ab0d6;
+  --accent:#45d0ff;
+  --accent-2:#ff7fe7;
+  --border:#4e6ba8;
+}
+
+body{
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(900px 500px at -8% -12%, rgba(69,208,255,.2), transparent 70%),
+    radial-gradient(900px 700px at 108% 12%, rgba(255,127,231,.15), transparent 72%),
+    linear-gradient(180deg, rgba(7,12,24,.94), rgba(4,7,15,.98)),
+    repeating-linear-gradient(0deg, rgba(118,148,204,.08) 0, rgba(118,148,204,.08) 1px, transparent 1px, transparent 26px),
+    repeating-linear-gradient(90deg, rgba(118,148,204,.06) 0, rgba(118,148,204,.06) 1px, transparent 1px, transparent 26px);
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:repeating-linear-gradient(180deg, rgba(255,255,255,.015) 0, rgba(255,255,255,.015) 1px, transparent 1px, transparent 3px);
+  mix-blend-mode:screen;
+  opacity:.35;
+  z-index:99;
+}
+
+.site-header,
+.portal-banner,
+.forum-toolbar,
+.section,
+.page,
+.card,
+.panel,
+.site-footer,
+.article-detail__header,
+.project-detail__header,
+.talent-card,
+.shop-card,
+.partner-card{
+  border-radius:0 !important;
+  border:2px solid var(--border) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14), 0 0 0 1px rgba(9,15,30,.65), 0 12px 24px rgba(0,0,0,.4) !important;
+}
+
+.site-header{
+  background:linear-gradient(180deg,#1a2d57,#0f1d3c 60%, #0b152d) !important;
+}
+
+.brand-text{
+  font-family:"VT323",monospace;
+  font-size:1.65rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#eef7ff;
+}
+
+.nav-link{
+  border-radius:0;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:.78rem;
+  border:1px solid #5b84cd;
+  background:linear-gradient(180deg,#2a4d8e,#1a2f59);
+}
+
+.nav-link.active{
+  background:linear-gradient(180deg,#6539b0,#2f5da0);
+  border-color:#8fdcff;
+}
+
+.portal-banner{
+  width:min(1180px, calc(100% - 24px));
+  margin:10px auto 0;
+  padding:10px 16px;
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  font-family:"VT323",monospace;
+  font-size:1.28rem;
+  background:linear-gradient(90deg,#162b56,#2f2866,#162b56);
+  color:#eff6ff;
+  text-shadow:0 0 10px rgba(69,208,255,.55);
+}
+
+.forum-toolbar{
+  width:min(1180px, calc(100% - 24px));
+  margin:0 auto;
+  padding:8px 14px;
+  display:flex;
+  gap:12px 20px;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  font-size:.84rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  background:linear-gradient(180deg,#0f1e40,#0b1732);
+}
+
+.forum-toolbar strong{color:#9de5ff}
+
+.main{padding-top:16px}
+
+h1,h2,h3{
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  text-shadow:0 0 12px rgba(69,208,255,.3);
+}
+
+.button,
+.button-secondary,
+button{
+  border-radius:0 !important;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+@media (max-width: 900px){
+  .portal-banner{font-size:1.05rem}
+  .forum-toolbar{font-size:.72rem}
+}
+
+/* Astralia.Live redesign v3: 2010 space portal (static, non-animated backdrop) */
+.starfield{display:none !important}
+
+body{
+  font-family:"Rajdhani","Plus Jakarta Sans",system-ui,sans-serif;
+  background:#030614;
+}
+
+.spacebackdrop{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(25,45,118,.32), rgba(3,6,20,0) 34%),
+    radial-gradient(circle at 50% 50%, rgba(8,11,35,.95) 0%, #030614 70%);
+}
+
+.spacebackdrop__stars,
+.spacebackdrop__stars--soft,
+.spacebackdrop__rings{
+  position:absolute;
+  inset:0;
+  display:block;
+}
+
+.spacebackdrop__stars{
+  background-image:
+    radial-gradient(circle at 7% 22%, rgba(41,230,255,.8) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 15% 74%, rgba(41,230,255,.7) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 24% 38%, rgba(41,230,255,.66) 0 1px, transparent 1.3px),
+    radial-gradient(circle at 33% 81%, rgba(41,230,255,.8) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 47% 28%, rgba(41,230,255,.8) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 56% 68%, rgba(41,230,255,.7) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 63% 18%, rgba(41,230,255,.72) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 72% 52%, rgba(41,230,255,.78) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 84% 32%, rgba(41,230,255,.75) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 92% 74%, rgba(41,230,255,.8) 0 1px, transparent 1.4px);
+}
+
+.spacebackdrop__stars--soft{
+  opacity:.35;
+  filter:blur(.4px);
+  background-image:
+    radial-gradient(circle at 10% 54%, rgba(102,235,255,.8) 0 2px, transparent 2.8px),
+    radial-gradient(circle at 29% 12%, rgba(102,235,255,.6) 0 2px, transparent 2.8px),
+    radial-gradient(circle at 44% 76%, rgba(102,235,255,.65) 0 2px, transparent 2.8px),
+    radial-gradient(circle at 69% 34%, rgba(102,235,255,.6) 0 2px, transparent 2.8px),
+    radial-gradient(circle at 87% 20%, rgba(102,235,255,.66) 0 2px, transparent 2.8px);
+}
+
+.spacebackdrop__rings{
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0 13%, rgba(68,112,216,.14) 13.2% 13.4%, transparent 13.6% 21%, rgba(68,112,216,.12) 21.2% 21.35%, transparent 21.55% 32%, rgba(68,112,216,.1) 32.2% 32.35%, transparent 32.55% 46%, rgba(68,112,216,.08) 46.2% 46.35%, transparent 46.55%);
+}
+
+body::before{display:none !important}
+
+.site-header{
+  background:linear-gradient(180deg, rgba(13,27,70,.94), rgba(8,19,50,.96)) !important;
+  border-bottom:1px solid rgba(96,145,255,.6) !important;
+}
+
+.brand-text{
+  font-family:"Orbitron",sans-serif;
+  letter-spacing:.16em;
+  font-size:1.15rem;
+  background:linear-gradient(90deg,#4be8ff 0%, #9ec5ff 30%, #f3b5ff 68%, #ffbe5e 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 18px rgba(90,215,255,.35);
+}
+
+.portal-banner{
+  border:1px solid rgba(99,147,255,.6) !important;
+  background:linear-gradient(90deg, rgba(11,27,68,.92), rgba(32,27,79,.92), rgba(11,27,68,.92)) !important;
+  font-family:"Orbitron",sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  font-size:.9rem;
+}
+
+.forum-toolbar{
+  border-top:0 !important;
+  background:linear-gradient(180deg, rgba(8,19,50,.92), rgba(7,15,39,.94)) !important;
+  font-family:"Rajdhani",sans-serif;
+  letter-spacing:.12em;
+}
+
+.nav-link{
+  font-family:"Rajdhani",sans-serif;
+  border:1px solid #466cb4;
+  background:linear-gradient(180deg, rgba(30,57,113,.92), rgba(18,35,77,.95));
+}
+
+.nav-link.active{
+  background:linear-gradient(180deg, rgba(74,47,163,.95), rgba(34,83,159,.95));
+}
+
+h1,h2,h3{
+  font-family:"Orbitron",sans-serif;
+  letter-spacing:.12em;
+}
+
+/* Astralia.Live redesign v4: dense 2010 forum portal layout */
+.main{padding-top:10px}
+
+.astral-home{max-width:1280px;margin:0 auto 40px;padding:0 14px 20px}
+.astral-home__topline{display:flex;justify-content:flex-end;border-top:2px solid #f3c92d;border-bottom:1px solid #f3c92d;color:#f3c92d;padding:4px 8px;font-family:"Orbitron",sans-serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;background:linear-gradient(90deg,#5e1c84,#4a1a79)}
+.astral-hero-panel{padding:34px 16px 20px;text-align:center;border:1px solid #6d4bd9;background:linear-gradient(180deg,rgba(22,11,57,.9),rgba(8,6,32,.92));position:relative;overflow:hidden}
+.astral-hero-panel::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 18% 24%,rgba(255,209,85,.65) 0 1.2px,transparent 1.8px),radial-gradient(circle at 34% 42%,rgba(75,231,255,.65) 0 1.2px,transparent 1.8px),radial-gradient(circle at 74% 16%,rgba(255,115,226,.65) 0 1.2px,transparent 1.8px),radial-gradient(circle at 88% 68%,rgba(255,209,85,.6) 0 1.2px,transparent 1.8px);opacity:.75;pointer-events:none}
+.astral-hero-panel>*{position:relative;z-index:1}
+.astral-logo-word{margin:0;font-family:"Orbitron",sans-serif;font-size:clamp(2.6rem,9vw,6.6rem);letter-spacing:.14em;background:linear-gradient(90deg,#4deaff 0%,#98c5ff 38%,#f084ef 74%,#ffca5f 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 18px rgba(86,220,255,.35)}
+.astral-hero-panel__eyebrow,.astral-hero-panel__sub{margin:.2rem 0;color:#20d6f6;font-family:"Orbitron",sans-serif;letter-spacing:.34em;text-transform:uppercase;font-size:.68rem}
+.astral-hero-panel__stats{margin-top:14px;display:flex;justify-content:center;flex-wrap:wrap;gap:22px;color:#f1dcff;font-size:.78rem;text-transform:uppercase;letter-spacing:.1em}
+
+.astral-tabnav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:8px 10px;border:1px solid #7b51d4;border-top:0;background:rgba(14,10,46,.86)}
+.astral-tabnav a{padding:8px 14px;border:1px solid #2bd9ff;background:linear-gradient(180deg,#0f4e82,#0a2d5c);text-transform:uppercase;letter-spacing:.11em;font-family:"Orbitron",sans-serif;font-size:.7rem;color:#aaf2ff;text-decoration:none}
+.astral-tabnav a:hover{filter:brightness(1.2)}
+
+.astral-grid{display:grid;grid-template-columns:280px minmax(0,1fr) 280px;gap:14px;margin-top:14px}
+.astral-col{display:grid;gap:14px;align-content:start}
+.astral-widget{border:1px solid #7a4dd5;background:rgba(17,10,47,.86);padding:10px;box-shadow:inset 0 0 0 1px rgba(108,56,208,.45)}
+.astral-widget>h2{margin:0 0 10px;padding:5px 8px;background:linear-gradient(90deg,#6f2fbc,#3a297f);border:1px solid rgba(186,111,255,.5);font-family:"Orbitron",sans-serif;font-size:.74rem;letter-spacing:.16em;color:#ffd84f;text-transform:uppercase}
+.astral-widget h3{margin:.2rem 0 .55rem;font-size:1.8rem;letter-spacing:.03em;text-transform:none;font-family:"Rajdhani",sans-serif}
+
+.astral-profile{text-align:center}
+.astral-profile__avatar{width:98px;height:98px;border-radius:50%;margin:8px auto;display:grid;place-items:center;font-size:2rem;background:radial-gradient(circle at 30% 30%,#53e9ff,#7b58f3 65%,#28135b);box-shadow:0 0 22px rgba(78,228,255,.5)}
+.astral-profile__name{margin:.25rem 0;font-weight:700}
+.astral-profile__tag{margin:0;color:#8be4ff;font-size:.82rem}
+.astral-rank{margin:0;font-size:1.15rem;text-align:center;color:#ffd95e}
+
+.astral-list{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.astral-list li{padding:6px 4px;border-bottom:1px dashed rgba(121,84,209,.45);font-size:.9rem}
+.astral-list li small{display:block;color:#8cb6dc;margin-top:2px}
+.dot-live{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ff426e;box-shadow:0 0 8px #ff426e;margin-right:8px}
+.astral-list--chat li{font-size:.84rem;line-height:1.35}
+
+.astral-featured p{margin:0 0 .85rem;color:#b9c8e6}
+.astral-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+.astral-live-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.astral-live-card{border:1px solid #4c2f96;background:linear-gradient(180deg,rgba(25,22,69,.9),rgba(12,10,40,.95));padding:8px}
+.astral-live-card a{display:grid;gap:6px;color:inherit;text-decoration:none}
+.astral-live-card img{width:100%;height:95px;object-fit:cover;border-radius:0}
+.astral-live-card strong{font-family:"Orbitron",sans-serif;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.astral-live-card small{font-size:.76rem;color:#89c2e1}
+.astral-live-card--empty{grid-column:1/-1;text-align:center;color:#9caecf}
+
+.astral-forum-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.astral-forum-table th,.astral-forum-table td{padding:8px 6px;border-bottom:1px solid rgba(112,76,201,.35);text-align:left}
+.astral-forum-table th{font-family:"Orbitron",sans-serif;text-transform:uppercase;font-size:.7rem;letter-spacing:.12em;color:#ffd95e}
+.astral-forum-table td:nth-child(n+2){color:#8aa6cb;font-size:.8rem}
+
+@media (max-width:1200px){
+  .astral-grid{grid-template-columns:240px minmax(0,1fr) 240px}
+}
+@media (max-width:980px){
+  .astral-grid{grid-template-columns:1fr}
+  .astral-live-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:600px){
+  .astral-logo-word{letter-spacing:.07em}
+  .astral-tabnav a{flex:1 1 calc(50% - 8px);text-align:center}
+  .astral-live-grid{grid-template-columns:1fr}
+}
+
+.astral-hero-copy{max-width:820px;margin:14px auto 0;color:#b7c9ea;font-size:1rem;line-height:1.6}
+.astral-hero-copy p{margin:.4rem 0}
+
+/* Astralia.Live redesign v5: subpages match homepage portal style */
+.section,
+.page,
+.article-detail,
+.project-detail,
+.contact-wrap,
+.legal-card,
+.talent-profile,
+.shop-detail,
+.service-detail{
+  border:1px solid #7a4dd5;
+  background:rgba(17,10,47,.82);
+  box-shadow:inset 0 0 0 1px rgba(108,56,208,.38);
+}
+
+.section-head h2,
+.page h1,
+.article-detail__title,
+.project-detail__title,
+.section h1,
+.section h2{
+  font-family:"Orbitron",sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#e9f3ff;
+}
+
+.page .muted,
+.section .muted,
+.article-detail__summary,
+.project-detail__summary,
+.card-summary{
+  color:#9eb8de;
+}
+
+.cards .card,
+.article-related .card,
+.project-related .card,
+.talent-card,
+.shop-card,
+.partner-card{
+  border:1px solid #5e3ea8;
+  background:linear-gradient(180deg,rgba(24,17,62,.88),rgba(12,9,36,.94));
+  border-radius:0;
+}
+
+.cards .card-body h3,
+.talent-card h3,
+.shop-card h3,
+.partner-card__label{
+  font-family:"Orbitron",sans-serif;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+input,
+textarea,
+select{
+  border-radius:0;
+  border:1px solid #5e46ad;
+  background:rgba(11,8,33,.88);
+  color:#def0ff;
+}
+
+.button,
+.btn,
+.button-secondary,
+.see-all,
+.nav-link,
+.astral-tabnav a{
+  border-radius:0 !important;
+}
+
+.astral-tabnav a.active{
+  border-color:#ffda63;
+  color:#ffeb9a;
+  background:linear-gradient(180deg,#6642c8,#2f4aa5);
+  box-shadow:0 0 0 1px rgba(255,218,99,.35) inset;
+}
+
+.site-footer{
+  border-top:1px solid #7b52d5;
+  background:rgba(10,8,31,.93);
+}
+
+.site-footer h4{
+  font-family:"Orbitron",sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#ffd85a;
+}
+
+
+
+
+/* Projekte: MySpace space-blackboard styling */
+.projects-page{
+  position:relative;
+  border:1px solid rgba(124,90,212,.9);
+  border-radius:20px;
+  padding:28px;
+  background:
+    radial-gradient(120% 100% at 0% 0%, rgba(148,95,255,.18), transparent 55%),
+    radial-gradient(120% 120% at 100% 0%, rgba(84,166,255,.14), transparent 58%),
+    linear-gradient(180deg, rgba(17,14,44,.95), rgba(9,9,24,.98));
+  box-shadow:
+    inset 0 0 0 1px rgba(208,180,255,.15),
+    inset 0 1px 0 rgba(255,255,255,.15),
+    0 20px 44px rgba(4,4,16,.55);
+}
+
+.projects-page::before,
+.projects-page::after{
+  content:"";
+  position:absolute;
+  pointer-events:none;
+}
+
+.projects-page::before{
+  inset:14px;
+  border:1px solid rgba(172,211,255,.2);
+  border-radius:14px;
+}
+
+.projects-page::after{
+  inset:0;
+  border-radius:20px;
+  background:repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 1px, transparent 1px 30px);
+  opacity:.22;
+}
+
+.projects-page__grid{
+  position:relative;
+  z-index:1;
+  gap:26px;
+}
+
+.projects-page__card{
+  border-radius:18px;
+  border:1px solid rgba(132,96,224,.75);
+  background:
+    linear-gradient(180deg, rgba(32,26,73,.96), rgba(14,12,40,.98) 42%, rgba(10,10,29,.99)),
+    radial-gradient(130% 110% at 50% -20%, rgba(186,145,255,.24), transparent 60%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.08),
+    inset 0 -16px 28px rgba(6,7,20,.5),
+    0 16px 30px rgba(4,4,14,.52);
+  overflow:hidden;
+  transform:translateY(0);
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.projects-page__card:hover,
+.projects-page__card:focus-within{
+  transform:translateY(-6px) scale(1.01);
+  border-color:rgba(255,222,128,.82);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.13),
+    inset 0 -16px 28px rgba(6,7,20,.5),
+    0 24px 42px rgba(5,5,18,.68),
+    0 0 0 1px rgba(255,222,128,.22);
+}
+
+.projects-page__image{
+  width:100%;
+  height:224px;
+  object-fit:cover;
+  border-radius:0;
+  border-bottom:1px solid rgba(148,201,255,.36);
+  box-shadow:inset 0 -24px 24px rgba(6,7,18,.55);
+  filter:saturate(1.08) contrast(1.06);
+}
+
+.projects-page__body{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  padding:18px 16px 16px;
+}
+
+.projects-page__body h3{
+  margin:0;
+  color:#f3f7ff;
+  font-size:1.08rem;
+  letter-spacing:.05em;
+  text-shadow:0 0 16px rgba(177,152,255,.32);
+}
+
+.projects-page__body .card-summary{
+  font-size:.95rem;
+  line-height:1.55;
+  color:#b8c9ee;
+}
+
+.projects-page__tags{
+  gap:8px;
+}
+
+.projects-page__tags span{
+  padding:4px 10px;
+  border-radius:999px;
+  border:1px solid rgba(169,213,255,.42);
+  background:linear-gradient(180deg, rgba(34,43,86,.84), rgba(22,27,59,.86));
+  color:#d8eaff;
+  font-size:.74rem;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+.projects-page .btn.small{
+  margin-top:auto;
+  align-self:flex-start;
+  padding:8px 14px;
+  border-radius:10px !important;
+  border:1px solid rgba(255,224,142,.78);
+  background:linear-gradient(180deg, rgba(92,66,175,.95), rgba(41,63,138,.95));
+  color:#fff0bc;
+  box-shadow:0 8px 18px rgba(11,9,28,.5), inset 0 1px 0 rgba(255,255,255,.2);
+}
+
+.projects-page .btn.small:hover,
+.projects-page .btn.small:focus-visible{
+  border-color:rgba(255,236,169,.95);
+  background:linear-gradient(180deg, rgba(107,78,194,.98), rgba(53,78,166,.98));
+}
+
+@media (max-width:700px){
+  .projects-page{padding:18px}
+  .projects-page__grid{gap:18px}
+  .projects-page__image{height:190px}
+}
+
+/* Astralia.Live redesign v6: animated canvas starfield background */
+.spacebackdrop{z-index:-2;overflow:hidden}
+#starfield{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block}
+.spacebackdrop__rings{z-index:1;mix-blend-mode:screen;opacity:.5}
+
+
+/* Astralia.Live redesign v7: cursor styling */
+body { cursor: crosshair; }
+a, button, input, textarea, select, .btn, .nav-link { cursor: pointer; }
+
+/* Astralia.Live redesign v8: about page aligned to portal index style */
+.astral-about .astral-about-hero{margin-top:14px}
+.astral-logo-word--subpage{font-size:clamp(2rem,6vw,4.2rem);letter-spacing:.08em}
+.astral-about-lead{max-width:920px;margin:.4rem auto 0;color:#a8ddff;font-size:1.1rem}
+
+.about-portal-grid{display:grid;gap:14px;margin-top:14px}
+.about-portal-media .about-hero-visual{max-width:calc(var(--hero-visual-scale,1) * 520px);margin:0 auto}
+.about-portal-media .about-hero-visual img{border-radius:0;border:1px solid #7550ce;box-shadow:0 18px 40px rgba(4,8,25,.45)}
+
+.about-cards--portal{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.about-cards--portal .about-card,
+.about-portal-team .team-card{
+  border-radius:0;
+  border:1px solid #5f40ad;
+  background:linear-gradient(180deg,rgba(24,17,62,.9),rgba(12,9,36,.95));
+  box-shadow:inset 0 0 0 1px rgba(118,82,210,.3);
+  transform:none;
+}
+.about-cards--portal .about-card::before,
+.about-portal-team .team-card::before{display:none}
+
+.about-cards--portal .about-card h3,
+.about-portal-team .team-info h3{
+  font-family:"Orbitron",sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  font-size:.95rem;
+}
+.about-cards--portal .about-card p,
+.about-portal-team .team-bio,
+.about-portal-team .team-role{color:#9eb8de}
+
+.astral-about .faq-item{
+  border-radius:0;
+  border:1px solid #5f40ad;
+  background:rgba(13,10,38,.92);
+}
+.astral-about .faq-item summary{font-family:"Orbitron",sans-serif;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
+
+@media (max-width:700px){
+  .astral-about-lead{font-size:1rem}
+}
+
+
+/* Astralia.Live redesign v9: talent/service layout fit to portal */
+.talents-grid--portal{
+  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  gap:16px;
+}
+
+.talents-grid--portal .talent-team{
+  border-radius:0;
+  border:1px solid #6a47c3;
+  background:linear-gradient(180deg,rgba(22,14,56,.92),rgba(10,8,34,.96));
+  box-shadow:inset 0 0 0 1px rgba(120,84,214,.3),0 14px 28px rgba(5,8,22,.45);
+  padding:20px;
+}
+
+.services-page--portal{
+  margin-top:14px;
+  padding:12px;
+}
+
+.services-page--portal .services-grid{
+  gap:14px;
+}
+
+.services-page--portal .service-card{
+  border-radius:0;
+  border:1px solid #6a47c3;
+  background:linear-gradient(180deg,rgba(22,14,56,.92),rgba(10,8,34,.96));
+  box-shadow:inset 0 0 0 1px rgba(120,84,214,.3),0 14px 28px rgba(5,8,22,.45);
+}
+
+.services-page--portal .service-card__body{padding:18px;gap:12px}
+.services-page--portal .service-card__title{font-family:"Orbitron",sans-serif;font-size:1.12rem;letter-spacing:.05em;text-transform:uppercase}
+
+/* Astralia.Live redesign v10: 2010 space-myspace talent presentation */
+.talents-page{
+  border:1px solid #7a4dd5;
+  background:rgba(12,9,38,.82);
+  box-shadow:inset 0 0 0 1px rgba(123,83,215,.35);
+  padding:14px;
+}
+
+.talents-grid--portal{
+  grid-template-columns:1fr;
+  gap:14px;
+}
+
+.talents-grid--portal .talent-team{
+  align-items:stretch;
+  gap:14px;
+}
+
+.talents-grid--portal .team-name{
+  font-family:"Orbitron",sans-serif;
+  font-size:1.2rem;
+  letter-spacing:.14em;
+  text-align:left;
+}
+
+.talents-grid--portal .team-member-strip{
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:12px;
+}
+
+.talents-grid--portal .talent-thumb{
+  padding:8px;
+  border-radius:0;
+  border:1px solid #5f45aa;
+  background:linear-gradient(180deg,rgba(31,23,73,.95),rgba(11,9,38,.98));
+  box-shadow:inset 0 0 0 1px rgba(141,102,238,.26),0 10px 18px rgba(4,7,22,.45);
+}
+
+.talents-grid--portal .talent-thumb::after{display:none}
+
+.talents-grid--portal .talent-thumb img{
+  border-radius:0;
+  border:1px solid rgba(160,125,245,.45);
+  box-shadow:0 8px 16px rgba(4,7,22,.45);
+  aspect-ratio:4/5;
+}
+
+.talents-grid--portal .talent-name{
+  position:static;
+  margin-top:8px;
+  padding:7px 8px;
+  border-radius:0;
+  background:linear-gradient(90deg,rgba(22,49,101,.92),rgba(63,40,128,.92));
+  border:1px solid rgba(87,221,255,.35);
+  box-shadow:none;
+  color:#dff5ff;
+  font-size:.76rem;
+  letter-spacing:.12em;
+  opacity:1;
+  transform:none;
+  text-shadow:none;
+}
+
+.talents-grid--portal .talent-live-indicator{
+  top:8px;
+  right:8px;
+  border-radius:0;
+  padding:3px 7px;
+  font-size:.6rem;
+  box-shadow:none;
+  border:1px solid rgba(255,255,255,.35);
+}
+
+.talents-grid--portal .talent-thumb:hover,
+.talents-grid--portal .talent-thumb:focus-visible{
+  transform:translateY(-2px);
+  box-shadow:inset 0 0 0 1px rgba(141,102,238,.4),0 14px 20px rgba(4,7,22,.52);
+}
+
+/* Astralia.Live redesign v11: friendslist style talents page */
+.talents-page--friends{
+  display:grid;
+  gap:12px;
+  border:1px solid #7a4dd5;
+  background:linear-gradient(180deg,rgba(13,10,39,.9),rgba(8,7,28,.94));
+  box-shadow:inset 0 0 0 1px rgba(122,77,213,.35);
+  padding:12px;
+}
+
+.friendslist-panel{
+  border:1px solid #5d39ad;
+  background:rgba(14,10,42,.88);
+}
+
+.friendslist-panel__header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:8px 10px;
+  background:linear-gradient(90deg,#5e1c84,#4a1a79);
+  border-bottom:1px solid #f3c92d;
+}
+
+.friendslist-panel__header h2{
+  margin:0;
+  font-family:"Orbitron",sans-serif;
+  font-size:.82rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:#f3c92d;
+}
+
+.friendslist-panel__header span{
+  color:#9deeff;
+  font-size:.72rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.friendslist{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:grid;
+}
+
+.friendslist li+li{border-top:1px solid rgba(94,65,173,.48)}
+
+.friend-row{
+  display:grid;
+  grid-template-columns:44px 1fr auto;
+  align-items:center;
+  gap:10px;
+  padding:8px 10px;
+  text-decoration:none;
+  color:#e8f3ff;
+  background:linear-gradient(180deg,rgba(29,20,67,.8),rgba(14,10,39,.86));
+}
+
+.friend-row:hover{background:linear-gradient(180deg,rgba(35,26,77,.92),rgba(18,13,47,.92));text-decoration:none}
+
+.friend-row__avatar{width:44px;height:44px;border:1px solid #6e55c5;background:#160f36;display:grid;place-items:center}
+.friend-row__avatar img{width:100%;height:100%;object-fit:cover;border-radius:0}
+
+.friend-row__name{
+  font-family:"Rajdhani",sans-serif;
+  font-size:1rem;
+  letter-spacing:.03em;
+  font-weight:700;
+}
+
+.friend-row__status{
+  font-size:.66rem;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  border:1px solid #5e46ad;
+  padding:4px 8px;
+  color:#cdddf5;
+  background:rgba(11,8,32,.88);
+}
+.friend-row__status.is-live{color:#ffea90;border-color:#f3c92d;background:rgba(116,79,2,.25)}
+.friend-row__status.is-offline{color:#97add4}
+.friend-row__status.is-error{color:#ff9bb7;border-color:#cb5d81}
+
+
+/* Astralia.Live redesign v13: full talent detail portal/myspace layout */
+.talent-profile-shell .talent-profile--portal{
+  display:grid;
+  grid-template-columns:320px minmax(0,1fr);
+  gap:14px;
+  border:1px solid #7a4dd5;
+  background:linear-gradient(180deg,rgba(13,10,39,.9),rgba(8,7,28,.94));
+  box-shadow:inset 0 0 0 1px rgba(122,77,213,.35);
+  padding:12px;
+}
+
+.profile-left{display:grid;gap:10px;align-content:start}
+.profile-team-box{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid #5d39ad;background:rgba(14,10,42,.88)}
+.profile-team-box .profile-team-logo{position:static;width:56px;border-radius:0;box-shadow:none}
+.profile-team-box .profile-team{margin:0}
+
+.talent-profile--portal .profile-visual{min-height:420px;border-radius:0;border:1px solid #5d39ad;padding:0}
+.talent-profile--portal .profile-content{border-radius:0;padding:14px;display:grid;gap:12px}
+.talent-profile--portal .profile-block{border:1px solid #5f43b3;background:rgba(10,8,33,.75);padding:10px}
+.talent-profile--portal .profile-block h2{margin:0 0 8px;font-family:"Orbitron",sans-serif;font-size:.82rem;letter-spacing:.13em;text-transform:uppercase;color:#f3c92d}
+.talent-profile--portal .profile-block p{margin:0;color:#b8c9e8;line-height:1.65}
+
+.talent-profile--portal .profile-meta{margin:0;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.talent-profile--portal .profile-meta div{border-radius:0;border:1px solid rgba(122,87,210,.35);background:rgba(18,13,43,.85);padding:9px 10px}
+.talent-profile--portal .profile-meta dt{font-family:"Orbitron",sans-serif;font-size:.62rem;letter-spacing:.13em;color:#9deeff}
+.talent-profile--portal .profile-meta dd{font-size:.93rem;color:#e7f3ff}
+
+.talent-profile--portal .profile-tags{margin:0}
+.talent-profile--portal .profile-tags li{border-radius:0;background:rgba(10,26,58,.72);border:1px solid #5b8cd6;color:#cde8ff;padding:6px 10px;font-size:.82rem}
+
+.talent-profile--portal .profile-socials{margin:0;gap:8px}
+.talent-profile--portal .profile-social{border-radius:0;border:1px solid #57d6ff;background:linear-gradient(180deg,rgba(14,42,76,.72),rgba(13,19,48,.72));padding:8px 12px}
+.talent-profile--portal .profile-social:hover{transform:translateY(-1px)}
+
+.profile-live-embed--portal{grid-column:1/-1;border:1px solid #5f43b3;border-radius:0;padding:10px;background:rgba(10,8,33,.75)}
+.profile-live-embed--portal .profile-live-embed__frame{border-radius:0}
+
+@media (max-width:1024px){
+  .talent-profile-shell .talent-profile--portal{grid-template-columns:1fr}
+}
+
+
+/* Astralia.Live redesign v14: unified talent profile + portrait-safe visual fitting */
+.talent-profile--portal .profile-visual{
+  min-height:520px;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+
+.talent-profile--portal .profile-fullbody{
+  position:relative;
+  inset:auto;
+  width:100%;
+  height:100%;
+  max-height:480px;
+  object-fit:contain;
+  object-position:center;
+  opacity:1;
+  z-index:2;
+}
+
+.talent-profile--portal .profile-visual::after{
+  background:linear-gradient(180deg,rgba(6,4,14,.25) 0%,rgba(6,4,14,.68) 100%);
+}
