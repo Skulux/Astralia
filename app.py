@@ -38,6 +38,7 @@ from urllib.parse import urljoin, quote, urlencode
 from typing import List, Tuple
 import threading
 import time
+import sqlite3
 
 try:
     import yaml  # type: ignore
@@ -64,6 +65,7 @@ for _brotli_module in ("brotli", "brotlicffi"):
 
 from markupsafe import Markup, escape
 from flask_mail import Mail, Message
+from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "3kvf8P9s3NzjtSDsYcuG")
@@ -344,9 +346,9 @@ NETIM_MAIL_DEFAULTS = {
     "MAIL_PORT": 465,
     "MAIL_USE_TLS": False,
     "MAIL_USE_SSL": True,
-    "MAIL_USERNAME": "project@astralia.de",
+    "MAIL_USERNAME": "project@lumynaria.de",
     "MAIL_PASSWORD": "your_mail_password",
-    "MAIL_DEFAULT_SENDER": "Astralia <noreply@astralia.de>",
+    "MAIL_DEFAULT_SENDER": "Astralia <noreply@astralia.live>",
 }
 
 
@@ -381,7 +383,7 @@ app.config.setdefault("BROTLI_QUALITY", 6)
 app.config.setdefault("BROTLI_MIN_SIZE", 1400)
 
 mail = Mail(app)
-CONTACT_RECIPIENT = os.environ.get("CONTACT_RECIPIENT", "contact@astralia.de")
+CONTACT_RECIPIENT = os.environ.get("CONTACT_RECIPIENT", "contact@astralia.live")
 DECAPI_BASE_URL = "https://decapi.me/twitch"
 
 
@@ -1142,6 +1144,118 @@ MAINTENANCE_USERNAME = os.environ.get("LUMY_MAINT_USER", "visitor")
 MAINTENANCE_PASSWORD = os.environ.get("LUMY_MAINT_PASS", "SSlz9ZWdPDYDJBHvFBJ8")
 ARTWORKS_USERNAME = os.environ.get("LUMY_ARTWORKS_USER", "gallery")
 ARTWORKS_PASSWORD = os.environ.get("LUMY_ARTWORKS_PASS", "ovxEneAkzWZZzIgPb2BE")
+USER_DB_PATH = BASE_DIR / "data" / "users.db"
+
+
+def _db_row_to_user(row):
+    if row is None:
+        return None
+    return {
+        "id": row["id"],
+        "username": row["username"],
+        "password_hash": row["password_hash"],
+        "is_admin": bool(row["is_admin"]),
+        "created_at": row["created_at"],
+        "updated_at": row["updated_at"],
+    }
+
+
+def _ensure_user_db() -> None:
+    USER_DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with sqlite3.connect(USER_DB_PATH) as conn:
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL UNIQUE,
+                password_hash TEXT NOT NULL,
+                is_admin INTEGER NOT NULL DEFAULT 0,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            )
+            """
+        )
+        conn.commit()
+
+
+def _get_user_by_username(username: str):
+    normalized = (username or "").strip().lower()
+    if not normalized:
+        return None
+    _ensure_user_db()
+    with sqlite3.connect(USER_DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        row = conn.execute(
+            "SELECT id, username, password_hash, is_admin, created_at, updated_at FROM users WHERE lower(username)=?",
+            (normalized,),
+        ).fetchone()
+    return _db_row_to_user(row)
+
+
+def _list_users():
+    _ensure_user_db()
+    with sqlite3.connect(USER_DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute(
+            "SELECT id, username, is_admin, created_at, updated_at FROM users ORDER BY lower(username)"
+        ).fetchall()
+    return [
+        {
+            "id": row["id"],
+            "username": row["username"],
+            "is_admin": bool(row["is_admin"]),
+            "created_at": row["created_at"],
+            "updated_at": row["updated_at"],
+        }
+        for row in rows
+    ]
+
+
+def _create_user(username: str, password: str, is_admin: bool = False):
+    normalized = _slugify(username)
+    if not normalized:
+        return False, "Bitte einen gültigen Benutzernamen angeben."
+    if len(password or "") < 8:
+        return False, "Passwort muss mindestens 8 Zeichen lang sein."
+    if _get_user_by_username(normalized):
+        return False, "Benutzername existiert bereits."
+    now = datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+    password_hash = generate_password_hash(password)
+    _ensure_user_db()
+    with sqlite3.connect(USER_DB_PATH) as conn:
+        conn.execute(
+            "INSERT INTO users (username, password_hash, is_admin, created_at, updated_at) VALUES (?, ?, ?, ?, ?)",
+            (normalized, password_hash, 1 if is_admin else 0, now, now),
+        )
+        conn.commit()
+    return True, "Benutzer wurde erstellt."
+
+
+def _update_user_password(username: str, new_password: str):
+    user = _get_user_by_username(username)
+    if not user:
+        return False, "Benutzer nicht gefunden."
+    if len(new_password or "") < 8:
+        return False, "Passwort muss mindestens 8 Zeichen lang sein."
+    now = datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+    password_hash = generate_password_hash(new_password)
+    with sqlite3.connect(USER_DB_PATH) as conn:
+        conn.execute(
+            "UPDATE users SET password_hash=?, updated_at=? WHERE id=?",
+            (password_hash, now, user["id"]),
+        )
+        conn.commit()
+    return True, "Passwort wurde aktualisiert."
+
+
+def _delete_user(username: str):
+    user = _get_user_by_username(username)
+    if not user:
+        return False, "Benutzer nicht gefunden."
+    with sqlite3.connect(USER_DB_PATH) as conn:
+        conn.execute("DELETE FROM users WHERE id=?", (user["id"],))
+        conn.commit()
+    return True, "Benutzer wurde gelöscht."
 
 SHOP_EFFECTS = {
     "": {"label": "", "class": ""},
@@ -1274,7 +1388,7 @@ DEFAULT_HOMEPAGE_SETTINGS = {
         },
         "tertiary_button": {
             "label": "Zum Discord",
-            "url": "https://dc.astralia.de",
+            "url": "https://dc.astralia.live",
         },
     },
     "sections": DEFAULT_HOMEPAGE_SECTIONS,
@@ -2778,6 +2892,9 @@ def inject_globals():
         "NAV_ITEMS": nav_items,
         "IS_ADMIN": session.get("is_admin"),
         "IS_ARTWORKS_MANAGER": session.get("artworks_manager"),
+        "AUTH_USERNAME": session.get("auth_username"),
+        "AUTH_SLUG": session.get("auth_slug"),
+        "AUTH_USER_ADMIN": session.get("auth_user_admin"),
         "MAINTENANCE_MODE": settings.get("maintenance_mode", False),
         "SHOW_GALLERY_LOGIN": gallery_login_available,
         "FOOTER": {
@@ -2954,19 +3071,288 @@ def get_talent_data():
     return [pseudo_team], member_index
 
 
+def _user_can_edit_slug(slug: str) -> bool:
+    if session.get("is_admin"):
+        return True
+    auth_slug = (session.get("auth_slug") or "").strip().casefold()
+    target_slug = (slug or "").strip().casefold()
+    return auth_slug and auth_slug == target_slug
+
+
+def _team_auth_required() -> bool:
+    return session.get("auth_source") == "db" and bool(session.get("auth_slug"))
+
+
+def _upsert_talent_profile(slug: str, payload: dict[str, object]) -> bool:
+    data = load_yaml("talents.yaml") or {}
+    if not isinstance(data, dict):
+        data = {}
+
+    teams = data.get("teams")
+    if not isinstance(teams, list):
+        teams = []
+        data["teams"] = teams
+
+    if not teams:
+        teams.append(
+            {
+                "id": "astralia",
+                "name": "Astralia",
+                "slogan": "",
+                "logo": "images/logo.png",
+                "colors": ["#f3c92d", "#57d6ff"],
+                "members": [],
+            }
+        )
+
+    target_slug = (slug or "").strip()
+    updated = False
+    for team in teams:
+        if not isinstance(team, dict):
+            continue
+        members = team.get("members")
+        if not isinstance(members, list):
+            members = []
+            team["members"] = members
+        for member in members:
+            if not isinstance(member, dict):
+                continue
+            if (member.get("slug") or "").strip() != target_slug:
+                continue
+            member.update(payload)
+            updated = True
+            break
+        if updated:
+            break
+
+    if not updated:
+        first_team = teams[0]
+        members = first_team.get("members")
+        if not isinstance(members, list):
+            members = []
+            first_team["members"] = members
+        new_profile = {
+            "slug": target_slug,
+            "name": payload.get("name") or target_slug.replace("-", " ").title(),
+            "birthday": "",
+            "species": "",
+            "height": "",
+            "profile_image": f"images/talents/members/{target_slug}.svg",
+            "fullbody_image": f"images/talents/members/{target_slug}.svg",
+            "favorites": [],
+            "specialties": "",
+            "motto": "",
+            "socials": [],
+            "introduction": "",
+        }
+        new_profile.update(payload)
+        members.append(new_profile)
+
+    save_yaml("talents.yaml", data)
+    get_talent_data.cache_clear()
+    return True
+
+
+@app.route("/user/login", methods=["GET", "POST"])
+@app.route("/admin/team-login", methods=["GET", "POST"], endpoint="team_login")
+@app.route("/verwaltung/team-login", methods=["GET", "POST"], endpoint="team_login_verwaltung")
+def user_login():
+    if session.get("auth_username"):
+        own_slug = session.get("auth_slug")
+        if own_slug:
+            return redirect(url_for("team_profile_verwaltung"))
+        return redirect(url_for("index"))
+
+    if request.method == "POST":
+        username = (request.form.get("username") or "").strip()
+        password = request.form.get("password", "")
+        user = _get_user_by_username(username)
+        if user and check_password_hash(user.get("password_hash") or "", password):
+            session["auth_source"] = "db"
+            session["auth_username"] = user.get("username")
+            session["auth_slug"] = user.get("username")
+            session["auth_user_admin"] = bool(user.get("is_admin"))
+            flash("Erfolgreich angemeldet.", "success")
+            next_url = request.args.get("next") or url_for("team_profile_verwaltung")
+            return redirect(next_url)
+        flash("Ungültige Zugangsdaten.", "error")
+
+    return render_template(
+        "admin/login.html",
+        login_title="Talent Login",
+        login_intro="Melde dich mit deinem Talent-Konto an, um dein Profil zu bearbeiten.",
+        login_button_label="Einloggen",
+    )
+
+
+@app.route("/user/logout")
+@app.route("/admin/team-logout", endpoint="team_logout")
+@app.route("/verwaltung/team-logout", endpoint="team_logout_verwaltung")
+def user_logout():
+    for key in ("auth_source", "auth_username", "auth_slug", "auth_user_admin"):
+        session.pop(key, None)
+    return redirect(url_for("index"))
+
+
+@app.route("/account/password", methods=["GET", "POST"])
+@app.route("/admin/team-password", methods=["GET", "POST"], endpoint="team_password")
+@app.route("/verwaltung/team-password", methods=["GET", "POST"], endpoint="team_password_verwaltung")
+def account_password():
+    if session.get("auth_source") != "db" or not session.get("auth_username"):
+        return redirect(url_for("team_login_verwaltung", next=request.path))
+
+    if request.method == "POST":
+        current_password = request.form.get("current_password", "")
+        new_password = request.form.get("new_password", "")
+        confirm_password = request.form.get("confirm_password", "")
+        user = _get_user_by_username(session.get("auth_username"))
+        if not user or not check_password_hash(user.get("password_hash") or "", current_password):
+            flash("Aktuelles Passwort ist ungültig.", "error")
+        elif new_password != confirm_password:
+            flash("Die neuen Passwörter stimmen nicht überein.", "error")
+        else:
+            ok, message = _update_user_password(user.get("username"), new_password)
+            flash(message, "success" if ok else "error")
+            if ok:
+                return redirect(url_for("team_profile_verwaltung"))
+
+    return render_template("account_password.html")
+
+
+def _profile_images_from_request(slug: str, fallback_talent: dict[str, object] | None = None) -> dict[str, str]:
+    fallback_talent = fallback_talent or {}
+    profile_image = (request.form.get("profile_image") or "").strip()
+    fullbody_image = (request.form.get("fullbody_image") or "").strip()
+
+    profile_upload = request.files.get("profile_upload")
+    if profile_upload and profile_upload.filename:
+        uploaded = _save_upload(profile_upload, f"{slug}-profile")
+        if uploaded:
+            profile_image = uploaded
+
+    fullbody_upload = request.files.get("fullbody_upload")
+    if fullbody_upload and fullbody_upload.filename:
+        uploaded = _save_upload(fullbody_upload, f"{slug}-fullbody")
+        if uploaded:
+            fullbody_image = uploaded
+
+    if not profile_image:
+        profile_image = (fallback_talent.get("profile_image") or "").strip() if isinstance(fallback_talent.get("profile_image"), str) else ""
+    if not fullbody_image:
+        fullbody_image = (fallback_talent.get("fullbody_image") or "").strip() if isinstance(fallback_talent.get("fullbody_image"), str) else ""
+
+    return {
+        "profile_image": profile_image,
+        "fullbody_image": fullbody_image,
+    }
+
+
+@app.route("/admin/team-profile", methods=["GET", "POST"], endpoint="team_profile")
+@app.route("/verwaltung/team-profile", methods=["GET", "POST"], endpoint="team_profile_verwaltung")
+def team_profile():
+    if not _team_auth_required():
+        return redirect(url_for("team_login_verwaltung", next=request.path))
+
+    slug = (session.get("auth_slug") or "").strip()
+    _, member_index = get_talent_data()
+    talent = member_index.get(slug)
+    if not talent:
+        talent = {
+            "slug": slug,
+            "name": slug.replace("-", " ").title(),
+            "birthday": "",
+            "species": "",
+            "height": "",
+            "specialties": "",
+            "motto": "",
+            "introduction": "",
+            "favorites": [],
+            "socials": [],
+        }
+
+    if request.method == "POST":
+        image_payload = _profile_images_from_request(slug, talent)
+        payload = {
+            "name": (request.form.get("name") or "").strip() or talent.get("name", ""),
+            "birthday": (request.form.get("birthday") or "").strip(),
+            "species": (request.form.get("species") or "").strip(),
+            "height": (request.form.get("height") or "").strip(),
+            "specialties": (request.form.get("specialties") or "").strip(),
+            "motto": (request.form.get("motto") or "").strip(),
+            "introduction": (request.form.get("introduction") or "").strip(),
+            "favorites": _parse_collection(request.form.get("favorites", "")),
+            "socials": _parse_socials(request.form.get("socials", "")),
+            "profile_image": image_payload.get("profile_image", ""),
+            "fullbody_image": image_payload.get("fullbody_image", ""),
+        }
+        if _upsert_talent_profile(slug, payload):
+            flash("Profil gespeichert.", "success")
+            return redirect(url_for("team_profile_verwaltung"))
+        flash("Profil konnte nicht gespeichert werden.", "error")
+
+    return render_template("talent_edit.html", talent=talent, managed_in_admin=True)
+
+
+@app.route("/talents/<slug>/edit", methods=["GET", "POST"], strict_slashes=False)
+def talent_edit(slug):
+    _, member_index = get_talent_data()
+    talent = member_index.get(slug)
+    if not talent:
+        abort(404)
+    if not _user_can_edit_slug(slug):
+        return redirect(url_for("team_login_verwaltung", next=request.path))
+
+    if request.method == "POST":
+        image_payload = _profile_images_from_request(slug, talent)
+        payload = {
+            "name": (request.form.get("name") or "").strip() or talent.get("name", ""),
+            "birthday": (request.form.get("birthday") or "").strip(),
+            "species": (request.form.get("species") or "").strip(),
+            "height": (request.form.get("height") or "").strip(),
+            "specialties": (request.form.get("specialties") or "").strip(),
+            "motto": (request.form.get("motto") or "").strip(),
+            "introduction": (request.form.get("introduction") or "").strip(),
+            "favorites": _parse_collection(request.form.get("favorites", "")),
+            "socials": _parse_socials(request.form.get("socials", "")),
+            "profile_image": image_payload.get("profile_image", ""),
+            "fullbody_image": image_payload.get("fullbody_image", ""),
+        }
+        if _upsert_talent_profile(slug, payload):
+            flash("Profil gespeichert.", "success")
+            return redirect(url_for("talent_detail", slug=slug))
+        flash("Profil konnte nicht gespeichert werden.", "error")
+
+    return render_template("talent_edit.html", talent=talent)
+
+
 @app.route("/admin/login", methods=["GET", "POST"])
+@app.route("/verwaltung/login", methods=["GET", "POST"], endpoint="admin_login_verwaltung")
 def admin_login():
     if session.get("is_admin"):
         return redirect(url_for("admin_dashboard"))
     error = None
     if request.method == "POST":
-        username = request.form.get("username", "").strip()
+        username = (request.form.get("username") or "").strip()
         password = request.form.get("password", "")
         if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
             session["is_admin"] = True
+            session["auth_source"] = "env"
+            session["auth_username"] = ADMIN_USERNAME
             flash("Erfolgreich angemeldet.", "success")
             next_url = request.args.get("next") or url_for("admin_dashboard")
             return redirect(next_url)
+
+        user = _get_user_by_username(username)
+        if user and check_password_hash(user.get("password_hash") or "", password) and user.get("is_admin"):
+            session["is_admin"] = True
+            session["auth_source"] = "db"
+            session["auth_username"] = user.get("username")
+            session["auth_slug"] = user.get("username")
+            session["auth_user_admin"] = True
+            flash("Erfolgreich angemeldet.", "success")
+            next_url = request.args.get("next") or url_for("admin_dashboard")
+            return redirect(next_url)
+
         error = "Ungültige Zugangsdaten."
         flash(error, "error")
     return render_template("admin/login.html")
@@ -3025,10 +3411,12 @@ def gallery_login():
 def admin_logout():
     was_admin = session.pop("is_admin", None)
     was_artworks_manager = session.pop("artworks_manager", None)
+    for key in ("auth_source", "auth_username", "auth_slug", "auth_user_admin"):
+        session.pop(key, None)
     flash("Abgemeldet.", "info")
     if was_artworks_manager and not was_admin:
         return redirect(url_for("gallery_login"))
-    return redirect(url_for("admin_login"))
+    return redirect(url_for("index"))
 
 
 @app.route("/maintenance-login", methods=["GET", "POST"])
@@ -3070,6 +3458,7 @@ def maintenance_logout():
 
 
 @app.route("/admin", methods=["GET", "POST"])
+@app.route("/verwaltung", methods=["GET", "POST"], endpoint="admin_dashboard_verwaltung")
 @admin_required
 def admin_dashboard():
     requested_tab = request.args.get("tab", "home")
@@ -3078,6 +3467,10 @@ def admin_dashboard():
     settings_data = get_settings()
     artworks_enabled = settings_data.get("artworks_panel_enabled", True)
     privacy_markdown = load_markdown(PRIVACY_FILE)
+    users_data = _list_users() if is_admin else []
+
+    if not is_admin and requested_tab == "users":
+        return redirect(url_for("admin_dashboard", tab="home"))
 
     if is_artworks_manager and not is_admin:
         if not artworks_enabled and request.method == "GET":
@@ -4466,6 +4859,25 @@ def admin_dashboard():
             flash("Datenschutzerklärung aktualisiert.", "success")
             return redirect(url_for("admin_dashboard", tab="privacy"))
 
+        if form_name == "users" and is_admin:
+            action = (request.form.get("user-action") or "").strip()
+            username = (request.form.get("username") or "").strip()
+            if action == "create":
+                password = request.form.get("password", "")
+                make_admin = request.form.get("is_admin") == "on"
+                ok, message = _create_user(username, password, is_admin=make_admin)
+                flash(message, "success" if ok else "error")
+            elif action == "delete":
+                ok, message = _delete_user(username)
+                flash(message, "success" if ok else "error")
+            elif action == "reset_password":
+                password = request.form.get("password", "")
+                ok, message = _update_user_password(username, password)
+                flash(message, "success" if ok else "error")
+            else:
+                flash("Unbekannte Benutzeraktion.", "error")
+            return redirect(url_for("admin_dashboard", tab="users"))
+
         if form_name == "settings":
             maintenance_value = request.form.get("settings-maintenance") == "on"
             shop_enabled = request.form.get("settings-shop") == "on"
@@ -4603,6 +5015,7 @@ def admin_dashboard():
         is_admin=is_admin,
         is_artworks_manager=is_artworks_manager,
         privacy=privacy_markdown,
+        users=users_data,
     )
 
 
@@ -4855,6 +5268,7 @@ def talent_detail(slug):
         image=image_url,
         canonical=url_for("talent_detail", slug=slug, _external=True),
     )
+    can_edit_profile = _user_can_edit_slug(slug)
     return render_template(
         "talent_detail.html",
         talent=talent,
@@ -4862,6 +5276,8 @@ def talent_detail(slug):
         live_status=live_status,
         is_live=is_live,
         twitch_embed_url=twitch_embed_url,
+        can_edit_profile=can_edit_profile,
+        current_auth_slug=session.get("auth_slug"),
         page_meta=page_meta,
     )
 
@@ -5107,7 +5523,7 @@ def contact():
                 reply_to=form_data["email"],
             )
             msg.body = (
-                "Neue Kontaktanfrage von Astralia.de\n\n"
+                "Neue Kontaktanfrage von astralia.live\n\n"
                 f"Name: {form_data['name']}\n"
                 f"E-Mail: {form_data['email']}\n"
                 f"Betreff: {form_data['subject']}\n\n"
