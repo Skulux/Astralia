@@ -3079,25 +3079,45 @@ def _user_can_edit_slug(slug: str) -> bool:
     return auth_slug and auth_slug == target_slug
 
 
-def _update_talent_profile(slug: str, payload: dict[str, object]) -> bool:
+def _team_auth_required() -> bool:
+    return session.get("auth_source") == "db" and bool(session.get("auth_slug"))
+
+
+def _upsert_talent_profile(slug: str, payload: dict[str, object]) -> bool:
     data = load_yaml("talents.yaml") or {}
     if not isinstance(data, dict):
-        return False
+        data = {}
+
     teams = data.get("teams")
     if not isinstance(teams, list):
-        return False
+        teams = []
+        data["teams"] = teams
 
+    if not teams:
+        teams.append(
+            {
+                "id": "astralia",
+                "name": "Astralia",
+                "slogan": "",
+                "logo": "images/logo.png",
+                "colors": ["#f3c92d", "#57d6ff"],
+                "members": [],
+            }
+        )
+
+    target_slug = (slug or "").strip()
     updated = False
     for team in teams:
         if not isinstance(team, dict):
             continue
         members = team.get("members")
         if not isinstance(members, list):
-            continue
+            members = []
+            team["members"] = members
         for member in members:
             if not isinstance(member, dict):
                 continue
-            if (member.get("slug") or "").strip() != slug:
+            if (member.get("slug") or "").strip() != target_slug:
                 continue
             member.update(payload)
             updated = True
@@ -3106,7 +3126,27 @@ def _update_talent_profile(slug: str, payload: dict[str, object]) -> bool:
             break
 
     if not updated:
-        return False
+        first_team = teams[0]
+        members = first_team.get("members")
+        if not isinstance(members, list):
+            members = []
+            first_team["members"] = members
+        new_profile = {
+            "slug": target_slug,
+            "name": payload.get("name") or target_slug.replace("-", " ").title(),
+            "birthday": "",
+            "species": "",
+            "height": "",
+            "profile_image": f"images/talents/members/{target_slug}.svg",
+            "fullbody_image": f"images/talents/members/{target_slug}.svg",
+            "favorites": [],
+            "specialties": "",
+            "motto": "",
+            "socials": [],
+            "introduction": "",
+        }
+        new_profile.update(payload)
+        members.append(new_profile)
 
     save_yaml("talents.yaml", data)
     get_talent_data.cache_clear()
@@ -3114,6 +3154,8 @@ def _update_talent_profile(slug: str, payload: dict[str, object]) -> bool:
 
 
 @app.route("/user/login", methods=["GET", "POST"])
+@app.route("/admin/team-login", methods=["GET", "POST"], endpoint="team_login")
+@app.route("/verwaltung/team-login", methods=["GET", "POST"], endpoint="team_login_verwaltung")
 def user_login():
     if session.get("auth_username"):
         own_slug = session.get("auth_slug")
@@ -3131,7 +3173,7 @@ def user_login():
             session["auth_slug"] = user.get("username")
             session["auth_user_admin"] = bool(user.get("is_admin"))
             flash("Erfolgreich angemeldet.", "success")
-            next_url = request.args.get("next") or url_for("talent_detail", slug=user.get("username"))
+            next_url = request.args.get("next") or url_for("team_profile_verwaltung")
             return redirect(next_url)
         flash("Ungültige Zugangsdaten.", "error")
 
@@ -3144,16 +3186,20 @@ def user_login():
 
 
 @app.route("/user/logout")
+@app.route("/admin/team-logout", endpoint="team_logout")
+@app.route("/verwaltung/team-logout", endpoint="team_logout_verwaltung")
 def user_logout():
     for key in ("auth_source", "auth_username", "auth_slug", "auth_user_admin"):
         session.pop(key, None)
-    return redirect(url_for("user_login"))
+    return redirect(url_for("team_login_verwaltung"))
 
 
 @app.route("/account/password", methods=["GET", "POST"])
+@app.route("/admin/team-password", methods=["GET", "POST"], endpoint="team_password")
+@app.route("/verwaltung/team-password", methods=["GET", "POST"], endpoint="team_password_verwaltung")
 def account_password():
     if session.get("auth_source") != "db" or not session.get("auth_username"):
-        return redirect(url_for("user_login", next=request.path))
+        return redirect(url_for("team_login_verwaltung", next=request.path))
 
     if request.method == "POST":
         current_password = request.form.get("current_password", "")
@@ -3168,19 +3214,33 @@ def account_password():
             ok, message = _update_user_password(user.get("username"), new_password)
             flash(message, "success" if ok else "error")
             if ok:
-                return redirect(url_for("talent_detail", slug=user.get("username")))
+                return redirect(url_for("team_profile_verwaltung"))
 
     return render_template("account_password.html")
 
 
-@app.route("/talents/<slug>/edit", methods=["GET", "POST"], strict_slashes=False)
-def talent_edit(slug):
+@app.route("/admin/team-profile", methods=["GET", "POST"], endpoint="team_profile")
+@app.route("/verwaltung/team-profile", methods=["GET", "POST"], endpoint="team_profile_verwaltung")
+def team_profile():
+    if not _team_auth_required():
+        return redirect(url_for("team_login_verwaltung", next=request.path))
+
+    slug = (session.get("auth_slug") or "").strip()
     _, member_index = get_talent_data()
     talent = member_index.get(slug)
     if not talent:
-        abort(404)
-    if not _user_can_edit_slug(slug):
-        return redirect(url_for("user_login", next=request.path))
+        talent = {
+            "slug": slug,
+            "name": slug.replace("-", " ").title(),
+            "birthday": "",
+            "species": "",
+            "height": "",
+            "specialties": "",
+            "motto": "",
+            "introduction": "",
+            "favorites": [],
+            "socials": [],
+        }
 
     if request.method == "POST":
         payload = {
@@ -3194,7 +3254,36 @@ def talent_edit(slug):
             "favorites": _parse_collection(request.form.get("favorites", "")),
             "socials": _parse_socials(request.form.get("socials", "")),
         }
-        if _update_talent_profile(slug, payload):
+        if _upsert_talent_profile(slug, payload):
+            flash("Profil gespeichert.", "success")
+            return redirect(url_for("team_profile_verwaltung"))
+        flash("Profil konnte nicht gespeichert werden.", "error")
+
+    return render_template("talent_edit.html", talent=talent, managed_in_admin=True)
+
+
+@app.route("/talents/<slug>/edit", methods=["GET", "POST"], strict_slashes=False)
+def talent_edit(slug):
+    _, member_index = get_talent_data()
+    talent = member_index.get(slug)
+    if not talent:
+        abort(404)
+    if not _user_can_edit_slug(slug):
+        return redirect(url_for("team_login_verwaltung", next=request.path))
+
+    if request.method == "POST":
+        payload = {
+            "name": (request.form.get("name") or "").strip() or talent.get("name", ""),
+            "birthday": (request.form.get("birthday") or "").strip(),
+            "species": (request.form.get("species") or "").strip(),
+            "height": (request.form.get("height") or "").strip(),
+            "specialties": (request.form.get("specialties") or "").strip(),
+            "motto": (request.form.get("motto") or "").strip(),
+            "introduction": (request.form.get("introduction") or "").strip(),
+            "favorites": _parse_collection(request.form.get("favorites", "")),
+            "socials": _parse_socials(request.form.get("socials", "")),
+        }
+        if _upsert_talent_profile(slug, payload):
             flash("Profil gespeichert.", "success")
             return redirect(url_for("talent_detail", slug=slug))
         flash("Profil konnte nicht gespeichert werden.", "error")
@@ -3203,6 +3292,7 @@ def talent_edit(slug):
 
 
 @app.route("/admin/login", methods=["GET", "POST"])
+@app.route("/verwaltung/login", methods=["GET", "POST"], endpoint="admin_login_verwaltung")
 def admin_login():
     if session.get("is_admin"):
         return redirect(url_for("admin_dashboard"))
@@ -3334,6 +3424,7 @@ def maintenance_logout():
 
 
 @app.route("/admin", methods=["GET", "POST"])
+@app.route("/verwaltung", methods=["GET", "POST"], endpoint="admin_dashboard_verwaltung")
 @admin_required
 def admin_dashboard():
     requested_tab = request.args.get("tab", "home")

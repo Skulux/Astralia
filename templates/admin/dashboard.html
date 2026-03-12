@@ -25,7 +25,7 @@
     <a class="admin-tab {% if tab == 'artworks' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='artworks') }}">Galerie</a>
     <a class="admin-tab {% if tab == 'privacy' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='privacy') }}">Datenschutz</a>
     <a class="admin-tab {% if tab == 'settings' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='settings') }}">Einstellungen</a>
-    {% if is_admin %}<a class="admin-tab {% if tab == 'users' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='users') }}">Benutzer</a>{% endif %}
+    {% if is_admin %}<a class="admin-tab {% if tab == 'users' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='users') }}">Team-Logins</a>{% endif %}
     {% endif %}
   </nav>
 
@@ -1481,12 +1481,12 @@
     {% elif tab == 'users' and is_admin %}
     <section class="admin-card">
       <fieldset class="admin-fieldset">
-        <legend>Benutzer erstellen</legend>
+        <legend>Team-Logins erstellen</legend>
         <form method="post" class="form-grid">
           <input type="hidden" name="form-name" value="users">
           <input type="hidden" name="user-action" value="create">
           <label>
-            <span>Benutzername (Slug)</span>
+            <span>Team-Loginsname (Slug)</span>
             <input type="text" name="username" required>
           </label>
           <label>
@@ -1497,12 +1497,12 @@
             <input type="checkbox" name="is_admin">
             <span>Admin-Rechte vergeben</span>
           </label>
-          <div><button class="button" type="submit">Benutzer anlegen</button></div>
+          <div><button class="button" type="submit">Team-Logins anlegen</button></div>
         </form>
       </fieldset>
 
       <fieldset class="admin-fieldset">
-        <legend>Benutzer verwalten</legend>
+        <legend>Team-Logins verwalten</legend>
         {% for user in users %}
         <article class="admin-fieldset">
           <h4>{{ user.username }}</h4>
@@ -1517,15 +1517,15 @@
             </label>
             <div><button class="button button-secondary" type="submit">Passwort zurücksetzen</button></div>
           </form>
-          <form method="post" onsubmit="return confirm('Benutzer wirklich löschen?');">
+          <form method="post" onsubmit="return confirm('Team-Logins wirklich löschen?');">
             <input type="hidden" name="form-name" value="users">
             <input type="hidden" name="user-action" value="delete">
             <input type="hidden" name="username" value="{{ user.username }}">
-            <button class="button button-secondary" type="submit">Benutzer löschen</button>
+            <button class="button button-secondary" type="submit">Team-Logins löschen</button>
           </form>
         </article>
         {% else %}
-        <p class="muted">Noch keine Benutzer im Talent-Login.</p>
+        <p class="muted">Noch keine Team-Logins im Talent-Login.</p>
         {% endfor %}
       </fieldset>
     </section>

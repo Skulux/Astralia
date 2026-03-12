@@ -19,5 +19,9 @@
     </div>
     <button class="button" type="submit">{{ login_button_label|default('Anmelden', true) }}</button>
   </form>
+
+  {% if login_title|default('Admin Login', true) == 'Admin Login' %}
+  <p class="muted"><a href="{{ url_for('team_login_verwaltung') }}">Team Login (Profil erstellen/bearbeiten)</a></p>
+  {% endif %}
 </section>
 {% endblock %}

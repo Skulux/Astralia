@@ -2,8 +2,8 @@
 {% block content %}
 <section class="page admin-login">
   <header class="page-header">
-    <h1>Talent-Profil bearbeiten</h1>
-    <p class="muted">Du bearbeitest das Profil von {{ talent.name }}.</p>
+    <h1>{{ "Team-Profil in der Verwaltung" if managed_in_admin else "Talent-Profil bearbeiten" }}</h1>
+    <p class="muted">Du bearbeitest das Profil von {{ talent.name }}{% if managed_in_admin %} über die Verwaltung{% endif %}.</p>
   </header>
 
   <form class="admin-card" method="post">
@@ -19,6 +19,9 @@
     <label><span>Favorites (eine Zeile pro Eintrag)</span><textarea name="favorites" rows="6">{{ (talent.favorites or [])|join('\n') }}</textarea></label>
     <label><span>Socials (Format: Label|URL|icon.svg)</span><textarea name="socials" rows="6">{% for link in talent.socials or [] %}{{ link.label }}|{{ link.url }}|{{ link.icon }}
 {% endfor %}</textarea></label>
+    {% if managed_in_admin %}
+    <p class="muted small"><a href="{{ url_for('team_password_verwaltung') }}">Passwort ändern</a> · <a href="{{ url_for('team_logout_verwaltung') }}">Logout</a></p>
+    {% endif %}
     <button class="button" type="submit">Profil speichern</button>
   </form>
 </section>
