@@ -344,9 +344,9 @@ NETIM_MAIL_DEFAULTS = {
     "MAIL_PORT": 465,
     "MAIL_USE_TLS": False,
     "MAIL_USE_SSL": True,
-    "MAIL_USERNAME": "project@astralia.de",
+    "MAIL_USERNAME": "project@lumynaria.de",
     "MAIL_PASSWORD": "your_mail_password",
-    "MAIL_DEFAULT_SENDER": "Astralia <noreply@astralia.de>",
+    "MAIL_DEFAULT_SENDER": "Astralia <noreply@astralia.live>",
 }
 
 
@@ -381,7 +381,7 @@ app.config.setdefault("BROTLI_QUALITY", 6)
 app.config.setdefault("BROTLI_MIN_SIZE", 1400)
 
 mail = Mail(app)
-CONTACT_RECIPIENT = os.environ.get("CONTACT_RECIPIENT", "contact@astralia.de")
+CONTACT_RECIPIENT = os.environ.get("CONTACT_RECIPIENT", "contact@astralia.live")
 DECAPI_BASE_URL = "https://decapi.me/twitch"
 
 
@@ -1274,7 +1274,7 @@ DEFAULT_HOMEPAGE_SETTINGS = {
         },
         "tertiary_button": {
             "label": "Zum Discord",
-            "url": "https://dc.astralia.de",
+            "url": "https://dc.astralia.live",
         },
     },
     "sections": DEFAULT_HOMEPAGE_SECTIONS,
@@ -5107,7 +5107,7 @@ def contact():
                 reply_to=form_data["email"],
             )
             msg.body = (
-                "Neue Kontaktanfrage von Astralia.de\n\n"
+                "Neue Kontaktanfrage von Astralia.live\n\n"
                 f"Name: {form_data['name']}\n"
                 f"E-Mail: {form_data['email']}\n"
                 f"Betreff: {form_data['subject']}\n\n"
