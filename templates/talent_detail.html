@@ -17,6 +17,16 @@
   <article class="page talent-profile talent-profile--portal">
     <aside class="profile-left">
       <a class="back-link" href="{{ url_for('talents') }}">← Zurück zur Übersicht</a>
+      {% if can_edit_profile %}
+      <p><a class="button button-secondary" href="{{ url_for('talent_edit', slug=talent.slug) }}">Profil bearbeiten</a></p>
+      {% elif AUTH_USERNAME %}
+      <p class="muted small">Du bist als {{ AUTH_USERNAME }} eingeloggt und kannst nur dein eigenes Profil bearbeiten.</p>
+      {% else %}
+      <p><a class="button button-secondary" href="{{ url_for('user_login', next=request.path) }}">Talent Login</a></p>
+      {% endif %}
+      {% if AUTH_USERNAME and can_edit_profile %}
+      <p class="muted small"><a href="{{ url_for('account_password') }}">Passwort ändern</a> · <a href="{{ url_for('user_logout') }}">Logout</a></p>
+      {% endif %}
       <div class="profile-visual" style="--tone-1: {{ talent.colors[0] if talent.colors else '#b393ff' }}; --tone-2: {{ talent.colors[1] if talent.colors|length > 1 else '#f0a9ff' }};">
         <div class="profile-glow"></div>
         {% set fullbody = talent.fullbody_image or talent.profile_image %}

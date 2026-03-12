@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page admin-login">
+  <header class="page-header">
+    <h1>Talent-Profil bearbeiten</h1>
+    <p class="muted">Du bearbeitest das Profil von {{ talent.name }}.</p>
+  </header>
+
+  <form class="admin-card" method="post">
+    <div class="form-grid">
+      <label><span>Name</span><input type="text" name="name" value="{{ talent.name }}"></label>
+      <label><span>Geburtstag</span><input type="text" name="birthday" value="{{ talent.birthday }}"></label>
+      <label><span>Spezies</span><input type="text" name="species" value="{{ talent.species }}"></label>
+      <label><span>Größe</span><input type="text" name="height" value="{{ talent.height }}"></label>
+    </div>
+    <label><span>Specialties</span><textarea name="specialties" rows="4">{{ talent.specialties }}</textarea></label>
+    <label><span>Motto</span><textarea name="motto" rows="3">{{ talent.motto }}</textarea></label>
+    <label><span>Introduction</span><textarea name="introduction" rows="6">{{ talent.introduction }}</textarea></label>
+    <label><span>Favorites (eine Zeile pro Eintrag)</span><textarea name="favorites" rows="6">{{ (talent.favorites or [])|join('\n') }}</textarea></label>
+    <label><span>Socials (Format: Label|URL|icon.svg)</span><textarea name="socials" rows="6">{% for link in talent.socials or [] %}{{ link.label }}|{{ link.url }}|{{ link.icon }}
+{% endfor %}</textarea></label>
+    <button class="button" type="submit">Profil speichern</button>
+  </form>
+</section>
+{% endblock %}
