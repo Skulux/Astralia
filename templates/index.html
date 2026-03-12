@@ -63,23 +63,6 @@
     </aside>
 
     <main class="astral-col astral-col--center">
-      <section class="astral-widget">
-        <h2>Live Streams</h2>
-        <div class="astral-live-grid">
-          {% for talent in live_profiles[:6] %}
-          <article class="astral-live-card">
-            <a href="https://www.twitch.tv/{{ talent.slug }}" target="_blank" rel="noopener">
-              <img src="{{ talent.profile_image_url }}" alt="{{ talent.name }}">
-              <strong>{{ talent.name | replace('\\', '') }}</strong>
-              <small>{{ talent.game or talent.title }}</small>
-            </a>
-          </article>
-          {% else %}
-          <article class="astral-live-card astral-live-card--empty">Noch keine aktiven Streams</article>
-          {% endfor %}
-        </div>
-      </section>
-
       <section id="home-news" class="astral-widget">
         <h2>{{ section_lookup.get('news', {}).get('heading', 'Neuigkeiten') }}</h2>
         <table class="astral-forum-table">
@@ -97,6 +80,23 @@
             {% endfor %}
           </tbody>
         </table>
+      </section>
+
+      <section class="astral-widget">
+        <h2>Live Streams</h2>
+        <div class="astral-live-grid">
+          {% for talent in live_profiles[:6] %}
+          <article class="astral-live-card">
+            <a href="https://www.twitch.tv/{{ talent.slug }}" target="_blank" rel="noopener">
+              <img src="{{ talent.profile_image_url }}" alt="{{ talent.name }}">
+              <strong>{{ talent.name | replace('\\', '') }}</strong>
+              <small>{{ talent.game or talent.title }}</small>
+            </a>
+          </article>
+          {% else %}
+          <article class="astral-live-card astral-live-card--empty">Noch keine aktiven Streams</article>
+          {% endfor %}
+        </div>
       </section>
 
       <section id="home-projects" class="astral-widget astral-featured">
