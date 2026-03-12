@@ -63,23 +63,6 @@
     </aside>
 
     <main class="astral-col astral-col--center">
-      <section id="home-projects" class="astral-widget astral-featured">
-        <h2>{{ section_lookup.get('projects', {}).get('heading', 'Projekte') }}</h2>
-        <div class="astral-live-grid">
-          {% for item in projects[:3] %}
-          <article class="astral-live-card">
-            <a href="{{ url_for('project_detail', slug=item.slug) }}">
-              <img src="{{ item.image_url or item.image }}" alt="{{ item.title }}">
-              <strong>{{ item.title }}</strong>
-              <small>{{ item.summary or '' }}</small>
-            </a>
-          </article>
-          {% else %}
-          <article class="astral-live-card astral-live-card--empty">Keine Projekte verfügbar.</article>
-          {% endfor %}
-        </div>
-      </section>
-
       <section class="astral-widget">
         <h2>Live Streams</h2>
         <div class="astral-live-grid">
@@ -114,6 +97,23 @@
             {% endfor %}
           </tbody>
         </table>
+      </section>
+
+      <section id="home-projects" class="astral-widget astral-featured">
+        <h2>{{ section_lookup.get('projects', {}).get('heading', 'Projekte') }}</h2>
+        <div class="astral-live-grid">
+          {% for item in projects[:3] %}
+          <article class="astral-live-card">
+            <a href="{{ url_for('project_detail', slug=item.slug) }}">
+              <img src="{{ item.image_url or item.image }}" alt="{{ item.title }}">
+              <strong>{{ item.title }}</strong>
+              <small>{{ item.summary or '' }}</small>
+            </a>
+          </article>
+          {% else %}
+          <article class="astral-live-card astral-live-card--empty">Keine Projekte verfügbar.</article>
+          {% endfor %}
+        </div>
       </section>
     </main>
 
