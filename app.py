@@ -3160,7 +3160,7 @@ def user_login():
     if session.get("auth_username"):
         own_slug = session.get("auth_slug")
         if own_slug:
-            return redirect(url_for("talent_detail", slug=own_slug))
+            return redirect(url_for("team_profile_verwaltung"))
         return redirect(url_for("index"))
 
     if request.method == "POST":

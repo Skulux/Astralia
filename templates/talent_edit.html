@@ -2,6 +2,12 @@
 {% block content %}
 <section class="page admin-login">
   <header class="page-header">
+    {% if managed_in_admin %}
+    <nav class="admin-tabs profile-management-tabs">
+      <a class="admin-tab active" href="{{ url_for('team_profile_verwaltung') }}">Profil</a>
+      <a class="admin-tab" href="{{ url_for('team_password_verwaltung') }}">Profil Verwaltung</a>
+    </nav>
+    {% endif %}
     <h1>{{ "Team-Profil in der Verwaltung" if managed_in_admin else "Talent-Profil bearbeiten" }}</h1>
     <p class="muted">Du bearbeitest das Profil von {{ talent.name }}{% if managed_in_admin %} über die Verwaltung{% endif %}.</p>
   </header>
