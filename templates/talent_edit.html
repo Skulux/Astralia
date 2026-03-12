@@ -12,7 +12,7 @@
     <p class="muted">Du bearbeitest das Profil von {{ talent.name }}{% if managed_in_admin %} über die Verwaltung{% endif %}.</p>
   </header>
 
-  <form class="admin-card" method="post">
+  <form class="admin-card" method="post" enctype="multipart/form-data">
     <div class="form-grid">
       <label><span>Name</span><input type="text" name="name" value="{{ talent.name }}"></label>
       <label><span>Geburtstag</span><input type="text" name="birthday" value="{{ talent.birthday }}"></label>
@@ -25,10 +25,34 @@
     <label><span>Favorites (eine Zeile pro Eintrag)</span><textarea name="favorites" rows="6">{{ (talent.favorites or [])|join('\n') }}</textarea></label>
     <label><span>Socials (Format: Label|URL|icon.svg)</span><textarea name="socials" rows="6">{% for link in talent.socials or [] %}{{ link.label }}|{{ link.url }}|{{ link.icon }}
 {% endfor %}</textarea></label>
+
+    <fieldset class="admin-fieldset">
+      <legend>Bilder</legend>
+      <div class="form-grid">
+        <label>
+          <span>Profilbild (URL/Pfad)</span>
+          <input type="text" name="profile_image" value="{{ talent.profile_image|default('', true) }}" placeholder="z. B. uploads/dein-bild.webp">
+        </label>
+        <label>
+          <span>Profilbild hochladen</span>
+          <input type="file" name="profile_upload" accept="image/*">
+        </label>
+        <label>
+          <span>Full Art (URL/Pfad)</span>
+          <input type="text" name="fullbody_image" value="{{ talent.fullbody_image|default('', true) }}" placeholder="z. B. uploads/dein-fullart.webp">
+        </label>
+        <label>
+          <span>Full Art hochladen</span>
+          <input type="file" name="fullbody_upload" accept="image/*">
+        </label>
+      </div>
+      <p class="muted small">Upload überschreibt den Textwert. Leer lassen, um den aktuellen Wert zu behalten.</p>
+    </fieldset>
     {% if managed_in_admin %}
     <p class="muted small"><a href="{{ url_for('team_password_verwaltung') }}">Passwort ändern</a> · <a href="{{ url_for('team_logout_verwaltung') }}">Logout</a></p>
     {% endif %}
     <button class="button" type="submit">Profil speichern</button>
-  </form>
+    </form>
+  <p class="muted small"><a href="{{ url_for('index') }}">← Zur Startseite</a></p>
 </section>
 {% endblock %}

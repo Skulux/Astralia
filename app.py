@@ -3191,7 +3191,7 @@ def user_login():
 def user_logout():
     for key in ("auth_source", "auth_username", "auth_slug", "auth_user_admin"):
         session.pop(key, None)
-    return redirect(url_for("team_login_verwaltung"))
+    return redirect(url_for("index"))
 
 
 @app.route("/account/password", methods=["GET", "POST"])
@@ -3219,6 +3219,34 @@ def account_password():
     return render_template("account_password.html")
 
 
+def _profile_images_from_request(slug: str, fallback_talent: dict[str, object] | None = None) -> dict[str, str]:
+    fallback_talent = fallback_talent or {}
+    profile_image = (request.form.get("profile_image") or "").strip()
+    fullbody_image = (request.form.get("fullbody_image") or "").strip()
+
+    profile_upload = request.files.get("profile_upload")
+    if profile_upload and profile_upload.filename:
+        uploaded = _save_upload(profile_upload, f"{slug}-profile")
+        if uploaded:
+            profile_image = uploaded
+
+    fullbody_upload = request.files.get("fullbody_upload")
+    if fullbody_upload and fullbody_upload.filename:
+        uploaded = _save_upload(fullbody_upload, f"{slug}-fullbody")
+        if uploaded:
+            fullbody_image = uploaded
+
+    if not profile_image:
+        profile_image = (fallback_talent.get("profile_image") or "").strip() if isinstance(fallback_talent.get("profile_image"), str) else ""
+    if not fullbody_image:
+        fullbody_image = (fallback_talent.get("fullbody_image") or "").strip() if isinstance(fallback_talent.get("fullbody_image"), str) else ""
+
+    return {
+        "profile_image": profile_image,
+        "fullbody_image": fullbody_image,
+    }
+
+
 @app.route("/admin/team-profile", methods=["GET", "POST"], endpoint="team_profile")
 @app.route("/verwaltung/team-profile", methods=["GET", "POST"], endpoint="team_profile_verwaltung")
 def team_profile():
@@ -3243,6 +3271,7 @@ def team_profile():
         }
 
     if request.method == "POST":
+        image_payload = _profile_images_from_request(slug, talent)
         payload = {
             "name": (request.form.get("name") or "").strip() or talent.get("name", ""),
             "birthday": (request.form.get("birthday") or "").strip(),
@@ -3253,6 +3282,8 @@ def team_profile():
             "introduction": (request.form.get("introduction") or "").strip(),
             "favorites": _parse_collection(request.form.get("favorites", "")),
             "socials": _parse_socials(request.form.get("socials", "")),
+            "profile_image": image_payload.get("profile_image", ""),
+            "fullbody_image": image_payload.get("fullbody_image", ""),
         }
         if _upsert_talent_profile(slug, payload):
             flash("Profil gespeichert.", "success")
@@ -3272,6 +3303,7 @@ def talent_edit(slug):
         return redirect(url_for("team_login_verwaltung", next=request.path))
 
     if request.method == "POST":
+        image_payload = _profile_images_from_request(slug, talent)
         payload = {
             "name": (request.form.get("name") or "").strip() or talent.get("name", ""),
             "birthday": (request.form.get("birthday") or "").strip(),
@@ -3282,6 +3314,8 @@ def talent_edit(slug):
             "introduction": (request.form.get("introduction") or "").strip(),
             "favorites": _parse_collection(request.form.get("favorites", "")),
             "socials": _parse_socials(request.form.get("socials", "")),
+            "profile_image": image_payload.get("profile_image", ""),
+            "fullbody_image": image_payload.get("fullbody_image", ""),
         }
         if _upsert_talent_profile(slug, payload):
             flash("Profil gespeichert.", "success")
@@ -3382,7 +3416,7 @@ def admin_logout():
     flash("Abgemeldet.", "info")
     if was_artworks_manager and not was_admin:
         return redirect(url_for("gallery_login"))
-    return redirect(url_for("admin_login"))
+    return redirect(url_for("index"))
 
 
 @app.route("/maintenance-login", methods=["GET", "POST"])
