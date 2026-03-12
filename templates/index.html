@@ -63,21 +63,23 @@
     </aside>
 
     <main class="astral-col astral-col--center">
-      <section id="home-projects" class="astral-widget astral-featured">
-        <h2>{{ section_lookup.get('projects', {}).get('heading', 'Projekte') }}</h2>
-        <div class="astral-live-grid">
-          {% for item in projects[:3] %}
-          <article class="astral-live-card">
-            <a href="{{ url_for('project_detail', slug=item.slug) }}">
-              <img src="{{ item.image_url or item.image }}" alt="{{ item.title }}">
-              <strong>{{ item.title }}</strong>
-              <small>{{ item.summary or '' }}</small>
-            </a>
-          </article>
-          {% else %}
-          <article class="astral-live-card astral-live-card--empty">Keine Projekte verfügbar.</article>
-          {% endfor %}
-        </div>
+      <section id="home-news" class="astral-widget">
+        <h2>{{ section_lookup.get('news', {}).get('heading', 'Neuigkeiten') }}</h2>
+        <table class="astral-forum-table">
+          <thead>
+            <tr><th>Thema</th><th>Beschreibung</th></tr>
+          </thead>
+          <tbody>
+            {% for item in news %}
+            <tr>
+              <td><a href="{{ url_for('news_detail', slug=item.slug) }}">{{ item.title }}</a></td>
+              <td>{{ (item.summary or item.body or '') | striptags | truncate(100, True, '…') }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="2">Keine Beiträge verfügbar.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </section>
 
       <section class="astral-widget">
@@ -97,23 +99,21 @@
         </div>
       </section>
 
-      <section id="home-news" class="astral-widget">
-        <h2>{{ section_lookup.get('news', {}).get('heading', 'Neuigkeiten') }}</h2>
-        <table class="astral-forum-table">
-          <thead>
-            <tr><th>Thema</th><th>Beschreibung</th></tr>
-          </thead>
-          <tbody>
-            {% for item in news %}
-            <tr>
-              <td><a href="{{ url_for('news_detail', slug=item.slug) }}">{{ item.title }}</a></td>
-              <td>{{ (item.summary or item.body or '') | striptags | truncate(100, True, '…') }}</td>
-            </tr>
-            {% else %}
-            <tr><td colspan="2">Keine Beiträge verfügbar.</td></tr>
-            {% endfor %}
-          </tbody>
-        </table>
+      <section id="home-projects" class="astral-widget astral-featured">
+        <h2>{{ section_lookup.get('projects', {}).get('heading', 'Projekte') }}</h2>
+        <div class="astral-live-grid">
+          {% for item in projects[:3] %}
+          <article class="astral-live-card">
+            <a href="{{ url_for('project_detail', slug=item.slug) }}">
+              <img src="{{ item.image_url or item.image }}" alt="{{ item.title }}">
+              <strong>{{ item.title }}</strong>
+              <small>{{ item.summary or '' }}</small>
+            </a>
+          </article>
+          {% else %}
+          <article class="astral-live-card astral-live-card--empty">Keine Projekte verfügbar.</article>
+          {% endfor %}
+        </div>
       </section>
     </main>
 
