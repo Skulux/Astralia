@@ -1,29 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="page admin-login">
-  <header class="page-header">
-    <h1>{{ login_title|default('Admin Login', true) }}</h1>
-    <p class="muted">{{ login_intro|default('Melde dich mit dem Administrationskonto an, um Inhalte zu bearbeiten.', true) }}</p>
-  </header>
+<section class="page admin-login admin-login-shell">
+  <div class="admin-login-shell__panel">
+    <div class="admin-login-shell__intro">
+      <p class="admin-login-shell__eyebrow">Astralia CMS</p>
+      <h1>{{ login_title|default('Admin Login', true) }}</h1>
+      <p class="muted">{{ login_intro|default('Melde dich mit dem Administrationskonto an, um Inhalte zu bearbeiten.', true) }}</p>
 
-  <form class="admin-card" method="post">
-    <div class="form-grid">
-      <label>
-        <span>Benutzername</span>
-        <input type="text" name="username" required>
-      </label>
-      <label>
-        <span>Passwort</span>
-        <input type="password" name="password" required>
-      </label>
+      <div class="admin-login-shell__highlights" aria-hidden="true">
+        <article>
+          <strong>Visual Refresh</strong>
+          <span>Mockup-inspirierte Oberfläche mit klarerem Fokus auf Inhaltspflege.</span>
+        </article>
+        <article>
+          <strong>Bestehender Flow</strong>
+          <span>Login, Rollen und Bearbeitungslogik bleiben unverändert.</span>
+        </article>
+      </div>
     </div>
-    <button class="button" type="submit">{{ login_button_label|default('Anmelden', true) }}</button>
-  </form>
 
-  <p class="muted small"><a href="{{ url_for('index') }}">← Zur Startseite</a></p>
+    <form class="admin-card admin-login-shell__form" method="post">
+      <div class="admin-login-shell__form-head">
+        <span class="admin-login-shell__dot" aria-hidden="true"></span>
+        Sicherer Zugang zum Control Center
+      </div>
+      <div class="form-grid">
+        <label>
+          <span>Benutzername</span>
+          <input type="text" name="username" required>
+        </label>
+        <label>
+          <span>Passwort</span>
+          <input type="password" name="password" required>
+        </label>
+      </div>
+      <button class="button" type="submit">{{ login_button_label|default('Anmelden', true) }}</button>
 
-  {% if login_title|default('Admin Login', true) == 'Admin Login' %}
-  <p class="muted"><a href="{{ url_for('team_login_verwaltung') }}">Team Login (Profil erstellen/bearbeiten)</a></p>
-  {% endif %}
+      <div class="admin-login-shell__links">
+        <a class="muted small" href="{{ url_for('index') }}">← Zur Startseite</a>
+        {% if login_title|default('Admin Login', true) == 'Admin Login' %}
+        <a class="muted small" href="{{ url_for('team_login_verwaltung') }}">Team Login verwalten</a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
 </section>
 {% endblock %}
