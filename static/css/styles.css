@@ -1349,9 +1349,9 @@ h1,h2,h3{
 .astral-hero-panel__stats span{display:inline-flex;align-items:center;gap:8px;color:rgba(200,180,255,.68)}
 .astral-hero-panel__pulse{width:8px;height:8px;border-radius:999px;background:#ff4d6d;box-shadow:0 0 0 0 rgba(255,77,109,.6);animation:astralPulse 1.4s ease-out infinite}
 
-.astral-tabnav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:8px 10px;border:1px solid #7a4dd5;border-top:0;background:rgba(14,8,38,.88)}
-.astral-tabnav a{padding:8px 14px;border:1px solid #00f5ff;background:linear-gradient(180deg,#124f7d,#0c264d);text-transform:uppercase;letter-spacing:.11em;font-family:"Orbitron",sans-serif;font-size:.7rem;color:#c8fcff;text-decoration:none}
-.astral-tabnav a:hover{filter:brightness(1.2)}
+.astral-tabnav{position:relative;z-index:10;display:flex;justify-content:center;gap:4px;flex-wrap:wrap;padding:10px 20px;background:rgba(10,2,25,.82);border-top:1px solid rgba(255,215,0,.14);border-bottom:2px solid rgba(155,89,245,.5)}
+.astral-tabnav a{font-family:"Orbitron",sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.18em;text-decoration:none;color:#00f5ff;padding:6px 14px;border:1px solid rgba(0,245,255,.85);background:rgba(0,245,255,.05);transition:all .2s ease;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}
+.astral-tabnav a:hover,.astral-tabnav a.active{background:#00f5ff;color:#05010f;box-shadow:0 0 20px rgba(0,245,255,.5);filter:none}
 
 .astral-grid{display:grid;grid-template-columns:280px minmax(0,1fr) 280px;gap:14px;margin-top:14px}
 .astral-col{display:grid;gap:14px;align-content:start}
