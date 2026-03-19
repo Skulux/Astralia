@@ -2,6 +2,13 @@
 {% block content %}
 {% set hero = homepage.hero %}
 <section class="astral-home">
+  <div class="marquee-bar" aria-label="Astralia Hinweisband">
+    <div class="marquee-bar__track">
+      <span>✦ WILLKOMMEN BEI {{ SITE_NAME|upper }} ✦ {{ live_profiles|length }} LIVE JETZT ✦ {{ all_talents|length }} MITGLIEDER ✦ DEUTSCHES VTUBER NETZWERK ✦ GEGRÜNDET 2023 ✦</span>
+      <span aria-hidden="true">✦ WILLKOMMEN BEI {{ SITE_NAME|upper }} ✦ {{ live_profiles|length }} LIVE JETZT ✦ {{ all_talents|length }} MITGLIEDER ✦ DEUTSCHES VTUBER NETZWERK ✦ GEGRÜNDET 2023 ✦</span>
+    </div>
+  </div>
+
   <div class="astral-home__topline">
     <span>✦ {{ SITE_NAME }}</span>
   </div>
@@ -10,9 +17,11 @@
     <p class="astral-hero-panel__eyebrow">VIRTUAL TALENT CONSTELLATION</p>
     <h1 class="astral-logo-word">ASTRALIA</h1>
     {% if hero.kicker %}<p class="astral-hero-panel__sub">{{ hero.kicker }}</p>{% endif %}
+    <div class="astral-hero-panel__divider" aria-hidden="true">· · · ✦ ✧ ✦ · · ·</div>
     <div class="astral-hero-panel__stats">
-      <span>🔴 {{ live_profiles|length }} Live jetzt</span>
+      <span><span class="astral-hero-panel__pulse"></span>{{ live_profiles|length }} Live jetzt</span>
       <span>{{ all_talents|length }} Mitglieder</span>
+      <span>Gegründet 2023</span>
     </div>
     {% if hero.subtitle_html %}
     <div class="astral-hero-copy">{{ hero.subtitle_html }}</div>
