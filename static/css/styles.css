@@ -1337,6 +1337,9 @@ h1,h2,h3{
 .marquee-bar{position:relative;overflow:hidden;margin-top:8px;border-top:2px solid #ffd700;border-bottom:2px solid #ffd700;background:linear-gradient(90deg,#6b21c8,#330066,#ff69d4,#330066,#6b21c8);box-shadow:0 0 24px rgba(107,33,200,.24)}
 .marquee-bar__track{display:flex;width:max-content;min-width:100%;animation:marqueeScroll 22s linear infinite}
 .marquee-bar__track span{display:inline-flex;align-items:center;flex-shrink:0;padding:6px 24px;font-family:"VT323",monospace;font-size:1.12rem;letter-spacing:.14em;text-transform:uppercase;color:#ffd700;text-shadow:0 0 10px rgba(255,215,0,.3);white-space:nowrap}
+.marquee-bar--subpage{margin-top:0;border-top-width:1px;border-bottom-width:1px;box-shadow:none;opacity:.92}
+.marquee-bar--subpage .marquee-bar__track{animation-duration:18s}
+.marquee-bar--subpage .marquee-bar__track span{padding:5px 20px;font-size:1rem;letter-spacing:.12em;color:rgba(255,215,0,.92)}
 .astral-hero-panel{padding:30px 20px 12px;text-align:center;position:relative;overflow:hidden;border:0;border-bottom:1px solid rgba(155,89,245,.36);background:none;box-shadow:none}
 .astral-hero-panel::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(0,245,255,.12),transparent 42%);pointer-events:none}
 .astral-hero-panel::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 18% 24%,rgba(255,209,85,.55) 0 1.2px,transparent 1.8px),radial-gradient(circle at 34% 42%,rgba(75,231,255,.55) 0 1.2px,transparent 1.8px),radial-gradient(circle at 74% 16%,rgba(255,115,226,.55) 0 1.2px,transparent 1.8px),radial-gradient(circle at 88% 68%,rgba(255,209,85,.5) 0 1.2px,transparent 1.8px);opacity:.72;pointer-events:none}

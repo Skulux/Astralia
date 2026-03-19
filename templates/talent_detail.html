@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="astral-home astral-subpage talent-profile-shell">
-  <div class="astral-home__topline"><span>✦ Talent Profil</span></div>
+  <div class="marquee-bar marquee-bar--subpage" aria-label="Talent Profil Hinweisband">
+    <div class="marquee-bar__track">
+      <span>✦ Talent Profil ✦ ASTRALIA PORTAL ✦ DEUTSCHES VTUBER NETZWERK ✦</span>
+      <span aria-hidden="true">✦ Talent Profil ✦ ASTRALIA PORTAL ✦ DEUTSCHES VTUBER NETZWERK ✦</span>
+    </div>
+  </div>
   <header class="astral-hero-panel talent-profile-shell__hero">
     <p class="astral-hero-panel__eyebrow">Astralia Profile Space</p>
     <h1 class="astral-logo-word astral-logo-word--subpage">{{ talent.name | replace('\\', '') }}</h1>
