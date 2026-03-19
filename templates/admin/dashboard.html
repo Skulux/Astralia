@@ -1,35 +1,125 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="page admin-dashboard">
-  <header class="page-header admin-page-header">
-    <div>
-      <h1>Content Management</h1>
-      <p class="muted">Bearbeite die YAML-Inhalte über die folgenden Tabs. Änderungen werden sofort gespeichert.</p>
-    </div>
-    <a class="button button-secondary" href="{{ url_for('admin_logout') }}">Abmelden</a>
-  </header>
-
-  <nav class="admin-tabs">
-    {% if is_artworks_manager and not is_admin %}
-    <a class="admin-tab {% if tab == 'artworks' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='artworks') }}">Galerie</a>
-    {% else %}
-    <a class="admin-tab {% if tab == 'home' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='home') }}">Startseite</a>
-    <a class="admin-tab {% if tab == 'talents' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='talents') }}">Talente</a>
-    <a class="admin-tab {% if tab == 'projects' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='projects') }}">Projekte</a>
-    <a class="admin-tab {% if tab == 'services' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='services') }}">Services</a>
-    <a class="admin-tab {% if tab == 'partners' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='partners') }}">Partner</a>
-    <a class="admin-tab {% if tab == 'news' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='news') }}">News</a>
-    <a class="admin-tab {% if tab == 'about' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='about') }}">Über uns</a>
-    <a class="admin-tab {% if tab == 'shop' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='shop') }}">Shop</a>
-    <a class="admin-tab {% if tab == 'resources' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='resources') }}">Ressourcen</a>
-    <a class="admin-tab {% if tab == 'artworks' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='artworks') }}">Galerie</a>
-    <a class="admin-tab {% if tab == 'privacy' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='privacy') }}">Datenschutz</a>
-    <a class="admin-tab {% if tab == 'settings' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='settings') }}">Einstellungen</a>
-    {% if is_admin %}<a class="admin-tab {% if tab == 'users' %}active{% endif %}" href="{{ url_for('admin_dashboard', tab='users') }}">Team-Logins</a>{% endif %}
+<section class="page admin-dashboard admin-shell">
+  {% if is_artworks_manager and not is_admin %}
+    {% set admin_sections = [
+      {'key': 'artworks', 'label': 'Galerie', 'icon': '🎨', 'group': 'Kuratierung'}
+    ] %}
+  {% else %}
+    {% set admin_sections = [
+      {'key': 'home', 'label': 'Startseite', 'icon': '✦', 'group': 'Inhalte'},
+      {'key': 'talents', 'label': 'Talente', 'icon': '👥', 'group': 'Inhalte'},
+      {'key': 'projects', 'label': 'Projekte', 'icon': '🚀', 'group': 'Inhalte'},
+      {'key': 'services', 'label': 'Services', 'icon': '🛠️', 'group': 'Inhalte'},
+      {'key': 'partners', 'label': 'Partner', 'icon': '🤝', 'group': 'Inhalte'},
+      {'key': 'news', 'label': 'News', 'icon': '📰', 'group': 'Inhalte'},
+      {'key': 'about', 'label': 'Über uns', 'icon': '🌌', 'group': 'Inhalte'},
+      {'key': 'shop', 'label': 'Shop', 'icon': '🛍️', 'group': 'Inhalte'},
+      {'key': 'resources', 'label': 'Ressourcen', 'icon': '🗂️', 'group': 'Design'},
+      {'key': 'artworks', 'label': 'Galerie', 'icon': '🎨', 'group': 'Design'},
+      {'key': 'privacy', 'label': 'Datenschutz', 'icon': '🔒', 'group': 'System'},
+      {'key': 'settings', 'label': 'Einstellungen', 'icon': '⚙️', 'group': 'System'}
+    ] %}
+    {% if is_admin %}
+      {% set admin_sections = admin_sections + [{'key': 'users', 'label': 'Team-Logins', 'icon': '🔑', 'group': 'System'}] %}
     {% endif %}
-  </nav>
+  {% endif %}
+  {% set admin_titles = {
+    'home': 'Startseite',
+    'talents': 'Talente',
+    'projects': 'Projekte',
+    'services': 'Services',
+    'partners': 'Partner',
+    'news': 'Newsroom',
+    'about': 'Über Astralia',
+    'shop': 'Shop',
+    'resources': 'Ressourcen',
+    'artworks': 'Galerie',
+    'privacy': 'Datenschutz',
+    'settings': 'Einstellungen',
+    'users': 'Team-Logins'
+  } %}
+  {% set active_title = admin_titles.get(tab, 'Content Management') %}
+  {% set active_group = namespace(value='Übersicht') %}
+  {% for item in admin_sections %}
+    {% if item.key == tab %}
+      {% set active_group.value = item.group %}
+    {% endif %}
+  {% endfor %}
 
-  <div class="admin-panels">
+  <div class="admin-shell__layout">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__brand">
+        <p class="admin-sidebar__eyebrow">Astralia CMS</p>
+        <h1>Control Center</h1>
+        <p>Zentrale Arbeitsoberfläche für Inhalte, Medien und Systemeinstellungen.</p>
+      </div>
+
+      <div class="admin-sidebar__meta">
+        <div>
+          <span class="admin-sidebar__meta-label">Aktiver Bereich</span>
+          <strong>{{ active_title }}</strong>
+        </div>
+        <div>
+          <span class="admin-sidebar__meta-label">Kategorie</span>
+          <strong>{{ active_group.value }}</strong>
+        </div>
+      </div>
+
+      <nav class="admin-sidebar__nav" aria-label="CMS Navigation">
+        {% set nav = namespace(current='') %}
+        {% for item in admin_sections %}
+          {% if item.group != nav.current %}
+            {% set nav.current = item.group %}
+            <p class="admin-sidebar__section">{{ item.group }}</p>
+          {% endif %}
+          <a class="admin-sidebar__link {% if tab == item.key %}active{% endif %}" href="{{ url_for('admin_dashboard', tab=item.key) }}">
+            <span class="admin-sidebar__icon" aria-hidden="true">{{ item.icon }}</span>
+            <span>{{ item.label }}</span>
+          </a>
+        {% endfor %}
+      </nav>
+
+      <div class="admin-sidebar__footer">
+        <a class="button button-secondary" href="{{ url_for('admin_logout') }}">Abmelden</a>
+      </div>
+    </aside>
+
+    <div class="admin-shell__content">
+      <header class="page-header admin-page-header admin-hero">
+        <div>
+          <p class="admin-hero__eyebrow">{{ active_group.value }}</p>
+          <h2>{{ active_title }}</h2>
+          <p class="muted">Bearbeite die YAML-Inhalte zentral an einem Ort. Änderungen werden weiterhin direkt gespeichert.</p>
+        </div>
+        <div class="admin-hero__actions">
+          <div class="admin-hero__status">
+            <span class="admin-hero__status-dot" aria-hidden="true"></span>
+            Live Editing aktiviert
+          </div>
+          <a class="button button-ghost" href="{{ url_for('index') }}">Website ansehen</a>
+        </div>
+      </header>
+
+      <div class="admin-overview" aria-hidden="true">
+        <article class="admin-overview__card">
+          <span class="admin-overview__label">Bereiche</span>
+          <strong>{{ admin_sections|length }}</strong>
+          <p>Alle CMS-Bereiche mit neuer Navigation gebündelt.</p>
+        </article>
+        <article class="admin-overview__card admin-overview__card--accent">
+          <span class="admin-overview__label">Aktiv</span>
+          <strong>{{ active_title }}</strong>
+          <p>Der aktuelle Bereich bleibt sichtbar und leicht erreichbar.</p>
+        </article>
+        <article class="admin-overview__card">
+          <span class="admin-overview__label">Fokus</span>
+          <strong>Klarer Workflow</strong>
+          <p>Mehr Orientierung, bessere Hierarchie und ein ruhigerer Lesefluss im Alltag.</p>
+        </article>
+      </div>
+
+      <div class="admin-panels">
     {% if tab == 'home' %}
     <form class="admin-card" method="post" enctype="multipart/form-data">
       <input type="hidden" name="form-name" value="homepage">
@@ -1848,6 +1938,8 @@
       <button class="button" type="submit">Talente speichern</button>
     </form>
     {% endif %}
+      </div>
+    </div>
   </div>
 </section>
 {% endblock %}
