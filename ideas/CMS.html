@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Astralia Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07030f;--sidebar:#0e0620;--card:#130828;--border:#2d1060;
+  --accent:#7c3aed;--accent2:#a855f7;--cyan:#00f5ff;--pink:#f472b6;
+  --gold:#fbbf24;--green:#4ade80;--red:#ef4444;--text:#e2d9f3;--muted:#7c6a99;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
+
+/* ── LOGIN ── */
+#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(ellipse at 50% 40%,rgba(124,58,237,.15),transparent 70%);}
+.login-box{background:var(--card);border:1px solid var(--border);padding:40px 36px;width:380px;text-align:center;box-shadow:0 0 60px rgba(124,58,237,.2);}
+.login-logo{font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;letter-spacing:8px;background:linear-gradient(135deg,#fff,var(--cyan) 40%,var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;}
+.login-sub{font-family:'VT323',monospace;font-size:1rem;color:var(--muted);letter-spacing:3px;margin-bottom:28px;}
+.login-field{width:100%;background:rgba(124,58,237,.1);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:.95rem;padding:10px 14px;outline:none;margin-bottom:12px;border-radius:2px;transition:border .2s;}
+.login-field:focus{border-color:var(--accent2);}
+.login-btn{width:100%;font-family:'Orbitron',sans-serif;font-size:.65rem;letter-spacing:3px;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;padding:12px;cursor:pointer;transition:all .3s;margin-top:4px;}
+.login-btn:hover{box-shadow:0 0 20px rgba(168,85,247,.5);transform:translateY(-1px);}
+.login-err{color:var(--red);font-size:.75rem;letter-spacing:1px;margin-top:8px;min-height:18px;font-family:'VT323',monospace;}
+
+/* ── MAIN LAYOUT ── */
+#adminApp{display:none;min-height:100vh;}
+.admin-wrap{display:grid;grid-template-columns:240px 1fr;min-height:100vh;}
+
+/* ── SIDEBAR ── */
+.sidebar{background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sidebar-logo{padding:24px 20px 16px;border-bottom:1px solid var(--border);}
+.sidebar-logo .logo-text{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;letter-spacing:5px;background:linear-gradient(135deg,#fff,var(--cyan) 40%,var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sidebar-logo .logo-sub{font-family:'VT323',monospace;font-size:.8rem;color:var(--muted);letter-spacing:2px;margin-top:2px;}
+.sidebar-nav{flex:1;padding:12px 0;}
+.nav-section{padding:8px 16px 4px;font-family:'Orbitron',sans-serif;font-size:.48rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;transition:all .2s;color:var(--muted);font-size:.85rem;font-weight:600;letter-spacing:.5px;border-left:3px solid transparent;}
+.nav-item:hover{color:var(--text);background:rgba(124,58,237,.1);}
+.nav-item.active{color:#fff;background:rgba(124,58,237,.2);border-left-color:var(--accent2);}
+.nav-item .icon{font-size:1rem;width:20px;text-align:center;}
+.sidebar-footer{padding:14px 16px;border-top:1px solid var(--border);}
+.logout-btn{width:100%;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--red);font-family:'Orbitron',sans-serif;font-size:.55rem;letter-spacing:2px;padding:8px;cursor:pointer;transition:all .2s;}
+.logout-btn:hover{background:rgba(239,68,68,.2);}
+
+/* ── MAIN CONTENT ── */
+.main-content{padding:28px 32px;overflow-y:auto;}
+.page-header{margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.page-title{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:900;letter-spacing:3px;color:#fff;}
+.page-subtitle{font-size:.8rem;color:var(--muted);margin-top:4px;letter-spacing:.5px;}
+
+/* ── SECTION ── */
+.section{display:none;}
+.section.active{display:block;}
+
+/* ── CARDS ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:3px;margin-bottom:18px;overflow:hidden;}
+.card-header{background:linear-gradient(90deg,rgba(124,58,237,.3),rgba(51,0,102,.2));border-bottom:1px solid var(--border);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-family:'Orbitron',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+.card-body{padding:18px;}
+
+/* ── DASHBOARD STATS ── */
+.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.dash-stat{background:var(--card);border:1px solid var(--border);padding:18px;text-align:center;position:relative;overflow:hidden;}
+.dash-stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.dash-stat.s1::before{background:var(--cyan);}
+.dash-stat.s2::before{background:var(--pink);}
+.dash-stat.s3::before{background:var(--gold);}
+.dash-stat.s4::before{background:var(--green);}
+.dash-num{font-family:'VT323',monospace;font-size:2.2rem;line-height:1;display:block;margin-bottom:4px;}
+.dash-lbl{font-size:.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.s1 .dash-num{color:var(--cyan);}
+.s2 .dash-num{color:var(--pink);}
+.s3 .dash-num{color:var(--gold);}
+.s4 .dash-num{color:var(--green);}
+
+/* ── FORM ELEMENTS ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-grid.cols3{grid-template-columns:1fr 1fr 1fr;}
+.form-grid.cols1{grid-template-columns:1fr;}
+.span2{grid-column:1/-1;}
+.field{margin-bottom:0;}
+.field label{display:block;font-size:.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
+.field input,.field textarea,.field select{width:100%;background:rgba(124,58,237,.08);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:.9rem;padding:8px 12px;outline:none;border-radius:2px;transition:border .2s;}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent2);box-shadow:0 0 0 2px rgba(168,85,247,.1);}
+.field textarea{resize:vertical;min-height:80px;}
+.field select option{background:var(--card);}
+
+/* ── BUTTONS ── */
+.btn{font-family:'Orbitron',sans-serif;font-size:.55rem;letter-spacing:2px;padding:9px 20px;cursor:pointer;border:none;transition:all .2s;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;}
+.btn-primary:hover{box-shadow:0 0 16px rgba(168,85,247,.4);transform:translateY(-1px);}
+.btn-danger{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.4)!important;color:var(--red);}
+.btn-danger:hover{background:rgba(239,68,68,.25);}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+.btn-ghost:hover{border-color:var(--accent2);color:var(--text);}
+.btn-success{background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.4)!important;color:var(--green);}
+.btn-sm{padding:5px 12px;font-size:.5rem;}
+.btn-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+
+/* ── TABLE ── */
+.admin-table{width:100%;border-collapse:collapse;}
+.admin-table th{padding:10px 12px;font-family:'Orbitron',sans-serif;font-size:.5rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase;border-bottom:1px solid var(--border);text-align:left;background:rgba(124,58,237,.1);}
+.admin-table td{padding:10px 12px;border-bottom:1px dashed rgba(45,16,96,.5);font-size:.82rem;vertical-align:middle;}
+.admin-table tr:hover td{background:rgba(124,58,237,.05);}
+.admin-table tr:last-child td{border:none;}
+
+/* ── STREAMER ROW ── */
+.streamer-row-img{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);background:linear-gradient(135deg,var(--accent),var(--pink));}
+.streamer-row-emoji{width:36px;height:36px;border-radius:50%;border:2px solid var(--accent);background:linear-gradient(135deg,var(--accent),var(--pink));display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.badge{display:inline-block;font-size:.55rem;letter-spacing:1px;padding:2px 8px;border-radius:1px;text-transform:uppercase;}
+.badge-live{background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.4);color:var(--red);}
+.badge-offline{background:rgba(124,102,153,.15);border:1px solid rgba(124,102,153,.3);color:var(--muted);}
+.badge-tag{background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.4);color:var(--accent2);}
+
+/* ── STREAMER EDIT MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1000;align-items:center;justify-content:center;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--card);border:1px solid var(--border);width:min(620px,95vw);max-height:90vh;overflow-y:auto;box-shadow:0 0 60px rgba(124,58,237,.3);}
+.modal-head{background:linear-gradient(90deg,rgba(124,58,237,.4),rgba(51,0,102,.3));border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;}
+.modal-head h3{font-family:'Orbitron',sans-serif;font-size:.65rem;letter-spacing:3px;color:var(--gold);}
+.modal-close{background:none;border:none;color:var(--muted);font-size:1.3rem;cursor:pointer;line-height:1;}
+.modal-close:hover{color:var(--pink);}
+.modal-body{padding:20px;}
+.modal-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;}
+
+/* ── IMG PREVIEW ── */
+.img-preview-wrap{position:relative;display:inline-block;}
+.img-preview{width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);background:linear-gradient(135deg,var(--accent),var(--pink));display:flex;align-items:center;justify-content:center;font-size:2rem;overflow:hidden;}
+.img-preview img{width:100%;height:100%;object-fit:cover;}
+.img-change-btn{position:absolute;bottom:0;right:0;width:24px;height:24px;background:var(--accent);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.7rem;}
+
+/* ── TOGGLE ── */
+.toggle-row{display:flex;align-items:center;gap:12px;padding:8px 0;}
+.toggle{position:relative;width:42px;height:22px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;position:absolute;}
+.toggle-sl{position:absolute;inset:0;background:rgba(124,58,237,.2);border:1px solid var(--border);cursor:pointer;transition:.2s;border-radius:11px;}
+.toggle-sl::before{content:'';position:absolute;width:16px;height:16px;left:2px;top:2px;background:var(--muted);transition:.2s;border-radius:50%;}
+.toggle input:checked+.toggle-sl{background:rgba(74,222,128,.25);border-color:var(--green);}
+.toggle input:checked+.toggle-sl::before{transform:translateX(20px);background:var(--green);}
+.toggle-lbl{font-size:.82rem;color:var(--text);}
+
+/* ── DRAG HANDLE ── */
+.drag-handle{cursor:grab;color:var(--muted);font-size:1rem;padding:0 4px;user-select:none;}
+.drag-handle:active{cursor:grabbing;}
+
+/* ── NOTICE ── */
+.notice{padding:10px 14px;border-radius:2px;font-size:.78rem;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.notice-info{background:rgba(0,245,255,.08);border:1px solid rgba(0,245,255,.2);color:var(--cyan);}
+.notice-success{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2);color:var(--green);}
+.notice-warn{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);color:var(--gold);}
+
+/* ── TWITCH STATUS ── */
+.tw-connected{color:var(--green);font-family:'VT323',monospace;font-size:1rem;letter-spacing:1px;}
+.tw-disconnected{color:var(--red);font-family:'VT323',monospace;font-size:1rem;letter-spacing:1px;}
+
+/* ── SAVE BAR ── */
+.save-bar{position:fixed;bottom:0;left:240px;right:0;background:rgba(14,6,32,.95);border-top:1px solid var(--border);padding:12px 32px;display:flex;align-items:center;justify-content:space-between;z-index:100;backdrop-filter:blur(10px);}
+.save-bar-text{font-size:.75rem;color:var(--muted);letter-spacing:1px;}
+.save-indicator{width:8px;height:8px;border-radius:50%;background:var(--gold);animation:blk 1s step-end infinite;display:inline-block;margin-right:8px;}
+@keyframes blk{50%{opacity:0}}
+
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent)}
+</style>
+<script src="astralia-api.js"></script>
+</head>
+<body>
+
+<!-- ══ LOGIN ══ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">ASTRALIA</div>
+    <div class="login-sub">✦ ADMIN PANEL ✦</div>
+    <input class="login-field" id="loginUser" type="text" placeholder="Benutzername" onkeydown="if(event.key==='Enter')doLogin()">
+    <input class="login-field" id="loginPass" type="password" placeholder="Passwort" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">EINLOGGEN</button>
+    <div class="login-err" id="loginErr"></div>
+    <div style="margin-top:14px;font-size:.65rem;color:var(--muted);">Standard: admin / astralia2024</div>
+  </div>
+</div>
+
+<!-- ══ ADMIN APP ══ -->
+<div id="adminApp">
+  <div class="admin-wrap">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-text">ASTRALIA</div>
+        <div class="logo-sub">ADMIN PANEL</div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">Übersicht</div>
+        <div class="nav-item active" onclick="showSection('dashboard')"><span class="icon">📊</span> Dashboard</div>
+        <div class="nav-section">Inhalt</div>
+        <div class="nav-item" onclick="showSection('streamers')"><span class="icon">🎮</span> Streamer</div>
+        <div class="nav-item" onclick="showSection('events')"><span class="icon">📅</span> Events</div>
+        <div class="nav-item" onclick="showSection('fanarts')"><span class="icon">🎨</span> Artworks</div>
+        <div class="nav-item" onclick="showSection('shop')"><span class="icon">🛍️</span> Shop</div>
+        <div class="nav-item" onclick="showSection('partners')"><span class="icon">🤝</span> Partner</div>
+        <div class="nav-item" onclick="showSection('apply')"><span class="icon">📩</span> Bewerbung</div>
+        <div class="nav-item" onclick="showSection('about')"><span class="icon">🌌</span> Über Uns</div>
+        <div class="nav-section">Design</div>
+        <div class="nav-item" onclick="showSection('header')"><span class="icon">🔤</span> Header & Texte</div>
+        <div class="nav-item" onclick="showSection('socials')"><span class="icon">🔗</span> Socials</div>
+        <div class="nav-section">System</div>
+        <div class="nav-item" onclick="showSection('twitch')"><span class="icon">🟣</span> Twitch API</div>
+        <div class="nav-item" onclick="showSection('settings')"><span class="icon">⚙️</span> Einstellungen</div>
+      </nav>
+      <div class="sidebar-footer">
+        <div style="font-size:.65rem;color:var(--muted);margin-bottom:8px;letter-spacing:1px;">Eingeloggt als <span id="loggedUser" style="color:var(--accent2);">admin</span></div>
+        <button class="logout-btn" onclick="doLogout()">✕ AUSLOGGEN</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main-content">
+
+      <!-- ── DASHBOARD ── -->
+      <div class="section active" id="sec-dashboard">
+        <div class="page-header">
+          <div class="page-title">DASHBOARD</div>
+          <div class="page-subtitle">Übersicht & Schnellzugriff</div>
+        </div>
+        <div class="dash-grid">
+          <div class="dash-stat s1"><span class="dash-num" id="d-streamers">12</span><span class="dash-lbl">Streamer</span></div>
+          <div class="dash-stat s2"><span class="dash-num" id="d-live">0</span><span class="dash-lbl">Live jetzt</span></div>
+          <div class="dash-stat s3"><span class="dash-num" id="d-events">4</span><span class="dash-lbl">Events</span></div>
+          <div class="dash-stat s4"><span class="dash-num" id="d-online">12</span><span class="dash-lbl">Online-Liste</span></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">⚡ Schnellaktionen</span></div>
+          <div class="card-body" style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="showSection('streamers');openStreamerModal(-1)">+ Streamer hinzufügen</button>
+            <button class="btn btn-ghost" onclick="showSection('events');addEvent()">+ Event hinzufügen</button>
+            <button class="btn btn-ghost" onclick="showSection('twitch')">🟣 Twitch verbinden</button>
+            <button class="btn btn-success" onclick="saveAll()">💾 Alle Änderungen speichern</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">📋 Streamer Übersicht</span></div>
+          <div class="card-body" style="padding:0;">
+            <table class="admin-table">
+              <thead><tr><th></th><th>Name</th><th>Twitch</th><th>Status</th><th>Tags</th></tr></thead>
+              <tbody id="dashStreamerList"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STREAMER ── -->
+      <div class="section" id="sec-streamers">
+        <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div class="page-title">STREAMER VERWALTEN</div>
+            <div class="page-subtitle">Streamer hinzufügen, bearbeiten & löschen</div>
+          </div>
+          <button class="btn btn-primary" onclick="openStreamerModal(-1)">+ Neu hinzufügen</button>
+        </div>
+        <div class="card">
+          <div class="card-body" style="padding:0;">
+            <table class="admin-table">
+              <thead><tr><th>⠿</th><th>Bild</th><th>Name</th><th>Twitch Login</th><th>Status</th><th>Theme</th><th>Aktionen</th></tr></thead>
+              <tbody id="streamerTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EVENTS ── -->
+      <div class="section" id="sec-events">
+        <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div class="page-title">EVENTS VERWALTEN</div>
+            <div class="page-subtitle">Kommende Events erstellen & bearbeiten</div>
+          </div>
+          <button class="btn btn-primary" onclick="addEvent()">+ Event hinzufügen</button>
+        </div>
+        <div id="eventsContainer"></div>
+      </div>
+
+      <!-- ── ONLINE ── -->
+      <div class="section" id="sec-online">
+        <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div class="page-title">ONLINE-LISTE</div>
+            <div class="page-subtitle">Seitenleiste — angezeigte Mitglieder</div>
+          </div>
+          <button class="btn btn-primary" onclick="addOnlineMember()">+ Hinzufügen</button>
+        </div>
+        <div id="onlineContainer"></div>
+      </div>
+
+      <!-- ── BEWERBUNG ── -->
+      <div class="section" id="sec-apply">
+        <div class="page-header">
+          <div class="page-title">📩 BEWERBUNGS-TEXTE</div>
+          <div class="page-subtitle">Texte und Felder beider Bewerbungsformulare anpassen</div>
+        </div>
+
+        <!-- VTuber Tab -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">🎭 VTuber-Bewerbung — Allgemein</span></div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="field"><label>Formular-Titel</label><input id="av-title" placeholder="🎭 VTUBER-BEWERBUNG"></div>
+              <div class="field"><label>Button-Text</label><input id="av-btn" placeholder="🚀 BEWERBUNG ABSENDEN"></div>
+              <div class="field span2"><label>Hinweis unter Button</label><input id="av-note" placeholder="* Pflichtfelder · Wir melden uns innerhalb von 7 Tagen"></div>
+              <div class="field"><label>Vorteile-Titel</label><input id="av-perksTitle" placeholder="✦ WAS DU BEKOMMST"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🎭 VTuber-Bewerbung — Vorteile (je Zeile eine)</span></div>
+          <div class="card-body">
+            <div class="field"><textarea id="av-perks" style="min-height:130px;font-family:monospace;font-size:.8rem;"></textarea>
+            <div style="font-size:.65rem;color:rgba(200,180,255,.4);margin-top:4px;">Eine Zeile pro Punkt, z.B.: ✓ Platz auf der Website</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🎭 VTuber-Bewerbung — Voraussetzungen</span></div>
+          <div class="card-body" id="av-reqs-container">
+            <!-- dynamisch -->
+          </div>
+        </div>
+
+        <!-- Partner Tab -->
+        <div class="card" style="margin-top:24px;">
+          <div class="card-header"><span class="card-title">🤝 Partner-Bewerbung — Allgemein</span></div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="field"><label>Formular-Titel</label><input id="ap-title" placeholder="🤝 PARTNER-BEWERBUNG"></div>
+              <div class="field"><label>Button-Text</label><input id="ap-btn" placeholder="🤝 ANFRAGE ABSENDEN"></div>
+              <div class="field span2"><label>Hinweis unter Button</label><input id="ap-note" placeholder="* Pflichtfelder · Wir melden uns innerhalb von 3 Werktagen"></div>
+              <div class="field"><label>Pakete-Titel</label><input id="ap-perksTitle" placeholder="✦ PARTNER-PAKETE"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🤝 Partner-Bewerbung — Pakete (je Zeile eine)</span></div>
+          <div class="card-body">
+            <div class="field"><textarea id="ap-perks" style="min-height:110px;font-family:monospace;font-size:.8rem;"></textarea>
+            <div style="font-size:.65rem;color:rgba(200,180,255,.4);margin-top:4px;">Eine Zeile pro Paket, z.B.: ⭐ Basis — Logo & Link</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🤝 Partner-Bewerbung — Info-Karten</span></div>
+          <div class="card-body" id="ap-reqs-container">
+            <!-- dynamisch -->
+          </div>
+        </div>
+
+        <div class="btn-row"><button class="btn btn-primary" onclick="saveApply()">💾 Speichern</button></div>
+      </div>
+
+      <!-- ── ÜBER UNS ── -->
+      <div class="section" id="sec-about">
+        <div class="page-header">
+          <div class="page-title">🌌 ÜBER UNS — TEXTE</div>
+          <div class="page-subtitle">Alle Inhalte der Über-uns-Seite bearbeiten</div>
+        </div>
+
+        <!-- Hero -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">🚀 Hero-Bereich</span></div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="field"><label>Titel</label><input id="ab-heroTitle" placeholder="ÜBER ASTRALIA"></div>
+              <div class="field"><label>Untertitel</label><input id="ab-heroSubtitle" placeholder="✦ DEUTSCHLANDS FÜHRENDES VTUBER NETZWERK ✦"></div>
+              <div class="field span2"><label>Beschreibung</label><textarea id="ab-heroDesc" style="min-height:70px;"></textarea></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fakten -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">📊 Fakten-Zahlen</span></div>
+          <div class="card-body" id="ab-facts-container"></div>
+        </div>
+
+        <!-- Mission -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">🌌 Mission</span></div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="field span2"><label>Abschnitts-Titel</label><input id="ab-missionTitle" placeholder="🌌 Unsere Mission"></div>
+              <div class="field span2"><label>Text (Absätze mit Leerzeile trennen)</label><textarea id="ab-missionText" style="min-height:120px;"></textarea></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Werte -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">💜 Werte</span></div>
+          <div class="card-body">
+            <div class="field" style="margin-bottom:14px;"><label>Abschnitts-Titel</label><input id="ab-valuesTitle" placeholder="💜 Unsere Werte"></div>
+            <div id="ab-values-container"></div>
+          </div>
+        </div>
+
+        <!-- Team -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">👑 Team-Karten</span></div>
+          <div class="card-body">
+            <div class="field" style="margin-bottom:14px;"><label>Abschnitts-Titel</label><input id="ab-teamTitle" placeholder="👑 Das Team"></div>
+            <div id="ab-team-container"></div>
+          </div>
+        </div>
+
+        <!-- Streamer -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">🌟 Streamer-Grid</span></div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="field"><label>Abschnitts-Titel</label><input id="ab-streamersTitle" placeholder="🌟 Unsere Streamer"></div>
+              <div class="field" style="display:flex;align-items:center;gap:10px;padding-top:18px;">
+                <label class="toggle-label" style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                  <input type="checkbox" id="ab-showStreamers" style="width:16px;height:16px;">
+                  <span style="font-size:.75rem;color:rgba(200,180,255,.7);">Streamer-Grid anzeigen</span>
+                </label>
+              </div>
+            </div>
+            <div style="font-size:.7rem;color:rgba(200,180,255,.4);margin-top:8px;">Die Streamer selbst werden automatisch aus dem Streamer-Manager geladen.</div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">📩 Call-to-Action</span></div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="field"><label>Titel</label><input id="ab-ctaTitle" placeholder="WERDE TEIL DER GALAXIS"></div>
+              <div class="field"><label>Button-Text</label><input id="ab-ctaBtn" placeholder="📩 JETZT BEWERBEN"></div>
+              <div class="field span2"><label>Beschreibung</label><input id="ab-ctaDesc" placeholder="Du bist ein VTuber..."></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row"><button class="btn btn-primary" onclick="saveAbout()">💾 Speichern</button></div>
+      </div>
+
+      <!-- ── HEADER & TEXTE ── -->
+      <div class="section" id="sec-header">
+        <div class="page-header">
+          <div class="page-title">HEADER & TEXTE</div>
+          <div class="page-subtitle">Alle sichtbaren Texte der Seite bearbeiten</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🔤 Header</span></div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="field"><label>Site Name</label><input id="h-siteName" placeholder="ASTRALIA"></div>
+              <div class="field"><label>Tagline</label><input id="h-tagline" placeholder="✦ DEUTSCHES VTUBER NETZWERK ✦"></div>
+              <div class="field"><label>Mitglieder Text</label><input id="h-members" placeholder="12.847 MITGLIEDER"></div>
+              <div class="field"><label>Gegründet Text</label><input id="h-founded" placeholder="GEGRÜNDET 2023"></div>
+              <div class="field span2"><label>Laufschrift (Marquee)</label><textarea id="h-marquee" style="min-height:60px;"></textarea></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🌌 Featured Banner</span></div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="field"><label>Banner Tag</label><input id="b-tag" placeholder="✦ Aktuell vorgestellt"></div>
+              <div class="field"><label>Titel (normal)</label><input id="b-titleMain" placeholder="Willkommen in der"></div>
+              <div class="field"><label>Titel Highlight (pink)</label><input id="b-titleHL" placeholder="Galaxis"></div>
+              <div class="field"><label>Untertitel</label><input id="b-titleSub" placeholder="Sternenreisender!"></div>
+              <div class="field span2"><label>Beschreibung</label><textarea id="b-desc"></textarea></div>
+              <div class="field"><label>Button 1 Text</label><input id="b-btn1" placeholder="Jetzt entdecken"></div>
+              <div class="field"><label>Button 2 Text</label><input id="b-btn2" placeholder="Partner werden"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">📊 Stream Stats Widget</span></div>
+          <div class="card-body">
+            <div class="form-grid cols3">
+              <div class="field"><label>Stat 1 Label</label><input id="s1l" placeholder="Ø Zuschauer"></div>
+              <div class="field"><label>Stat 1 Wert</label><input id="s1v" placeholder="847"></div>
+              <div class="field"></div>
+              <div class="field"><label>Stat 2 Label</label><input id="s2l" placeholder="Peak Zuschauer"></div>
+              <div class="field"><label>Stat 2 Wert</label><input id="s2v" placeholder="4.2k"></div>
+              <div class="field"></div>
+              <div class="field"><label>Stat 3 Label</label><input id="s3l" placeholder="Ø Stream-Dauer"></div>
+              <div class="field"><label>Stat 3 Wert</label><input id="s3v" placeholder="2.1h"></div>
+              <div class="field"></div>
+              <div class="field"><label>Stat 4 Label</label><input id="s4l" placeholder="Streams Total"></div>
+              <div class="field"><label>Stat 4 Wert</label><input id="s4v" placeholder="312"></div>
+              <div class="field"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🦶 Footer</span></div>
+          <div class="card-body">
+            <div class="field"><label>Footer Copyright Text</label><textarea id="h-footer" style="min-height:60px;"></textarea></div>
+          </div>
+        </div>
+        <div class="btn-row"><button class="btn btn-primary" onclick="saveAll()">💾 Speichern</button></div>
+      </div>
+
+      <!-- ── SOCIALS ── -->
+      <div class="section" id="sec-socials">
+        <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div class="page-title">SOCIALS & LINKS</div>
+            <div class="page-subtitle">Social-Media Links verwalten</div>
+          </div>
+          <button class="btn btn-primary" onclick="addSocial()">+ Hinzufügen</button>
+        </div>
+        <div id="socialsContainer"></div>
+        <div class="btn-row"><button class="btn btn-primary" onclick="saveAll()">💾 Speichern</button></div>
+      </div>
+
+      <!-- ── TWITCH API ── -->
+      <div class="section" id="sec-twitch">
+        <div class="page-header">
+          <div class="page-title">TWITCH API</div>
+          <div class="page-subtitle">Live-Tracking konfigurieren</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🔑 API Zugangsdaten</span></div>
+          <div class="card-body">
+            <div class="notice notice-info">ℹ️ Registriere eine App auf <a href="https://dev.twitch.tv/console" target="_blank" style="color:var(--cyan);">dev.twitch.tv/console</a> um Client ID und Secret zu erhalten.</div>
+            <div class="form-grid">
+              <div class="field"><label>Client ID</label><input id="tw-clientId" placeholder="deine_client_id"></div>
+              <div class="field"><label>Client Secret</label><input id="tw-clientSecret" type="password" placeholder="••••••••••••••••"></div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-primary" onclick="testTwitch()">🟣 Zugangsdaten eingeben</button>
+              <span id="tw-status" style="font-family:'VT323',monospace;font-size:1rem;line-height:2;"></span>
+            </div>
+            <div id="tw-manual-wrap" style="display:none;margin-top:14px;">
+              <div class="notice notice-info">ℹ️ <strong>So holst du den Token:</strong><br>
+              1. Klicke auf <strong>"Token URL öffnen"</strong> — es öffnet sich ein neuer Tab<br>
+              2. Du siehst JSON Text mit <code style="color:var(--cyan);">access_token</code><br>
+              3. Kopiere den langen Wert nach <code style="color:var(--cyan);">"access_token":"</code><br>
+              4. Füge ihn unten ein und klicke <strong>"Token speichern"</strong></div>
+              <div style="background:rgba(0,0,0,.3);padding:10px;font-family:monospace;font-size:.68rem;color:var(--cyan);word-break:break-all;margin:8px 0;border:1px solid var(--border);max-height:60px;overflow:auto;" id="tw-token-url"></div>
+              <div class="btn-row" style="margin-top:8px;">
+                <button class="btn btn-primary btn-sm" onclick="openTokenUrl()">🔗 Token URL öffnen</button>
+              </div>
+              <div class="form-grid cols1" style="margin-top:12px;">
+                <div class="field">
+                  <label>Access Token einfügen</label>
+                  <input id="tw-manualToken" placeholder="Füge den access_token hier ein...">
+                </div>
+              </div>
+              <div class="btn-row">
+                <button class="btn btn-success" onclick="saveManualToken()">✓ Token speichern & aktivieren</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">👤 Twitch Logins</span></div>
+          <div class="card-body">
+            <div class="notice notice-info">ℹ️ Diese werden automatisch aus den Streamer-Einträgen gelesen.</div>
+            <div id="tw-loginList" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ARTWORKS ── -->
+      <div class="section" id="sec-fanarts">
+        <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;">
+          <div><div class="page-title">ARTWORKS VERWALTEN</div><div class="page-subtitle">Artwork-Galerie befüllen & bearbeiten</div></div>
+          <button class="btn btn-primary" onclick="addArtwork()">+ Artwork hinzufügen</button>
+        </div>
+        <div id="fanartsContainer"></div>
+        <div class="btn-row"><button class="btn btn-primary" onclick="saveAll()">💾 Speichern</button></div>
+      </div>
+
+      <!-- ── SHOP ── -->
+      <div class="section" id="sec-shop">
+        <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+          <div>
+            <div class="page-title">🛍️ SHOP VERWALTEN</div>
+            <div class="page-subtitle">Shopify Storefront API verbinden oder Produkte manuell pflegen</div>
+          </div>
+        </div>
+
+        <!-- ── Storefront API Einstellungen ── -->
+        <div style="background:linear-gradient(135deg,rgba(150,191,72,.08),rgba(18,8,36,.9));border:1px solid rgba(150,191,72,.35);padding:20px;margin-bottom:24px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+            <div style="font-family:'Orbitron',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:3px;color:#96bf48;">● SHOPIFY STOREFRONT API</div>
+            <span id="shopApiStatus" style="font-family:'VT323',monospace;font-size:.85rem;letter-spacing:2px;color:rgba(200,180,255,.4);">⬤ NICHT VERBUNDEN</span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div class="field">
+              <label>Shop-Domain <span style="color:var(--muted);font-weight:400;">(z.B. mein-shop.myshopify.com)</span></label>
+              <input class="inp" id="sfDomain" placeholder="mein-shop.myshopify.com"
+                value="${''}" oninput="updateShopApiField('storefrontDomain',this.value)">
+            </div>
+            <div class="field">
+              <label>Storefront Access Token <span style="color:var(--muted);font-weight:400;">(aus Shopify → Apps → API-Zugang)</span></label>
+              <input class="inp" id="sfToken" placeholder="shpat_xxxxxxxxxx" type="password"
+                oninput="updateShopApiField('storefrontToken',this.value)">
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="testShopifyConnection()">🔌 Verbindung testen</button>
+            <button class="btn btn-ghost" onclick="saveAll()">💾 Speichern</button>
+            <div style="font-size:.7rem;color:rgba(200,180,255,.4);flex:1;">
+              💡 Token: Shopify Admin → <b style="color:rgba(200,180,255,.7);">Einstellungen → Apps → App entwickeln → Storefront API</b> → "read_products" aktivieren.<br style="margin-bottom:4px;">
+              🏷️ Talent-Filter: Produkt in Shopify den Tag <b style="color:var(--star-gold);">talent:twitchname</b> geben (z.B. <span style="color:var(--star-cyan);">talent:symphoniea</span>) → erscheint dann beim Klick auf das Talent-Bild im Shop.
+            </div>
+          </div>
+
+          <div id="shopTestResult" style="display:none;margin-top:12px;padding:10px 14px;font-family:'VT323',monospace;font-size:.9rem;letter-spacing:2px;border:1px solid;"></div>
+        </div>
+
+        <!-- ── Manuelle Produkte (Fallback wenn kein API-Key) ── -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+          <div>
+            <div style="font-family:'Orbitron',sans-serif;font-size:.65rem;letter-spacing:3px;color:var(--muted);">MANUELLE PRODUKTE <span style="color:rgba(200,180,255,.3);">(Fallback wenn API nicht verbunden)</span></div>
+          </div>
+          <button class="btn btn-primary" onclick="addShopProduct()">+ Produkt hinzufügen</button>
+        </div>
+
+        <div id="shopContainer"></div>
+        <div class="btn-row"><button class="btn btn-primary" onclick="saveAll()">💾 Speichern</button></div>
+      </div>
+
+      <!-- ── PARTNER ── -->
+      <div class="section" id="sec-partners">
+        <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;">
+          <div><div class="page-title">PARTNER VERWALTEN</div><div class="page-subtitle">Partner hinzufügen & bearbeiten</div></div>
+          <button class="btn btn-primary" onclick="addPartner()">+ Partner hinzufügen</button>
+        </div>
+        <div id="partnersContainer"></div>
+        <div class="btn-row"><button class="btn btn-primary" onclick="saveAll()">💾 Speichern</button></div>
+      </div>
+      <div class="section" id="sec-settings">
+        <div class="page-header">
+          <div class="page-title">EINSTELLUNGEN</div>
+          <div class="page-subtitle">System-Konfiguration</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🔐 Admin Zugangsdaten ändern</span></div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="field"><label>Neuer Benutzername</label><input id="new-user" placeholder="admin"></div>
+              <div class="field"><label>Neues Passwort</label><input id="new-pass" type="password" placeholder="••••••••"></div>
+            </div>
+            <div class="btn-row"><button class="btn btn-primary" onclick="changeCredentials()">Zugangsdaten ändern</button></div>
+            <div id="cred-msg" style="font-family:'VT323',monospace;font-size:.95rem;margin-top:8px;"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🗄️ Daten</span></div>
+          <div class="card-body">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="btn btn-ghost" onclick="exportData()">📤 Daten exportieren (JSON)</button>
+              <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()">📥 Daten importieren</button>
+              <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+              <button class="btn btn-danger" onclick="if(confirm('Alle Daten zurücksetzen?')) resetData()">🗑️ Zurücksetzen</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main-content -->
+  </div><!-- /admin-wrap -->
+
+  <!-- SAVE BAR -->
+  <div class="save-bar" id="saveBar" style="display:none;">
+    <div><span class="save-indicator"></span><span class="save-bar-text">Ungespeicherte Änderungen</span></div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-ghost btn-sm" onclick="loadAll()">Verwerfen</button>
+      <button class="btn btn-primary btn-sm" onclick="saveAll()">💾 Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ STREAMER MODAL ══ -->
+<div class="modal-bg" id="streamerModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modalTitle">STREAMER BEARBEITEN</h3>
+      <button class="modal-close" onclick="closeStreamerModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;gap:20px;align-items:flex-start;margin-bottom:16px;">
+        <div>
+          <div class="img-preview" id="modalImgPreview">🌠</div>
+          <div style="display:flex;gap:6px;margin-top:8px;">
+            <label style="cursor:pointer;" title="Bild hochladen">
+              <span class="btn btn-ghost btn-sm">📁 Bild</span>
+              <input type="file" accept="image/*" style="display:none;" onchange="handleModalImg(event)">
+            </label>
+            <button class="btn btn-ghost btn-sm" onclick="clearModalImg()">✕</button>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div class="form-grid">
+            <div class="field"><label>Anzeigename</label><input id="m-name" placeholder="SYMPHONIEA"></div>
+            <div class="field"><label>Twitch Login</label><input id="m-login" placeholder="symphoniea"></div>
+            <div class="field"><label>Emoji (Fallback)</label><input id="m-emoji" placeholder="🌙"></div>
+            <div class="field"><label>Farb-Theme</label>
+              <select id="m-theme">
+                <option value="theme-a">Theme A (Lila/Pink)</option>
+                <option value="theme-b">Theme B (Türkis)</option>
+                <option value="theme-c">Theme C (Gold)</option>
+                <option value="theme-d">Theme D (Rot)</option>
+                <option value="theme-e">Theme E (Blau)</option>
+                <option value="theme-f">Theme F (Violett)</option>
+                <option value="theme-g">Theme G (Grün)</option>
+                <option value="theme-h">Theme H (Magenta)</option>
+                <option value="theme-i">Theme I (Hellblau)</option>
+                <option value="theme-j">Theme J (Orange)</option>
+                <option value="theme-k">Theme K (Gelbgrün)</option>
+                <option value="theme-l">Theme L (Pink)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Tags (komma-getrennt)</label><input id="m-tags" placeholder="VTuber,DE,Gaming"></div>
+        <div class="field"><label>Offline-Text</label><input id="m-offline" placeholder="Offline"></div>
+        <div class="field"><label>Bio / Beschreibung</label><input id="m-bio" placeholder="VTuber im Astralia Netzwerk."></div>
+        <div class="field span2"><label>Bild URL (alternativ zu Upload)</label><input id="m-imgUrl" placeholder="https://..."></div>
+      </div>
+      <div class="toggle-row" style="margin-top:8px;">
+        <label class="toggle"><input type="checkbox" id="m-live"><span class="toggle-sl"></span></label>
+        <span class="toggle-lbl">Manuell als LIVE markieren (wird durch Twitch überschrieben)</span>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeStreamerModal()">Abbrechen</button>
+      <button class="btn btn-primary" onclick="saveStreamerModal()">💾 Speichern</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════ DEFAULTS ════
+const DEFAULT_DATA = {
+  credentials:{username:'admin',password:'astralia2024'},
+  streamers:[
+    {twitchLogin:'symphoniea',emoji:'🌙',img:'',name:'SYMPHONIEA',game:'Offline',live:false,viewers:'0',tags:['VTuber','DE'],theme:'theme-a',offlineMsg:'Offline'},
+    {twitchLogin:'luricerus',emoji:'🪐',img:'',name:'LURICERUS',game:'Offline',live:false,viewers:'0',tags:['VTuber','DE'],theme:'theme-b',offlineMsg:'Offline'},
+    {twitchLogin:'starxrai_n',emoji:'☄️',img:'',name:'STARXRAI_N',game:'Offline',live:false,viewers:'0',tags:['VTuber','DE'],theme:'theme-c',offlineMsg:'Offline'},
+    {twitchLogin:'evilyuna73',emoji:'🌺',img:'',name:'EVILYUNA73',game:'Offline',live:false,viewers:'0',tags:['VTuber','DE'],theme:'theme-d',offlineMsg:'Offline'},
+    {twitchLogin:'flicsegawa',emoji:'🌸',img:'',name:'FLICSEGAWA',game:'Offline',live:false,viewers:'0',tags:['VTuber','DE'],theme:'theme-e',offlineMsg:'Offline'},
+    {twitchLogin:'tathor',emoji:'⚔️',img:'',name:'TATHOR',game:'Offline',live:false,viewers:'0',tags:['VTuber','DE'],theme:'theme-f',offlineMsg:'Offline'},
+    {twitchLogin:'n0frog',emoji:'🐸',img:'',name:'N0FROG',game:'Offline',live:false,viewers:'0',tags:['VTuber','DE'],theme:'theme-g',offlineMsg:'Offline'},
+    {twitchLogin:'tefluvt',emoji:'🔮',img:'',name:'TEFLUVT',game:'Offline',live:false,viewers:'0',tags:['VTuber','DE'],theme:'theme-h',offlineMsg:'Offline'},
+    {twitchLogin:'fairyprincessvt',emoji:'🧚',img:'',name:'FAIRYPRINCESSVT',game:'Offline',live:false,viewers:'0',tags:['VTuber','DE'],theme:'theme-i',offlineMsg:'Offline'},
+    {twitchLogin:'yunoyuzuha',emoji:'🌿',img:'',name:'YUNOYUZUHA',game:'Offline',live:false,viewers:'0',tags:['VTuber','DE'],theme:'theme-j',offlineMsg:'Offline'},
+    {twitchLogin:'yutarovt',emoji:'🌟',img:'',name:'YUTAROVT',game:'Offline',live:false,viewers:'0',tags:['VTuber','DE'],theme:'theme-k',offlineMsg:'Offline'},
+    {twitchLogin:'melody_4you',emoji:'🎵',img:'',name:'MELODY_4YOU',game:'Offline',live:false,viewers:'0',tags:['VTuber','DE'],theme:'theme-l',offlineMsg:'Offline'},
+  ],
+  events:[
+    {dateIso:'2026-03-15',time:'20:00',date:'📅 So, 15. Mär 2026 · 20:00 Uhr',name:'Astralia Galaxy Concert',type:'🎵 Musik-Event',desc:'Das große Konzert-Event!'},
+    {dateIso:'2026-03-22',time:'19:00',date:'📅 So, 22. Mär 2026 · 19:00 Uhr',name:'Collab-Stream',type:'🌌 Collab',desc:'Alle Streamer zusammen!'},
+    {dateIso:'2026-04-01',time:'18:00',date:'📅 Mi, 1. Apr 2026 · 18:00 Uhr',name:'Astralia Geburtstag! 🎂',type:'🎂 Jubiläum',desc:'3 Jahre Astralia!'},
+    {dateIso:'2026-04-10',time:'',date:'📅 Fr, 10. Apr 2026',name:'Artwork Contest #3',type:'🖼️ Kreativ',desc:'Einreichungen willkommen!'},
+  ],
+  online:[
+    {emoji:'🌙',name:'SYMPHONIEA',tag:'Offline',twitchLogin:'symphoniea'},
+    {emoji:'🪐',name:'LURICERUS',tag:'Offline',twitchLogin:'luricerus'},
+    {emoji:'☄️',name:'STARXRAI_N',tag:'Offline',twitchLogin:'starxrai_n'},
+    {emoji:'🌺',name:'EVILYUNA73',tag:'Offline',twitchLogin:'evilyuna73'},
+    {emoji:'🌸',name:'FLICSEGAWA',tag:'Offline',twitchLogin:'flicsegawa'},
+    {emoji:'⚔️',name:'TATHOR',tag:'Offline',twitchLogin:'tathor'},
+  ],
+  socials:[
+    {icon:'𝕏',label:'@AstraliaVTuber',url:'#',hoverColor:'#00f5ff'},
+    {icon:'💬',label:'Discord Server',url:'#',hoverColor:'#7289DA'},
+    {icon:'▶',label:'YouTube Kanal',url:'#',hoverColor:'#ff0000'},
+    {icon:'🟣',label:'Twitch',url:'#',hoverColor:'#9146FF'},
+  ],
+  header:{siteName:'ASTRALIA',tagline:'✦ DEUTSCHES VTUBER NETZWERK ✦',members:'12.847 MITGLIEDER',founded:'GEGRÜNDET 2023',marquee:'✦ WILLKOMMEN BEI ASTRALIA — DEUTSCHLANDS GRÖSSTES VTUBER NETZWERK ✦',footer:'© 2024 ASTRALIA VTUBER NETWORK · ALLE RECHTE VORBEHALTEN · MADE WITH ✦ IN DEUTSCHLAND'},
+  banner:{tag:'✦ Aktuell vorgestellt',titleMain:'Willkommen in der',titleHL:'Galaxis',titleSub:'Sternenreisender!',desc:'Astralia ist Deutschlands führendes VTuber-Netzwerk — ein Ort für Fans, Streamer und Sternenjäger.',btn1:'Jetzt entdecken',btn2:'Partner werden'},
+  stats:{s1l:'Ø Zuschauer',s1v:'847',s2l:'Peak Zuschauer',s2v:'4.2k',s3l:'Ø Stream-Dauer',s3v:'2.1h',s4l:'Streams Total',s4v:'312'},
+  artworks:[
+    {img:'',emoji:'🌙',artist:'KometKid',tag:'symphoniea',source:'https://twitter.com',likes:47,liked:false},
+    {img:'',emoji:'🪐',artist:'GalaxyBrush',tag:'luricerus',source:'https://twitter.com',likes:38,liked:false},
+    {img:'',emoji:'✨',artist:'StarArtist',tag:'collab',source:'https://twitter.com',likes:82,liked:false},
+    {img:'',emoji:'🌠',artist:'NebulaDraw',tag:'symphoniea',source:'https://twitter.com',likes:61,liked:false},
+    {img:'',emoji:'🎆',artist:'CosmicPen',tag:'collab',source:'https://twitter.com',likes:29,liked:false},
+    {img:'',emoji:'🌌',artist:'RingSketch',tag:'luricerus',source:'https://twitter.com',likes:54,liked:false},
+    {img:'',emoji:'💫',artist:'MoonArtDE',tag:'symphoniea',source:'https://twitter.com',likes:93,liked:false},
+    {img:'',emoji:'🌟',artist:'VoidCanvas',tag:'collab',source:'https://twitter.com',likes:71,liked:false},
+  ],
+  partners:[
+    {img:'',name:'GalaxyCon',desc:'Deutschlands größte VTuber Convention',url:'#',verified:true},
+    {img:'',name:'StarSound Studio',desc:'Professionelles Recording für VTuber',url:'#',verified:true},
+  ],
+  about:{
+    heroTitle:'ÜBER ASTRALIA',
+    heroSubtitle:'✦ DEUTSCHLANDS FÜHRENDES VTUBER NETZWERK ✦',
+    heroDesc:'Astralia ist mehr als ein Netzwerk — es ist eine Familie aus Kreativen, Träumern und Sternenreisenden. Seit 2023 verbinden wir deutsche VTuber und ihre Communities zu einem galaktischen Ökosystem.',
+    facts:[
+      {num:'12+',  lbl:'Aktive Streamer'},
+      {num:'12.8k',lbl:'Community-Mitglieder'},
+      {num:'2023', lbl:'Gegründet'},
+      {num:'100%', lbl:'Made in Deutschland'},
+    ],
+    missionTitle:'🌌 Unsere Mission',
+    missionText:'Wir glauben daran, dass jeder eine Bühne verdient — egal ob 10 oder 10.000 Zuschauer. Astralia schafft den Raum, in dem kreative Köpfe wachsen können, unterstützt von einer Community, die sich wirklich für einander interessiert.\n\nUnser Ziel ist es, den deutschen VTuber-Raum zu einer lebendigen, positiven und professionellen Gemeinschaft zu machen — eine Galaxis, in der jeder Stern strahlen kann.',
+    valuesTitle:'💜 Unsere Werte',
+    values:[
+      {icon:'🌟',title:'GEMEINSCHAFT',desc:'Wir sind mehr als Streamer und Zuschauer — wir sind eine Familie. Gegenseitige Unterstützung steht bei uns an erster Stelle.'},
+      {icon:'🎨',title:'KREATIVITÄT',desc:'Jeder Streamer bringt seinen eigenen Stil mit. Wir feiern Vielfalt und individuelle Kreativität.'},
+      {icon:'🚀',title:'WACHSTUM',desc:'Wir helfen unseren Streamern, sich weiterzuentwickeln — mit Tipps, Kollaborationen und gegenseitiger Förderung.'},
+      {icon:'💜',title:'INKLUSIVITÄT',desc:'Alle sind willkommen. Kein Hass, keine Ausgrenzung — Astralia ist ein sicherer Raum für jeden Sternenreisenden.'},
+    ],
+    teamTitle:'👑 Das Team',
+    team:[
+      {avatar:'👑',name:'FOUNDER',role:'Netzwerk-Gründer',color:''},
+      {avatar:'🎨',name:'ART DIRECTOR',role:'Design & Branding',color:'linear-gradient(135deg,#00796b,#00f5ff)'},
+      {avatar:'📋',name:'MANAGER',role:'Community & Events',color:'linear-gradient(135deg,#7a0000,#ff6b35)'},
+      {avatar:'💻',name:'TECH LEAD',role:'Website & Technik',color:'linear-gradient(135deg,#003d7a,#4da6ff)'},
+    ],
+    showStreamers: true,
+    streamersTitle:'🌟 Unsere Streamer',
+    ctaTitle:'WERDE TEIL DER GALAXIS',
+    ctaDesc:'Du bist ein VTuber und möchtest Teil von Astralia werden?',
+    ctaBtn:'📩 JETZT BEWERBEN',
+  },
+  apply:{
+    vtuber:{
+      title:'🎭 VTUBER-BEWERBUNG',
+      subtitle:'Werde Teil von Astralia!',
+      fields:[
+        {id:'s-name',    label:'VTuber / Streamer Name *', type:'text',     placeholder:'Dein Streamer-Name'},
+        {id:'s-platform',label:'Twitch / Hauptplattform *',type:'text',     placeholder:'https://twitch.tv/deinname'},
+        {id:'s-email',   label:'E-Mail *',                  type:'email',    placeholder:'deine@email.de'},
+        {id:'s-discord', label:'Discord Tag',               type:'text',     placeholder:'deinname#0000'},
+        {id:'s-viewers', label:'Ø Zuschauerzahl',           type:'text',     placeholder:'z.B. 50–100'},
+        {id:'s-about',   label:'Erzähl uns von dir! *',     type:'textarea', placeholder:'Wer bist du? Was macht deinen Stream besonders? Warum möchtest du Teil von Astralia sein?'},
+        {id:'s-links',   label:'Weitere Links',             type:'text',     placeholder:'https://...'},
+      ],
+      btnText:'🚀 BEWERBUNG ABSENDEN',
+      note:'* Pflichtfelder · Wir melden uns innerhalb von 7 Tagen',
+      reqs:[
+        {icon:'🌍', title:'DEUTSCHSPRACHIG',   desc:'Dein Stream sollte primär auf Deutsch stattfinden (oder Deutsch/Englisch gemischt).'},
+        {icon:'📺', title:'REGELMÄSSIG AKTIV', desc:'Mindestens 2× pro Woche live — Konsistenz ist der Schlüssel zum Wachstum.'},
+        {icon:'🎭', title:'VTUBER CHARAKTER',  desc:'Du streamst mit einem VTuber-Modell oder -Avatar. Ob 2D, 3D oder PNG — alles willkommen!'},
+        {icon:'💜', title:'POSITIVE COMMUNITY',desc:'Eine freundliche, inklusive Community ist uns wichtiger als reine Zuschauerzahlen.'},
+      ],
+      perks:['✓ Eigene Seite auf der Astralia Website','✓ Community-Crosspromotion','✓ Collab-Möglichkeiten mit anderen Talents','✓ Discord-Zugang & persönlicher Support','✓ Event-Teilnahme & gemeinsame Streams','✓ Merch-Möglichkeiten im Astralia Shop'],
+      perksTitle:'✦ WAS DU BEKOMMST',
+    },
+    partner:{
+      title:'🤝 PARTNER-BEWERBUNG',
+      subtitle:'Kooperiere mit Astralia!',
+      fields:[
+        {id:'p-name',    label:'Firmen- / Projektname *',  type:'text',     placeholder:'Name deines Unternehmens'},
+        {id:'p-contact', label:'Ansprechpartner *',         type:'text',     placeholder:'Dein Name'},
+        {id:'p-email',   label:'E-Mail *',                  type:'email',    placeholder:'kontakt@firma.de'},
+        {id:'p-website', label:'Website / Social Media *',  type:'text',     placeholder:'https://deine-website.de'},
+        {id:'p-about',   label:'Was schwebt dir vor? *',    type:'textarea', placeholder:'Beschreibe deine Partnerschaftsidee...'},
+        {id:'p-product', label:'Zielgruppe / Produkt',      type:'text',     placeholder:'z.B. Gaming-Peripherie für 18–30-jährige'},
+      ],
+      btnText:'🤝 ANFRAGE ABSENDEN',
+      note:'* Pflichtfelder · Wir melden uns innerhalb von 3 Werktagen',
+      reqs:[
+        {icon:'👥', title:'ENGAGIERTE COMMUNITY',    desc:'Direkte Verbindung zu einer aktiven VTuber-Community in der DACH-Region.'},
+        {icon:'🎯', title:'ZIELGENAUES MARKETING',   desc:'Unsere Talents streamen täglich — deine Marke ist dort wo die Zielgruppe ist.'},
+        {icon:'🛍️', title:'MERCH & SHOP',             desc:'Produkt-Kollabos direkt im Astralia Shop — von Design bis Fulfillment.'},
+        {icon:'📊', title:'TRANSPARENTES REPORTING', desc:'Wir liefern dir klare Zahlen: Reichweite, Klicks, Conversions.'},
+      ],
+      perks:['⭐ Basis — Logo & Link auf der Website','⭐⭐ Standard — + Stream-Erwähnungen','⭐⭐⭐ Premium — + Dedicated Content','🛍️ Merch — Produkt-Kollab im Shop'],
+      perksTitle:'✦ PARTNER-PAKETE',
+    },
+  },
+  shop:{products:[
+    {img:'https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=600&q=80',emoji:'🌙',name:'Symphoniea Mondnacht Hoodie',desc:'Oversized Fit · Mondmotiv Stickerei · Bio-Baumwolle · XS–XXL',category:'Hoodie',badge:'new',price:'44,99 €',oldPrice:'',shopifyUrl:'#',shopifyTags:['talent:symphoniea','Hoodie']},
+    {img:'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=600&q=80',emoji:'🌙',name:'Symphoniea Stardust Shirt',desc:'Unisex Regular Fit · Frontprint · XS–XXL',category:'Shirt',badge:'',price:'29,99 €',oldPrice:'',shopifyUrl:'#',shopifyTags:['talent:symphoniea','Shirt']},
+    {img:'https://images.unsplash.com/photo-1588117305388-c2631a279f82?w=600&q=80',emoji:'🌙',name:'Symphoniea Chibi Sticker Set',desc:'6 Sticker · Wetterfest · Vinyl · 8×8cm',category:'Sticker',badge:'',price:'8,99 €',oldPrice:'',shopifyUrl:'#',shopifyTags:['talent:symphoniea','Sticker']},
+    {img:'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=600&q=80',emoji:'🌙',name:'Symphoniea Mondlicht Tote Bag',desc:'100% Baumwoll-Canvas · 38×42cm · Mondmotiv',category:'Tote Bag',badge:'sale',price:'14,99 €',oldPrice:'19,99 €',shopifyUrl:'#',shopifyTags:['talent:symphoniea','Tote Bag']},
+    {img:'https://images.unsplash.com/photo-1588099768531-a72d4a198538?w=600&q=80',emoji:'🌙',name:'Symphoniea Snapback Cap',desc:'One Size · Besticktes Mond-Logo · Schwarz',category:'Cap',badge:'new',price:'24,99 €',oldPrice:'',shopifyUrl:'#',shopifyTags:['talent:symphoniea','Cap']},
+    {img:'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600&q=80',emoji:'🌙',name:'Symphoniea Fan Bundle',desc:'Hoodie + Sticker Set + Tote Bag — spare 20%',category:'Bundle',badge:'sale',price:'54,99 €',oldPrice:'73,97 €',shopifyUrl:'#',shopifyTags:['talent:symphoniea','Bundle']},
+    {img:'https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=600&q=80',emoji:'🌌',name:'Astralia Galaxy Hoodie',desc:'Netzwerk-Edition · Unisex Oversized · XS–XXL',category:'Hoodie',badge:'',price:'44,99 €',oldPrice:'',shopifyUrl:'#',shopifyTags:['Hoodie']},
+    {img:'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=600&q=80',emoji:'✨',name:'Astralia Collab Shirt',desc:'Alle 12 Streamer · Limited Edition · XS–XXL',category:'Shirt',badge:'new',price:'34,99 €',oldPrice:'',shopifyUrl:'#',shopifyTags:['Shirt']},
+  ]},
+};
+
+// ════ STATE ════
+let data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+let dirty = false;
+let editIdx = -1;
+let modalImgData = '';
+
+// ════ LOGIN ════
+async function doLogin(){
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+
+  // API-Login versuchen
+  if(window._astraliaAPIReady){
+    const result = await AstraliaAPI.login(u, p);
+    if(result.ok){
+      document.getElementById('loginScreen').style.display='none';
+      document.getElementById('adminApp').style.display='block';
+      document.getElementById('loggedUser').textContent=u;
+      await loadAll(); renderAll();
+      return;
+    }
+    // Falls API nicht erreichbar, auf lokale Credentials fallen
+    if(result.error && !result.error.includes('Zugangsdaten')){
+      // API-Fehler (nicht Passwort falsch) → lokaler Fallback
+    } else {
+      document.getElementById('loginErr').textContent='✗ Falscher Benutzername oder Passwort';
+      setTimeout(()=>document.getElementById('loginErr').textContent='',2000);
+      return;
+    }
+  }
+
+  // Lokaler Fallback (kein API-Zugriff)
+  const creds = data.credentials || DEFAULT_DATA.credentials;
+  if(u===(creds.username||creds.user) && p===(creds.password||creds.pass)){
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('adminApp').style.display='block';
+    document.getElementById('loggedUser').textContent=u;
+    await loadAll(); renderAll();
+  } else {
+    document.getElementById('loginErr').textContent='✗ Falscher Benutzername oder Passwort';
+    setTimeout(()=>document.getElementById('loginErr').textContent='',2000);
+  }
+}
+function doLogout(){
+  if(window._astraliaAPIReady) AstraliaAPI.clearToken();
+  document.getElementById('adminApp').style.display='none';
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('loginPass').value='';
+}
+
+// ════ SECTIONS ════
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if(id==='streamers') renderStreamerTable();
+  if(id==='events') renderEvents();
+  if(id==='online') renderOnline();
+  if(id==='socials') renderSocials();
+  if(id==='header') fillHeader();
+  if(id==='twitch') renderTwitchSection();
+  if(id==='fanarts') renderArtworksAdmin();
+  if(id==='shop') renderShopAdmin();
+  if(id==='partners') renderPartnersAdmin();
+  if(id==='dashboard') renderDashboard();
+}
+
+// ════ DIRTY ════
+function markDirty(){dirty=true;document.getElementById('saveBar').style.display='flex';}
+function clearDirty(){dirty=false;document.getElementById('saveBar').style.display='none';}
+
+// ════ SAVE / LOAD ════
+function saveAll(){
+  collectHeader();
+  // API speichern
+  if(window._astraliaAPIReady){
+    AstraliaAPI.save(data).then(ok=>{
+      if(!ok) console.warn('[Admin] API-Speichern fehlgeschlagen, nur localStorage');
+    });
+  }
+  try{ localStorage.setItem('astralia_data', JSON.stringify(data)); }catch(e){}
+  clearDirty();
+  showToast('✓ Gespeichert!','success');
+  renderDashboard();
+}
+async function loadAll(){
+  try{
+    // API-First laden
+    if(window._astraliaAPIReady){
+      try{
+        const apiData = await AstraliaAPI.load();
+        if(apiData){ data = {...DEFAULT_DATA, ...apiData}; renderAll(); return; }
+      }catch(e){ console.warn('[Admin] API load fehlgeschlagen:', e); }
+    }
+    const saved = localStorage.getItem('astralia_data');
+    if(saved){
+      data = JSON.parse(saved);
+      if(data.fanarts && !data.artworks){
+        data.artworks = data.fanarts.map(f=>({
+          img: f.img||'', emoji: f.emoji||'🎨', artist: f.artist||'',
+          tag: f.tag||'collab', source: f.source||'', likes: f.likes||0, liked: false
+        }));
+        delete data.fanarts;
+      }
+    }
+  }catch(e){}
+  // Immer sicherstellen dass alle Arrays existieren
+  if(!data.events)    data.events    = [];
+  if(!data.streamers) data.streamers = [];
+  if(!data.artworks)  data.artworks  = [];
+  if(!data.partners)  data.partners  = [];
+  // Socials: altes Format migrieren (platform/emoji → icon/label) + Default-Fallback
+  if(!data.socials || !data.socials.length){
+    data.socials = DEFAULT_DATA.socials;
+  } else if(data.socials[0] && data.socials[0].platform !== undefined){
+    // Migration: altes Format
+    data.socials = data.socials.map(s=>({
+      icon: s.emoji||s.icon||'🔗',
+      label: s.platform||s.label||'Social',
+      url: s.url||'#',
+      hoverColor: s.hoverColor||'#9b59f5'
+    }));
+  }
+  if(!data.online)    data.online    = [];
+  if(!data.shop)      data.shop      = {products:[]};
+  if(!data.about)      data.about      = DEFAULT_DATA.about;
+  if(!data.apply)     data.apply     = DEFAULT_DATA.apply;
+  if(!data.apply.vtuber)  data.apply.vtuber  = DEFAULT_DATA.apply.vtuber;
+  if(!data.apply.partner) data.apply.partner = DEFAULT_DATA.apply.partner;
+  if(!data.shop.products) data.shop.products = [];
+  if(!data.twitch)    data.twitch    = {};
+  if(!data.header)    data.header    = DEFAULT_DATA.header;
+  if(!data.banner)    data.banner    = DEFAULT_DATA.banner;
+  if(!data.stats)     data.stats     = DEFAULT_DATA.stats;
+  fillHeader();
+}
+function collectHeader(){
+  data.header.siteName = v('h-siteName');
+  data.header.tagline = v('h-tagline');
+  data.header.members = v('h-members');
+  data.header.founded = v('h-founded');
+  data.header.marquee = v('h-marquee');
+  data.header.footer = v('h-footer');
+  data.banner.tag = v('b-tag');
+  data.banner.titleMain = v('b-titleMain');
+  data.banner.titleHL = v('b-titleHL');
+  data.banner.titleSub = v('b-titleSub');
+  data.banner.desc = v('b-desc');
+  data.banner.btn1 = v('b-btn1');
+  data.banner.btn2 = v('b-btn2');
+  data.stats.s1l=v('s1l');data.stats.s1v=v('s1v');
+  data.stats.s2l=v('s2l');data.stats.s2v=v('s2v');
+  data.stats.s3l=v('s3l');data.stats.s3v=v('s3v');
+  data.stats.s4l=v('s4l');data.stats.s4v=v('s4v');
+  // Twitch credentials immer mitspeichern
+  if(!data.twitch) data.twitch={};
+  const _cid=v('tw-clientId').trim(), _csec=v('tw-clientSecret').trim();
+  if(_cid) data.twitch.clientId=_cid;
+  if(_csec) data.twitch.clientSecret=_csec;
+}
+function fillHeader(){
+  sv('h-siteName',data.header.siteName);
+  sv('h-tagline',data.header.tagline);
+  sv('h-members',data.header.members);
+  sv('h-founded',data.header.founded);
+  sv('h-marquee',data.header.marquee);
+  sv('h-footer',data.header.footer);
+  sv('b-tag',data.banner.tag);
+  sv('b-titleMain',data.banner.titleMain);
+  sv('b-titleHL',data.banner.titleHL);
+  sv('b-titleSub',data.banner.titleSub);
+  sv('b-desc',data.banner.desc);
+  sv('b-btn1',data.banner.btn1);
+  sv('b-btn2',data.banner.btn2);
+  sv('s1l',data.stats.s1l);sv('s1v',data.stats.s1v);
+  sv('s2l',data.stats.s2l);sv('s2v',data.stats.s2v);
+  sv('s3l',data.stats.s3l);sv('s3v',data.stats.s3v);
+  sv('s4l',data.stats.s4l);sv('s4v',data.stats.s4v);
+  sv('tw-clientId',data.twitch?.clientId||'');
+  sv('tw-clientSecret',data.twitch?.clientSecret||'');
+}
+function v(id){const el=document.getElementById(id);return el?el.value:'';}
+function sv(id,val){const el=document.getElementById(id);if(el)el.value=val||'';}
+
+// ════ RENDER ALL ════
+function renderAll(){
+  renderDashboard();
+  renderStreamerTable();
+  renderEvents();
+  renderOnline();
+  renderSocials();
+  renderArtworksAdmin();
+  renderShopAdmin();
+  renderPartnersAdmin();
+  renderApply();
+  renderAboutAdmin();
+  renderTwitchSection();
+  fillHeader();
+}
+
+// ════ DASHBOARD ════
+function renderDashboard(){
+  document.getElementById('d-streamers').textContent = data.streamers.length;
+  document.getElementById('d-live').textContent = data.streamers.filter(s=>s.live).length;
+  document.getElementById('d-events').textContent = data.events.length;
+  document.getElementById('d-online').textContent = data.online.length;
+  const tbody = document.getElementById('dashStreamerList');
+  tbody.innerHTML = data.streamers.map((s,i)=>`
+    <tr>
+      <td>${s.img?`<img src="${s.img}" class="streamer-row-img" onerror="this.style.display='none'">`:`<div class="streamer-row-emoji">${s.emoji}</div>`}</td>
+      <td style="font-weight:700;">${s.name}</td>
+      <td style="color:var(--muted);">@${s.twitchLogin}</td>
+      <td><span class="badge ${s.live?'badge-live':'badge-offline'}">${s.live?'● LIVE':'OFFLINE'}</span></td>
+      <td>${s.tags.map(t=>`<span class="badge badge-tag" style="margin-right:3px;">${t}</span>`).join('')}</td>
+    </tr>`).join('');
+}
+
+// ════ STREAMER TABLE ════
+function renderStreamerTable(){
+  const tbody = document.getElementById('streamerTable');
+  tbody.innerHTML = data.streamers.map((s,i)=>`
+    <tr>
+      <td><span class="drag-handle">⠿</span></td>
+      <td>${s.img?`<img src="${s.img}" class="streamer-row-img" onerror="this.style.display='none'">`:`<div class="streamer-row-emoji">${s.emoji}</div>`}</td>
+      <td style="font-weight:700;">${s.name}</td>
+      <td style="color:var(--muted);">@${s.twitchLogin}</td>
+      <td><span class="badge ${s.live?'badge-live':'badge-offline'}">${s.live?'● LIVE':'OFFLINE'}</span></td>
+      <td style="color:var(--muted);font-size:.75rem;">${s.theme}</td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-ghost btn-sm" onclick="openStreamerModal(${i})">✎ Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteStreamer(${i})">✕</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+// ════ STREAMER MODAL ════
+function openStreamerModal(i){
+  editIdx = i;
+  modalImgData = '';
+  const s = i>=0 ? data.streamers[i] : {twitchLogin:'',emoji:'⭐',img:'',name:'',game:'Offline',live:false,viewers:'0',tags:[],theme:'theme-a',offlineMsg:'Offline'};
+  document.getElementById('modalTitle').textContent = i>=0 ? 'STREAMER BEARBEITEN' : 'NEUER STREAMER';
+  sv('m-name', s.name);
+  sv('m-login', s.twitchLogin);
+  sv('m-emoji', s.emoji);
+  sv('m-tags', s.tags.join(','));
+  sv('m-offline', s.offlineMsg||'Offline');
+  sv('m-bio', s.bio||'');
+  sv('m-imgUrl', s.img||'');
+  sv('m-theme', s.theme);
+  document.getElementById('m-live').checked = s.live;
+  const prev = document.getElementById('modalImgPreview');
+  if(s.img){ prev.innerHTML=`<img src="${s.img}" style="width:100%;height:100%;object-fit:cover;" onerror="this.textContent='${s.emoji}'">`; }
+  else { prev.innerHTML = s.emoji||'⭐'; }
+  document.getElementById('streamerModal').classList.add('open');
+}
+function closeStreamerModal(){ document.getElementById('streamerModal').classList.remove('open'); }
+function handleModalImg(e){
+  const file=e.target.files[0]; if(!file) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    modalImgData=ev.target.result;
+    document.getElementById('m-imgUrl').value=ev.target.result;
+    document.getElementById('modalImgPreview').innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+  };
+  r.readAsDataURL(file);
+}
+function clearModalImg(){ modalImgData=''; sv('m-imgUrl',''); document.getElementById('modalImgPreview').innerHTML=v('m-emoji')||'⭐'; }
+function saveStreamerModal(){
+  const s={
+    twitchLogin:v('m-login').toLowerCase().trim(),
+    name:v('m-name').toUpperCase(),
+    emoji:v('m-emoji'),
+    img:v('m-imgUrl'),
+    bio:v('m-bio')||'VTuber im Astralia Netzwerk.',
+    game:'Offline',
+    live:document.getElementById('m-live').checked,
+    viewers:'0',
+    tags:v('m-tags').split(',').map(t=>t.trim()).filter(Boolean),
+    theme:v('m-theme'),
+    offlineMsg:v('m-offline')||'Offline',
+  };
+  if(editIdx>=0) data.streamers[editIdx]=s;
+  else data.streamers.push(s);
+  closeStreamerModal();
+  renderStreamerTable();
+  saveAll(); // direkt speichern → Hauptseite aktualisiert sich sofort
+}
+function deleteStreamer(i){ if(confirm(`"${data.streamers[i].name}" wirklich löschen?`)){ data.streamers.splice(i,1); renderStreamerTable(); markDirty(); } }
+
+// ════ EVENTS ════
+const EVENT_TYPES = [
+  {emoji:'🎵',label:'Musik-Event'},
+  {emoji:'🎮',label:'Gaming'},
+  {emoji:'🌌',label:'Collab'},
+  {emoji:'🏆',label:'Turnier'},
+  {emoji:'🎂',label:'Jubiläum'},
+  {emoji:'🖼️',label:'Kreativ'},
+  {emoji:'💬',label:'Talkshow'},
+  {emoji:'🎉',label:'Party'},
+  {emoji:'📺',label:'Stream'},
+  {emoji:'🌟',label:'Special'},
+];
+
+function fmtEventDate(iso, time){
+  if(!iso) return '📅 Datum wählen';
+  try{
+    const d = new Date(iso + (time ? 'T'+time : 'T00:00'));
+    const days = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+    const months = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+    let str = `📅 ${days[d.getDay()]}, ${d.getDate()}. ${months[d.getMonth()]} ${d.getFullYear()}`;
+    if(time) str += ` · ${time} Uhr`;
+    return str;
+  }catch(e){ return '📅 '+iso; }
+}
+
+function renderEvents(){
+  const c = document.getElementById('eventsContainer');
+  if(!data.events?.length){
+    c.innerHTML=`<div style="text-align:center;padding:40px;color:var(--muted);font-family:'VT323',monospace;font-size:1.1rem;letter-spacing:2px;">Noch keine Events — klicke auf "+ Event hinzufügen"</div>`;
+    return;
+  }
+  c.innerHTML = data.events.map((e,i)=>`
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-header">
+        <span class="card-title" style="font-size:.75rem;">
+          <span style="color:var(--gold);">${fmtEventDate(e.dateIso||'', e.time||'')}</span>
+          &nbsp;·&nbsp;${e.name||'Neues Event'}
+        </span>
+        <button class="btn btn-danger btn-sm" onclick="removeEvent(${i})">✕ Löschen</button>
+      </div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;align-items:start;">
+
+          <!-- Thumbnail -->
+          <div>
+            <div style="font-family:'Orbitron',sans-serif;font-size:.55rem;letter-spacing:2px;color:var(--muted);margin-bottom:6px;">THUMBNAIL</div>
+            <div style="aspect-ratio:16/9;background:rgba(107,33,200,.15);border:1px dashed rgba(155,89,245,.4);overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;"
+              onclick="document.getElementById('ev-img-${i}').click()">
+              ${e.img
+                ? `<img src="${e.img}" style="width:100%;height:100%;object-fit:cover;" onerror="this.remove()">`
+                : `<span style="font-size:1.8rem;">${e.type?.split(' ')[0]||'📅'}</span>`}
+              <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.6);color:rgba(200,180,255,.6);font-family:'VT323',monospace;font-size:.65rem;text-align:center;padding:3px;">📷 hochladen</div>
+            </div>
+            <input type="file" id="ev-img-${i}" accept="image/*" style="display:none" onchange="handleEventImg(event,${i})">
+            ${e.img?`<button class="btn btn-danger btn-sm" onclick="data.events[${i}].img='';renderEvents();markDirty()" style="width:100%;margin-top:4px;font-size:.55rem;padding:3px;">✕ Entfernen</button>`:''}
+          </div>
+
+          <!-- Felder -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+
+            <!-- Name -->
+            <div class="field" style="grid-column:1/-1;">
+              <label>Event-Name</label>
+              <input class="inp" value="${e.name||''}" placeholder="z.B. Astralia Galaxy Concert" oninput="data.events[${i}].name=this.value;markDirty()">
+            </div>
+
+            <!-- Datum -->
+            <div class="field">
+              <label>📅 Datum</label>
+              <input class="inp" type="date" value="${e.dateIso||''}"
+                onchange="data.events[${i}].dateIso=this.value;data.events[${i}].date=fmtEventDate(this.value,data.events[${i}].time||'');markDirty()">
+            </div>
+
+            <!-- Uhrzeit -->
+            <div class="field">
+              <label>🕐 Uhrzeit (optional)</label>
+              <input class="inp" type="time" value="${e.time||''}"
+                onchange="data.events[${i}].time=this.value;data.events[${i}].date=fmtEventDate(data.events[${i}].dateIso||'',this.value);markDirty()">
+            </div>
+
+            <!-- Typ -->
+            <div class="field">
+              <label>Event-Typ</label>
+              <select class="inp" onchange="data.events[${i}].type=this.value;markDirty()">
+                ${EVENT_TYPES.map(t=>`<option value="${t.emoji} ${t.label}" ${e.type===t.emoji+' '+t.label?'selected':''}>${t.emoji} ${t.label}</option>`).join('')}
+              </select>
+            </div>
+
+            <!-- Beschreibung -->
+            <div class="field">
+              <label>Beschreibung (optional)</label>
+              <input class="inp" value="${e.desc||''}" placeholder="Kurze Beschreibung" oninput="data.events[${i}].desc=this.value;markDirty()">
+            </div>
+
+          </div>
+        </div>
+        <!-- Vorschau -->
+        <div style="margin-top:10px;padding:8px 12px;background:rgba(107,33,200,.1);border:1px solid rgba(155,89,245,.2);font-family:'VT323',monospace;font-size:.85rem;color:rgba(200,180,255,.6);letter-spacing:1px;">
+          Vorschau: <span style="color:var(--gold);">${fmtEventDate(e.dateIso||'',e.time||'')}</span> · <span style="color:#fff;">${e.name||'—'}</span> · <span style="color:var(--cyan);">${e.type||'—'}</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function handleEventImg(e, i){
+  const file = e.target.files[0]; if(!file) return;
+  const r = new FileReader();
+  r.onload = ev => { data.events[i].img = ev.target.result; renderEvents(); markDirty(); };
+  r.readAsDataURL(file);
+}
+
+function addEvent(){
+  if(!data.events) data.events = [];
+  const today = new Date().toISOString().split('T')[0];
+  data.events.push({dateIso:today, time:'', date:fmtEventDate(today,''), name:'Neues Event', type:'🌌 Collab', desc:'', img:''});
+  renderEvents();
+  markDirty();
+}
+function removeEvent(i){ data.events.splice(i,1); renderEvents(); markDirty(); }
+
+// ════ SHOP ════
+const SHOP_CATEGORIES = ['Hoodie','Shirt','Cap','Tote Bag','Poster','Sticker','Bundle','Sonstiges'];
+
+function renderShopAdmin(){
+  if(!data.shop) data.shop = {products:[], storefrontDomain:'', storefrontToken:''};
+  if(!data.shop.products) data.shop.products = [];
+
+  // API-Felder befüllen
+  const domEl = document.getElementById('sfDomain');
+  const tokEl = document.getElementById('sfToken');
+  if(domEl) domEl.value = data.shop.storefrontDomain||'';
+  if(tokEl) tokEl.value = data.shop.storefrontToken||'';
+  updateShopApiStatus();
+
+  const c = document.getElementById('shopContainer');
+  if(!c) return;
+
+  if(!data.shop.products.length){
+    c.innerHTML=`<div style="text-align:center;padding:30px;color:var(--muted);font-family:'VT323',monospace;font-size:1rem;letter-spacing:2px;">Keine manuellen Produkte — wird automatisch ignoriert wenn API verbunden ist.</div>`;
+    return;
+  }
+
+  c.innerHTML = `
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;margin-top:4px;">
+    ${data.shop.products.map((p,i)=>`
+    <div style="background:var(--surface);border:1px solid var(--border);padding:16px;display:flex;flex-direction:column;gap:10px;">
+
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div style="width:80px;height:80px;flex-shrink:0;border:1px dashed rgba(155,89,245,.4);background:rgba(107,33,200,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;font-size:2rem;"
+          onclick="document.getElementById('shop-img-${i}').click()">
+          ${p.img?`<img src="${p.img}" style="width:100%;height:100%;object-fit:cover;">`:p.emoji||'👕'}
+        </div>
+        <div style="flex:1;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:.55rem;color:var(--muted);letter-spacing:2px;margin-bottom:6px;">PRODUKTBILD (klicken)</div>
+          <input type="file" id="shop-img-${i}" accept="image/*" style="display:none" onchange="handleShopImg(event,${i})">
+          ${p.img
+            ?`<button class="btn btn-danger btn-sm" onclick="data.shop.products[${i}].img='';renderShopAdmin();markDirty()" style="font-size:.55rem;">✕ Entfernen</button>`
+            :`<button class="btn btn-ghost btn-sm" onclick="document.getElementById('shop-img-${i}').click()" style="font-size:.55rem;">📷 Hochladen</button>`}
+          <div style="margin-top:8px;display:flex;align-items:center;gap:6px;">
+            <span style="font-size:.55rem;color:var(--muted);">EMOJI:</span>
+            <input class="inp" value="${p.emoji||'👕'}" style="width:52px;text-align:center;font-size:1.1rem;padding:2px;" maxlength="4" oninput="data.shop.products[${i}].emoji=this.value;markDirty()">
+          </div>
+        </div>
+      </div>
+
+      <div class="field"><label>Produktname</label>
+        <input class="inp" value="${p.name||''}" placeholder="z.B. Astralia Galaxy Hoodie" oninput="data.shop.products[${i}].name=this.value;markDirty()">
+      </div>
+      <div class="field"><label>Kurzbeschreibung</label>
+        <input class="inp" value="${p.desc||''}" placeholder="Unisex · 100% Bio-Baumwolle · XS–XXL" oninput="data.shop.products[${i}].desc=this.value;markDirty()">
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="field"><label>Kategorie</label>
+          <select class="inp" onchange="data.shop.products[${i}].category=this.value;markDirty()">
+            ${SHOP_CATEGORIES.map(cat=>`<option value="${cat}" ${p.category===cat?'selected':''}>${cat}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field"><label>Badge</label>
+          <select class="inp" onchange="data.shop.products[${i}].badge=this.value;markDirty()">
+            <option value="" ${!p.badge?'selected':''}>Kein Badge</option>
+            <option value="new" ${p.badge==='new'?'selected':''}>🆕 NEU</option>
+            <option value="sale" ${p.badge==='sale'?'selected':''}>🏷️ SALE</option>
+            <option value="sold-out" ${p.badge==='sold-out'?'selected':''}>❌ AUSVERKAUFT</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="field"><label>Preis (z.B. 34,99 €)</label>
+          <input class="inp" value="${p.price||''}" placeholder="34,99 €" oninput="data.shop.products[${i}].price=this.value;markDirty()">
+        </div>
+        <div class="field"><label>Alter Preis (optional)</label>
+          <input class="inp" value="${p.oldPrice||''}" placeholder="44,99 €" oninput="data.shop.products[${i}].oldPrice=this.value;markDirty()">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>🔗 Shopify Produkt-Link</label>
+        <input class="inp" value="${p.shopifyUrl||''}" placeholder="https://dein-shop.myshopify.com/products/..." oninput="data.shop.products[${i}].shopifyUrl=this.value;markDirty()">
+      </div>
+
+      <button class="btn btn-danger btn-sm" onclick="deleteShopProduct(${i})">🗑 Produkt löschen</button>
+    </div>`).join('')}
+  </div>`;
+}
+
+function updateShopApiField(key, val){
+  if(!data.shop) data.shop={products:[]};
+  data.shop[key] = val.trim();
+  updateShopApiStatus();
+  markDirty();
+}
+
+function updateShopApiStatus(){
+  const el = document.getElementById('shopApiStatus');
+  if(!el) return;
+  const connected = data.shop?.storefrontDomain && data.shop?.storefrontToken;
+  el.textContent = connected ? '⬤ VERBUNDEN' : '⬤ NICHT VERBUNDEN';
+  el.style.color = connected ? '#96bf48' : 'rgba(200,180,255,.4)';
+}
+
+async function testShopifyConnection(){
+  const domain = document.getElementById('sfDomain')?.value?.trim();
+  const token  = document.getElementById('sfToken')?.value?.trim();
+  const res = document.getElementById('shopTestResult');
+  if(!res) return;
+
+  if(!domain || !token){
+    res.style.display='block';
+    res.style.borderColor='#ef4444';
+    res.style.color='#ef4444';
+    res.style.background='rgba(239,68,68,.08)';
+    res.textContent='⚠ Bitte Domain und Token eingeben.';
+    return;
+  }
+
+  res.style.display='block';
+  res.style.borderColor='rgba(0,245,255,.3)';
+  res.style.color='var(--star-cyan)';
+  res.style.background='rgba(0,245,255,.05)';
+  res.textContent='🔌 Verbinde ...';
+
+  try{
+    const r = await fetch(`https://${domain}/api/2024-01/graphql.json`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','X-Shopify-Storefront-Access-Token':token},
+      body:JSON.stringify({query:`{ shop { name productsCount { count } } }`})
+    });
+    const j = await r.json();
+    if(j.errors) throw new Error(j.errors[0].message);
+    const count = j.data.shop.productsCount?.count ?? '?';
+    res.style.borderColor='#96bf48';
+    res.style.color='#96bf48';
+    res.style.background='rgba(150,191,72,.08)';
+    res.textContent=`✓ VERBUNDEN mit "${j.data.shop.name}" · ${count} Produkte gefunden`;
+  } catch(e){
+    res.style.borderColor='#ef4444';
+    res.style.color='#ef4444';
+    res.style.background='rgba(239,68,68,.08)';
+    res.textContent=`⚠ FEHLER: ${e.message}`;
+  }
+}
+
+function addShopProduct(){
+  if(!data.shop) data.shop={products:[]};
+  if(!data.shop.products) data.shop.products=[];
+  data.shop.products.push({img:'',emoji:'👕',name:'',desc:'',category:'Hoodie',badge:'new',price:'',oldPrice:'',shopifyUrl:''});
+  renderShopAdmin();
+  markDirty();
+}
+function deleteShopProduct(i){
+  if(!confirm(`"${data.shop.products[i]?.name||'Produkt'}" wirklich löschen?`)) return;
+  data.shop.products.splice(i,1);
+  renderShopAdmin();
+  markDirty();
+}
+function handleShopImg(e,i){
+  const file=e.target.files[0]; if(!file) return;
+  const r=new FileReader();
+  r.onload=ev=>{ data.shop.products[i].img=ev.target.result; renderShopAdmin(); markDirty(); };
+  r.readAsDataURL(file);
+}
+
+// ════ PARTNERS ════
+function renderPartnersAdmin(){
+  const c = document.getElementById('partnersContainer');
+  if(!data.partners?.length){
+    c.innerHTML=`<div style="text-align:center;padding:40px;color:var(--muted);font-family:'VT323',monospace;font-size:1.1rem;letter-spacing:2px;">Noch keine Partner — klicke auf "+ Partner hinzufügen"</div>`;
+    return;
+  }
+  c.innerHTML = `
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:16px;">
+    ${data.partners.map((p,i)=>`
+    <div style="background:var(--surface);border:1px solid var(--border);padding:16px;display:flex;flex-direction:column;gap:10px;">
+
+      <!-- Logo Upload -->
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:64px;height:64px;border:1px dashed rgba(155,89,245,.4);border-radius:4px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:rgba(107,33,200,.1);cursor:pointer;flex-shrink:0;" onclick="document.getElementById('p-img-${i}').click()">
+          ${p.img?`<img src="${p.img}" style="width:100%;height:100%;object-fit:contain;" onerror="this.remove()">`:
+          `<span style="font-size:1.5rem;color:rgba(155,89,245,.4);">🤝</span>`}
+        </div>
+        <div style="flex:1;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:.6rem;color:var(--muted);letter-spacing:2px;margin-bottom:4px;">LOGO (klicken zum hochladen)</div>
+          <input type="file" id="p-img-${i}" accept="image/*" style="display:none" onchange="handlePartnerImg(event,${i})">
+          ${p.img?`<button class="btn btn-danger btn-sm" onclick="data.partners[${i}].img='';renderPartnersAdmin();markDirty()" style="font-size:.55rem;padding:3px 8px;">✕ Entfernen</button>`:''}
+        </div>
+      </div>
+
+      <div class="field"><label>Partner-Name</label>
+        <input class="inp" value="${p.name||''}" placeholder="z.B. GalaxyCon" oninput="data.partners[${i}].name=this.value;markDirty()">
+      </div>
+      <div class="field"><label>Beschreibung</label>
+        <input class="inp" value="${p.desc||''}" placeholder="Kurze Beschreibung" oninput="data.partners[${i}].desc=this.value;markDirty()">
+      </div>
+      <div class="field"><label>Website-URL</label>
+        <input class="inp" value="${p.url||''}" placeholder="https://..." oninput="data.partners[${i}].url=this.value;markDirty()">
+      </div>
+      <div class="field" style="display:flex;align-items:center;gap:10px;">
+        <label style="margin:0;display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" ${p.verified?'checked':''} onchange="data.partners[${i}].verified=this.checked;markDirty()">
+          <span style="font-size:.65rem;color:var(--muted);letter-spacing:1px;">✓ VERIFIZIERT (zeigt Badge)</span>
+        </label>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="deletePartner(${i})">🗑 Partner löschen</button>
+    </div>`).join('')}
+  </div>`;
+}
+
+function addPartner(){
+  data.partners.push({img:'',name:'',desc:'',url:'#',verified:false});
+  renderPartnersAdmin();
+  markDirty();
+}
+function deletePartner(i){
+  if(!confirm(`"${data.partners[i]?.name||'Partner'}" wirklich löschen?`)) return;
+  data.partners.splice(i,1);
+  renderPartnersAdmin();
+  markDirty();
+}
+function handlePartnerImg(e,i){
+  const file=e.target.files[0]; if(!file) return;
+  const r=new FileReader();
+  r.onload=ev=>{ data.partners[i].img=ev.target.result; renderPartnersAdmin(); markDirty(); };
+  r.readAsDataURL(file);
+}
+
+// ════ ONLINE ════
+function renderOnline(){
+  const c=document.getElementById('onlineContainer');
+  c.innerHTML = data.online.map((m,i)=>`
+    <div class="card" style="margin-bottom:10px;">
+      <div class="card-body" style="padding:12px 18px;">
+        <div class="form-grid" style="align-items:center;">
+          <div class="field"><label>Emoji</label><input value="${m.emoji}" style="max-width:80px;" oninput="data.online[${i}].emoji=this.value;markDirty()"></div>
+          <div class="field"><label>Name</label><input value="${m.name}" oninput="data.online[${i}].name=this.value;markDirty()"></div>
+          <div class="field"><label>Twitch Login</label><input value="${m.twitchLogin||''}" placeholder="(für Auto-Status)" oninput="data.online[${i}].twitchLogin=this.value;markDirty()"></div>
+          <div class="field" style="display:flex;align-items:flex-end;gap:8px;">
+            <div style="flex:1;"><label>Status (manuell)</label><input value="${m.tag}" oninput="data.online[${i}].tag=this.value;markDirty()"></div>
+            <button class="btn btn-danger btn-sm" style="margin-bottom:1px;" onclick="removeOnlineMember(${i})">✕</button>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function addOnlineMember(){ data.online.push({emoji:'⭐',name:'Neu',tag:'Offline',twitchLogin:''}); renderOnline(); markDirty(); }
+function removeOnlineMember(i){ data.online.splice(i,1); renderOnline(); markDirty(); }
+
+// ════ SOCIALS ════
+function renderSocials(){
+  const c=document.getElementById('socialsContainer');
+  c.innerHTML = data.socials.map((s,i)=>`
+    <div class="card" style="margin-bottom:10px;">
+      <div class="card-body" style="padding:12px 18px;">
+        <div class="form-grid" style="align-items:center;">
+          <div class="field"><label>Icon / Emoji</label><input value="${s.icon}" style="max-width:80px;" oninput="data.socials[${i}].icon=this.value;markDirty()"></div>
+          <div class="field"><label>Label</label><input value="${s.label}" oninput="data.socials[${i}].label=this.value;markDirty()"></div>
+          <div class="field"><label>URL</label><input value="${s.url}" oninput="data.socials[${i}].url=this.value;markDirty()"></div>
+          <div class="field" style="display:flex;align-items:flex-end;gap:8px;">
+            <div style="flex:1;"><label>Hover-Farbe</label><input value="${s.hoverColor}" oninput="data.socials[${i}].hoverColor=this.value;markDirty()"></div>
+            <button class="btn btn-danger btn-sm" style="margin-bottom:1px;" onclick="removeSocial(${i})">✕</button>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function addSocial(){ data.socials.push({icon:'🔗',label:'Neu',url:'#',hoverColor:'#00f5ff'}); renderSocials(); markDirty(); }
+function removeSocial(i){ data.socials.splice(i,1); renderSocials(); markDirty(); }
+
+// ════ ARTWORKS ════
+function renderArtworksAdmin(){
+  if(!data.artworks) data.artworks = [];
+  const c = document.getElementById('fanartsContainer');
+  if(!c) return;
+  if(!data.artworks.length){
+    c.innerHTML = `<div style="text-align:center;padding:40px;color:var(--muted);font-family:'VT323',monospace;font-size:1.1rem;letter-spacing:2px;">Noch keine Artworks — klicke auf "+ Artwork hinzufügen"</div>`;
+    return;
+  }
+  // Streamer-Optionen für Dropdown
+  const streamerOpts = data.streamers.map(s=>
+    `<option value="${s.twitchLogin?.toLowerCase()||''}">${s.emoji} ${s.name}</option>`
+  ).join('') + `<option value="collab">🌌 COLLAB (mehrere Streamer)</option>`;
+
+  c.innerHTML = `
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:16px;">
+    ${data.artworks.map((a,i)=>`
+    <div style="background:var(--surface);border:1px solid var(--border);padding:14px;display:flex;flex-direction:column;gap:10px;">
+      <!-- Bild Preview -->
+      <div style="aspect-ratio:3/4;background:rgba(107,33,200,.15);border:1px dashed rgba(155,89,245,.4);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer;" onclick="document.getElementById('aw-img-${i}').click()">
+        ${a.img?`<img src="${a.img}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.remove()">`:``}
+        <span style="position:relative;z-index:1;font-size:3rem;pointer-events:none;">${a.img?'':a.emoji||'🎨'}</span>
+        <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.6);color:rgba(200,180,255,.7);font-family:'VT323',monospace;font-size:.8rem;text-align:center;padding:4px;pointer-events:none;">📷 Bild hochladen</div>
+      </div>
+      <input type="file" id="aw-img-${i}" accept="image/*" style="display:none" onchange="handleArtworkImg(event,${i})">
+      ${a.img?`<button class="btn btn-danger btn-sm" onclick="clearArtworkImg(${i})" style="font-size:.6rem;padding:3px;">✕ Bild entfernen</button>`:''}
+      <!-- Felder -->
+      <div style="display:grid;grid-template-columns:60px 1fr;gap:8px;align-items:center;">
+        <label style="color:var(--muted);font-size:.65rem;">EMOJI</label>
+        <input class="inp" value="${a.emoji||'🎨'}" oninput="data.artworks[${i}].emoji=this.value;markDirty()" style="width:60px;text-align:center;font-size:1.2rem;" maxlength="4">
+      </div>
+      <div style="display:grid;grid-template-columns:60px 1fr;gap:8px;align-items:center;">
+        <label style="color:var(--muted);font-size:.65rem;">ARTIST</label>
+        <input class="inp" value="${a.artist||''}" placeholder="Künstlername" oninput="data.artworks[${i}].artist=this.value;markDirty()">
+      </div>
+      <div style="display:grid;grid-template-columns:60px 1fr;gap:8px;align-items:center;">
+        <label style="color:var(--muted);font-size:.65rem;">STREAMER</label>
+        <select class="inp" onchange="data.artworks[${i}].tag=this.value;markDirty()">
+          ${data.streamers.map(s=>`<option value="${s.twitchLogin?.toLowerCase()||''}" ${a.tag===s.twitchLogin?.toLowerCase()?'selected':''}>${s.emoji} ${s.name}</option>`).join('')}
+          <option value="collab" ${a.tag==='collab'?'selected':''}>🌌 COLLAB</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:60px 1fr;gap:8px;align-items:center;">
+        <label style="color:var(--muted);font-size:.65rem;">QUELLE / LINK</label>
+        <input class="inp" value="${a.source||''}" placeholder="https://twitter.com/artist (leer lassen = kein Link)" oninput="data.artworks[${i}].source=this.value;markDirty()">
+      </div>
+      <div style="display:grid;grid-template-columns:60px 1fr;gap:8px;align-items:center;">
+        <label style="color:var(--muted);font-size:.65rem;">♥ LIKES</label>
+        <input class="inp" type="number" min="0" value="${a.likes||0}" oninput="data.artworks[${i}].likes=parseInt(this.value)||0;markDirty()" style="width:80px;">
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="deleteArtwork(${i})">🗑 Artwork löschen</button>
+    </div>`).join('')}
+  </div>`;
+}
+
+function addArtwork(){
+  if(!data.artworks) data.artworks=[];
+  // Ersten Streamer als Standard-Tag
+  const defaultTag = data.streamers[0]?.twitchLogin?.toLowerCase() || 'collab';
+  data.artworks.push({img:'',emoji:'🎨',artist:'',tag:defaultTag,source:'',likes:0,liked:false});
+  renderArtworksAdmin();
+  markDirty();
+}
+
+function deleteArtwork(i){
+  if(!confirm(`Artwork von "${data.artworks[i]?.artist||'?'}" wirklich löschen?`)) return;
+  data.artworks.splice(i,1);
+  renderArtworksAdmin();
+  markDirty();
+}
+
+function handleArtworkImg(e,i){
+  const file=e.target.files[0]; if(!file) return;
+  const r=new FileReader();
+  r.onload=ev=>{ data.artworks[i].img=ev.target.result; renderArtworksAdmin(); markDirty(); };
+  r.readAsDataURL(file);
+}
+
+function clearArtworkImg(i){
+  data.artworks[i].img='';
+  renderArtworksAdmin();
+  markDirty();
+}
+
+// ════ TWITCH ════
+function openTokenUrl(){
+  const cid=v('tw-clientId'), csec=v('tw-clientSecret');
+  const url=`https://id.twitch.tv/oauth2/token?client_id=${encodeURIComponent(cid)}&client_secret=${encodeURIComponent(csec)}&grant_type=client_credentials`;
+  document.getElementById('tw-token-url').textContent=url;
+  window.open(url,'_blank');
+}
+function saveManualToken(){
+  const token=v('tw-manualToken').trim();
+  if(!token){showToast('⚠ Token leer!','error');return;}
+  const cid=v('tw-clientId').trim();
+  const csec=v('tw-clientSecret').trim();
+  data.twitch={...data.twitch, token, clientId:cid, clientSecret:csec};
+  document.getElementById('tw-status').style.color='var(--green)';
+  document.getElementById('tw-status').textContent='✓ Token gespeichert!';
+  document.getElementById('tw-manual-wrap').style.display='none';
+  saveAll();
+  showToast('✓ Token gespeichert! Hauptseite wird nun live aktualisiert.','success');
+}
+function renderTwitchSection(){
+  sv('tw-clientId', data.twitch?.clientId||'');
+  const logins = data.streamers.map(s=>s.twitchLogin);
+  document.getElementById('tw-loginList').innerHTML = logins.map(l=>`<span class="badge badge-tag" style="font-size:.7rem;padding:4px 10px;">@${l}</span>`).join('');
+}
+async function testTwitch(){
+  const cid=v('tw-clientId'), csec=v('tw-clientSecret');
+  const st=document.getElementById('tw-status');
+  if(!cid||!csec){st.style.color='var(--red)';st.textContent='⚠ Beide Felder ausfüllen!';return;}
+  st.style.color='var(--muted)';st.textContent='Verbinde...';
+  // Always show manual section with the helper link
+  document.getElementById('tw-manual-wrap').style.display='block';
+  const url=`https://id.twitch.tv/oauth2/token?client_id=${encodeURIComponent(cid)}&client_secret=${encodeURIComponent(csec)}&grant_type=client_credentials`;
+  document.getElementById('tw-token-url').textContent=url;
+  st.style.color='var(--gold)';
+  st.textContent='👇 Klicke unten auf "Token URL öffnen"';
+}
+
+// ════ CREDENTIALS ════
+function changeCredentials(){
+  const u=v('new-user'), p=v('new-pass');
+  const msg=document.getElementById('cred-msg');
+  if(!u||!p){msg.style.color='var(--red)';msg.textContent='⚠ Beide Felder ausfüllen!';return;}
+  data.credentials={user:u,pass:p};
+  saveAll();
+  msg.style.color='var(--green)';msg.textContent='✓ Zugangsdaten geändert!';
+  setTimeout(()=>msg.textContent='',3000);
+}
+
+// ════ EXPORT / IMPORT ════
+function exportData(){
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='astralia_backup.json';a.click();
+}
+function importData(e){
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=ev=>{try{data=JSON.parse(ev.target.result);saveAll();renderAll();showToast('✓ Importiert!','success');}catch{showToast('✗ Ungültige Datei','error');}};
+  r.readAsText(file);
+}
+// ════ ÜBER UNS ════
+function renderAboutAdmin(){
+  const ab = data.about || DEFAULT_DATA.about;
+
+  // Hero
+  setVal('ab-heroTitle',     ab.heroTitle    || '');
+  setVal('ab-heroSubtitle',  ab.heroSubtitle || '');
+  setVal('ab-heroDesc',      ab.heroDesc     || '');
+  setVal('ab-missionTitle',  ab.missionTitle || '');
+  setVal('ab-missionText',   ab.missionText  || '');
+  setVal('ab-valuesTitle',   ab.valuesTitle  || '');
+  setVal('ab-teamTitle',     ab.teamTitle    || '');
+  setVal('ab-streamersTitle',ab.streamersTitle||'');
+  setVal('ab-ctaTitle',      ab.ctaTitle     || '');
+  setVal('ab-ctaBtn',        ab.ctaBtn       || '');
+  setVal('ab-ctaDesc',       ab.ctaDesc      || '');
+  const showCb = document.getElementById('ab-showStreamers');
+  if(showCb) showCb.checked = ab.showStreamers !== false;
+
+  // Fakten
+  const fc = document.getElementById('ab-facts-container');
+  if(fc) fc.innerHTML = (ab.facts||[]).map((f,i)=>`
+    <div class="form-grid" style="margin-bottom:10px;">
+      <div class="field"><label>Zahl ${i+1}</label><input value="${esc(f.num)}" oninput="updateAboutArr('facts',${i},'num',this.value)"></div>
+      <div class="field"><label>Label ${i+1}</label><input value="${esc(f.lbl)}" oninput="updateAboutArr('facts',${i},'lbl',this.value)"></div>
+    </div>`).join('') +
+    `<button class="btn btn-ghost" onclick="addAboutItem('facts',{num:'0',lbl:'Neu'})">+ Fakt</button>
+     <button class="btn btn-ghost" style="color:#ef4444;border-color:#ef4444;" onclick="removeAboutItem('facts')">− Letzten</button>`;
+
+  // Werte
+  const vc = document.getElementById('ab-values-container');
+  if(vc) vc.innerHTML = (ab.values||[]).map((v,i)=>`
+    <div class="form-grid" style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(155,89,245,.15);">
+      <div class="field"><label>Icon</label><input value="${esc(v.icon)}" oninput="updateAboutArr('values',${i},'icon',this.value)" style="width:60px;"></div>
+      <div class="field"><label>Titel</label><input value="${esc(v.title)}" oninput="updateAboutArr('values',${i},'title',this.value)"></div>
+      <div class="field span2"><label>Beschreibung</label><input value="${esc(v.desc)}" oninput="updateAboutArr('values',${i},'desc',this.value)"></div>
+    </div>`).join('') +
+    `<button class="btn btn-ghost" onclick="addAboutItem('values',{icon:'⭐',title:'NEU',desc:''})">+ Wert</button>
+     <button class="btn btn-ghost" style="color:#ef4444;border-color:#ef4444;" onclick="removeAboutItem('values')">− Letzten</button>`;
+
+  // Team
+  const tc = document.getElementById('ab-team-container');
+  if(tc) tc.innerHTML = (ab.team||[]).map((t,i)=>`
+    <div class="form-grid" style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(155,89,245,.15);">
+      <div class="field"><label>Emoji</label><input value="${esc(t.avatar)}" oninput="updateAboutArr('team',${i},'avatar',this.value)" style="width:60px;"></div>
+      <div class="field"><label>Name</label><input value="${esc(t.name)}" oninput="updateAboutArr('team',${i},'name',this.value)"></div>
+      <div class="field"><label>Rolle</label><input value="${esc(t.role)}" oninput="updateAboutArr('team',${i},'role',this.value)"></div>
+      <div class="field"><label>Farbe (CSS gradient, leer = standard)</label><input value="${esc(t.color||'')}" oninput="updateAboutArr('team',${i},'color',this.value)" placeholder="linear-gradient(...)"></div>
+    </div>`).join('') +
+    `<button class="btn btn-ghost" onclick="addAboutItem('team',{avatar:'⭐',name:'NEU',role:'',color:''})">+ Mitglied</button>
+     <button class="btn btn-ghost" style="color:#ef4444;border-color:#ef4444;" onclick="removeAboutItem('team')">− Letzten</button>`;
+}
+
+function updateAboutArr(arr, idx, key, val){
+  if(!data.about) data.about = JSON.parse(JSON.stringify(DEFAULT_DATA.about));
+  data.about[arr][idx][key] = val;
+}
+function addAboutItem(arr, tmpl){
+  if(!data.about) data.about = JSON.parse(JSON.stringify(DEFAULT_DATA.about));
+  data.about[arr].push({...tmpl});
+  renderAboutAdmin();
+}
+function removeAboutItem(arr){
+  if(!data.about) data.about = JSON.parse(JSON.stringify(DEFAULT_DATA.about));
+  if(data.about[arr].length > 1) data.about[arr].pop();
+  renderAboutAdmin();
+}
+
+function saveAbout(){
+  if(!data.about) data.about = JSON.parse(JSON.stringify(DEFAULT_DATA.about));
+  data.about.heroTitle     = document.getElementById('ab-heroTitle')?.value     || '';
+  data.about.heroSubtitle  = document.getElementById('ab-heroSubtitle')?.value  || '';
+  data.about.heroDesc      = document.getElementById('ab-heroDesc')?.value      || '';
+  data.about.missionTitle  = document.getElementById('ab-missionTitle')?.value  || '';
+  data.about.missionText   = document.getElementById('ab-missionText')?.value   || '';
+  data.about.valuesTitle   = document.getElementById('ab-valuesTitle')?.value   || '';
+  data.about.teamTitle     = document.getElementById('ab-teamTitle')?.value     || '';
+  data.about.streamersTitle= document.getElementById('ab-streamersTitle')?.value|| '';
+  data.about.showStreamers = document.getElementById('ab-showStreamers')?.checked !== false;
+  data.about.ctaTitle      = document.getElementById('ab-ctaTitle')?.value      || '';
+  data.about.ctaBtn        = document.getElementById('ab-ctaBtn')?.value        || '';
+  data.about.ctaDesc       = document.getElementById('ab-ctaDesc')?.value       || '';
+  saveAll();
+  showToast('✓ Über-uns-Texte gespeichert','success');
+}
+
+// ════ APPLY ════
+function renderApply(){
+  const av = data.apply?.vtuber  || DEFAULT_DATA.apply.vtuber;
+  const ap = data.apply?.partner || DEFAULT_DATA.apply.partner;
+
+  // VTuber allgemein
+  setVal('av-title',     av.title    || '');
+  setVal('av-btn',       av.btnText  || '');
+  setVal('av-note',      av.note     || '');
+  setVal('av-perksTitle',av.perksTitle|| '');
+  setVal('av-perks',    (av.perks||[]).join('\n'));
+
+  // VTuber Voraussetzungen
+  const avReqs = document.getElementById('av-reqs-container');
+  if(avReqs) avReqs.innerHTML = (av.reqs||[]).map((r,i)=>`
+    <div class="form-grid" style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(155,89,245,.15);">
+      <div class="field"><label>Icon ${i+1}</label><input value="${esc(r.icon)}" oninput="updateApplyReq('vtuber',${i},'icon',this.value)" style="width:60px;"></div>
+      <div class="field"><label>Titel</label><input value="${esc(r.title)}" oninput="updateApplyReq('vtuber',${i},'title',this.value)"></div>
+      <div class="field span2"><label>Beschreibung</label><input value="${esc(r.desc)}" oninput="updateApplyReq('vtuber',${i},'desc',this.value)"></div>
+    </div>`).join('') +
+    `<button class="btn btn-ghost" onclick="addApplyReq('vtuber')">+ Voraussetzung</button>
+     <button class="btn btn-ghost" style="color:#ef4444;border-color:#ef4444;" onclick="removeApplyReq('vtuber')">− Letzte entfernen</button>`;
+
+  // Partner allgemein
+  setVal('ap-title',     ap.title    || '');
+  setVal('ap-btn',       ap.btnText  || '');
+  setVal('ap-note',      ap.note     || '');
+  setVal('ap-perksTitle',ap.perksTitle|| '');
+  setVal('ap-perks',    (ap.perks||[]).join('\n'));
+
+  // Partner Info-Karten
+  const apReqs = document.getElementById('ap-reqs-container');
+  if(apReqs) apReqs.innerHTML = (ap.reqs||[]).map((r,i)=>`
+    <div class="form-grid" style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(155,89,245,.15);">
+      <div class="field"><label>Icon ${i+1}</label><input value="${esc(r.icon)}" oninput="updateApplyReq('partner',${i},'icon',this.value)" style="width:60px;"></div>
+      <div class="field"><label>Titel</label><input value="${esc(r.title)}" oninput="updateApplyReq('partner',${i},'title',this.value)"></div>
+      <div class="field span2"><label>Beschreibung</label><input value="${esc(r.desc)}" oninput="updateApplyReq('partner',${i},'desc',this.value)"></div>
+    </div>`).join('') +
+    `<button class="btn btn-ghost" onclick="addApplyReq('partner')">+ Info-Karte</button>
+     <button class="btn btn-ghost" style="color:#ef4444;border-color:#ef4444;" onclick="removeApplyReq('partner')">− Letzte entfernen</button>`;
+}
+
+function setVal(id, val){
+  const el = document.getElementById(id);
+  if(el) el.value = val;
+}
+function esc(s){ return (s||'').replace(/"/g,'&quot;'); }
+
+function updateApplyReq(type, idx, key, val){
+  if(!data.apply) data.apply = JSON.parse(JSON.stringify(DEFAULT_DATA.apply));
+  data.apply[type].reqs[idx][key] = val;
+}
+function addApplyReq(type){
+  if(!data.apply) data.apply = JSON.parse(JSON.stringify(DEFAULT_DATA.apply));
+  data.apply[type].reqs.push({icon:'⭐', title:'NEUER PUNKT', desc:'Beschreibung hier eingeben.'});
+  renderApply();
+}
+function removeApplyReq(type){
+  if(!data.apply) data.apply = JSON.parse(JSON.stringify(DEFAULT_DATA.apply));
+  if(data.apply[type].reqs.length > 1) data.apply[type].reqs.pop();
+  renderApply();
+}
+
+function saveApply(){
+  if(!data.apply) data.apply = JSON.parse(JSON.stringify(DEFAULT_DATA.apply));
+
+  // VTuber
+  data.apply.vtuber.title     = document.getElementById('av-title')?.value     || '';
+  data.apply.vtuber.btnText   = document.getElementById('av-btn')?.value       || '';
+  data.apply.vtuber.note      = document.getElementById('av-note')?.value      || '';
+  data.apply.vtuber.perksTitle= document.getElementById('av-perksTitle')?.value|| '';
+  data.apply.vtuber.perks     = (document.getElementById('av-perks')?.value||'').split('\\n').map(s=>s.trim()).filter(Boolean);
+
+  // Partner
+  data.apply.partner.title     = document.getElementById('ap-title')?.value     || '';
+  data.apply.partner.btnText   = document.getElementById('ap-btn')?.value       || '';
+  data.apply.partner.note      = document.getElementById('ap-note')?.value      || '';
+  data.apply.partner.perksTitle= document.getElementById('ap-perksTitle')?.value|| '';
+  data.apply.partner.perks     = (document.getElementById('ap-perks')?.value||'').split('\\n').map(s=>s.trim()).filter(Boolean);
+
+  saveAll();
+  showToast('✓ Bewerbungs-Texte gespeichert','success');
+}
+
+function resetData(){data=JSON.parse(JSON.stringify(DEFAULT_DATA));saveAll();renderAll();showToast('✓ Zurückgesetzt','success');}
+
+// ════ TOAST ════
+function showToast(msg,type='success'){
+  const t=document.createElement('div');
+  t.style.cssText=`position:fixed;bottom:70px;right:24px;z-index:9999;background:${type==='success'?'rgba(74,222,128,.15)':'rgba(239,68,68,.15)'};border:1px solid ${type==='success'?'rgba(74,222,128,.4)':'rgba(239,68,68,.4)'};color:${type==='success'?'var(--green)':'var(--red)'};padding:10px 20px;font-family:'VT323',monospace;font-size:1.1rem;letter-spacing:2px;box-shadow:0 0 20px rgba(0,0,0,.5);animation:toastIn .3s ease;`;
+  t.textContent=msg;document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2500);
+}
+const ts=document.createElement('style');ts.textContent='@keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}';document.head.appendChild(ts);
+
+// INIT
+loadAll();
+</script>
+</body>
+</html>
