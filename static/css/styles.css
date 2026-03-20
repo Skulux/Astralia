@@ -1347,33 +1347,38 @@ h1,h2,h3{
 /* Astralia.Live redesign v4: dense 2010 forum portal layout */
 .main{padding-top:10px}
 
-.astral-home{max-width:1280px;margin:0 auto 40px;padding:0 14px 20px}
-.marquee-bar{position:relative;overflow:hidden;margin-top:8px;border-top:2px solid #ffd700;border-bottom:2px solid #ffd700;background:linear-gradient(90deg,#6b21c8,#330066,#ff69d4,#330066,#6b21c8);box-shadow:0 0 24px rgba(107,33,200,.24)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:5;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.08) 2px,rgba(0,0,0,.08) 4px);opacity:.26;mix-blend-mode:soft-light}
+
+.astral-home{position:relative;max-width:1280px;margin:0 auto 40px;padding:0 14px 20px}
+.astral-home::before{content:"";position:absolute;inset:0 14px auto;top:0;height:360px;border-radius:0 0 28px 28px;background:radial-gradient(circle at 50% 0%,rgba(0,245,255,.16),transparent 44%),radial-gradient(circle at 22% 20%,rgba(107,33,200,.18),transparent 34%),radial-gradient(circle at 78% 16%,rgba(255,105,212,.14),transparent 30%);pointer-events:none;filter:blur(2px)}
+.marquee-bar{position:relative;overflow:hidden;margin-top:8px;border-top:2px solid #ffd700;border-bottom:2px solid #ffd700;background:linear-gradient(90deg,#6b21c8,#330066,#ff69d4,#330066,#6b21c8);background-size:240% 100%;box-shadow:0 0 24px rgba(107,33,200,.24);animation:astralGradientShift 7s ease infinite}
 .marquee-bar__track{display:flex;width:max-content;min-width:100%;animation:marqueeScroll 22s linear infinite}
 .marquee-bar__track span{display:inline-flex;align-items:center;flex-shrink:0;padding:6px 24px;font-family:"VT323",monospace;font-size:1.12rem;letter-spacing:.14em;text-transform:uppercase;color:#ffd700;text-shadow:0 0 10px rgba(255,215,0,.3);white-space:nowrap}
 .marquee-bar--subpage{margin-top:0;border-top-width:1px;border-bottom-width:1px;box-shadow:none;opacity:.92}
 .marquee-bar--subpage .marquee-bar__track{animation-duration:18s}
 .marquee-bar--subpage .marquee-bar__track span{padding:5px 20px;font-size:1rem;letter-spacing:.12em;color:rgba(255,215,0,.92)}
-.astral-hero-panel{padding:30px 20px 12px;text-align:center;position:relative;overflow:hidden;border:0;border-bottom:1px solid rgba(155,89,245,.36);background:none;box-shadow:none}
+.astral-hero-panel{padding:30px 20px 18px;text-align:center;position:relative;overflow:hidden;border:1px solid rgba(126,78,214,.42);border-top:0;background:linear-gradient(180deg,rgba(22,9,45,.72),rgba(10,4,24,.32));box-shadow:inset 0 0 0 1px rgba(255,255,255,.04),0 16px 40px rgba(5,1,15,.24)}
 .astral-hero-panel::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(0,245,255,.12),transparent 42%);pointer-events:none}
 .astral-hero-panel::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 18% 24%,rgba(255,209,85,.55) 0 1.2px,transparent 1.8px),radial-gradient(circle at 34% 42%,rgba(75,231,255,.55) 0 1.2px,transparent 1.8px),radial-gradient(circle at 74% 16%,rgba(255,115,226,.55) 0 1.2px,transparent 1.8px),radial-gradient(circle at 88% 68%,rgba(255,209,85,.5) 0 1.2px,transparent 1.8px);opacity:.72;pointer-events:none}
 .astral-hero-panel>*{position:relative;z-index:1}
-.astral-logo-word{margin:0;font-family:"Orbitron",sans-serif;font-size:clamp(3rem,9vw,7rem);font-weight:900;letter-spacing:.2em;background:linear-gradient(90deg,#ffffff 0%,#00f5ff 26%,#ff69d4 66%,#ffd700 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 30px rgba(0,245,255,.34)}
+.astral-logo-word{margin:0;font-family:"Orbitron",sans-serif;font-size:clamp(3rem,9vw,7rem);font-weight:900;letter-spacing:.2em;background:linear-gradient(90deg,#ffffff 0%,#00f5ff 26%,#ff69d4 66%,#ffd700 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 30px rgba(0,245,255,.34);animation:astralLogoFloat 3.6s ease-in-out infinite}
 .astral-hero-panel__eyebrow,.astral-hero-panel__sub{margin:.28rem 0 0;color:#00f5ff;font-family:"VT323",monospace;letter-spacing:.32em;text-transform:uppercase;font-size:1.04rem}
 .astral-hero-panel__sub{color:#00f5ff;opacity:.92}
 .astral-hero-panel__divider{margin:.5rem 0 0;color:#ffd700;font-family:"VT323",monospace;font-size:1.18rem;letter-spacing:.45em;opacity:.86}
-.astral-hero-panel__stats{margin-top:8px;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:18px;color:#f1dcff;font-size:.76rem;text-transform:uppercase;letter-spacing:.18em}
-.astral-hero-panel__stats span{display:inline-flex;align-items:center;gap:8px;color:rgba(200,180,255,.68)}
+.astral-hero-panel__stats{margin-top:10px;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;color:#f1dcff;font-size:.76rem;text-transform:uppercase;letter-spacing:.18em}
+.astral-hero-panel__stats span{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid rgba(155,89,245,.3);background:rgba(107,33,200,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);color:rgba(232,213,255,.82)}
 .astral-hero-panel__pulse{width:8px;height:8px;border-radius:999px;background:#ff4d6d;box-shadow:0 0 0 0 rgba(255,77,109,.6);animation:astralPulse 1.4s ease-out infinite}
 
-.astral-tabnav{position:relative;z-index:10;display:flex;justify-content:center;gap:4px;flex-wrap:wrap;padding:10px 20px;background:rgba(10,2,25,.82);border-top:1px solid rgba(255,215,0,.14);border-bottom:2px solid rgba(155,89,245,.5)}
+.astral-tabnav{position:relative;z-index:10;display:flex;justify-content:center;gap:4px;flex-wrap:wrap;padding:10px 20px;background:rgba(10,2,25,.82);border-top:1px solid rgba(255,215,0,.14);border-bottom:2px solid rgba(155,89,245,.5);box-shadow:0 14px 28px rgba(5,1,15,.18)}
 .astral-tabnav a{font-family:"Orbitron",sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.18em;text-decoration:none;color:#00f5ff;padding:6px 14px;border:1px solid rgba(0,245,255,.85);background:rgba(0,245,255,.05);transition:all .2s ease;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}
 .astral-tabnav a:hover,.astral-tabnav a.active{background:#00f5ff;color:#05010f;box-shadow:0 0 20px rgba(0,245,255,.5);filter:none}
 
 .astral-grid{display:grid;grid-template-columns:280px minmax(0,1fr) 280px;gap:14px;margin-top:14px}
 .astral-col{display:grid;gap:14px;align-content:start}
-.astral-widget{border:1px solid #7a4dd5;background:rgba(17,10,47,.88);padding:10px;box-shadow:inset 0 0 0 1px rgba(108,56,208,.45)}
-.astral-widget>h2{margin:0 0 10px;padding:5px 8px;background:linear-gradient(90deg,#6b21c8,#330066);border:1px solid rgba(186,111,255,.5);font-family:"Orbitron",sans-serif;font-size:.74rem;letter-spacing:.16em;color:#ffd84f;text-transform:uppercase}
+.astral-widget{position:relative;border:1px solid #7a4dd5;background:linear-gradient(180deg,rgba(28,10,55,.95),rgba(14,8,32,.95));padding:12px;box-shadow:0 0 12px rgba(107,33,200,.24),inset 0 0 0 1px rgba(108,56,208,.45),inset 0 0 28px rgba(107,33,200,.06);overflow:hidden}
+.astral-widget::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.05),transparent 30%);opacity:.4;pointer-events:none}
+.astral-widget>h2{position:relative;display:flex;align-items:center;gap:8px;margin:0 0 12px;padding:7px 10px;background:linear-gradient(90deg,rgba(107,33,200,.92),rgba(51,0,102,.88));border:1px solid rgba(186,111,255,.5);font-family:"Orbitron",sans-serif;font-size:.74rem;letter-spacing:.16em;color:#ffd84f;text-transform:uppercase}
+.astral-widget>h2::before{content:"";width:8px;height:8px;border-radius:50%;background:#ffd84f;box-shadow:0 0 8px rgba(255,216,79,.75);animation:astralWidgetPulse 1.4s ease-in-out infinite}
 .astral-widget h3{margin:.2rem 0 .55rem;font-size:1.8rem;letter-spacing:.03em;text-transform:none;font-family:"Rajdhani",sans-serif}
 
 .astral-profile{text-align:center}
@@ -1383,8 +1388,10 @@ h1,h2,h3{
 .astral-rank{margin:0;font-size:1.15rem;text-align:center;color:#ffd95e}
 
 .astral-list{list-style:none;padding:0;margin:0;display:grid;gap:8px}
-.astral-list li{padding:6px 4px;border-bottom:1px dashed rgba(121,84,209,.45);font-size:.9rem}
+.astral-list li{padding:8px 6px;border-bottom:1px dashed rgba(121,84,209,.45);font-size:.9rem;background:linear-gradient(90deg,rgba(107,33,200,.08),transparent 68%)}
 .astral-list li small{display:block;color:#8cb6dc;margin-top:2px}
+.astral-list a{color:#ffd3ff}
+.astral-list a:hover{color:#00f5ff;text-decoration:none}
 .dot-live{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ff426e;box-shadow:0 0 8px #ff426e;margin-right:8px}
 .astral-list--chat li{font-size:.84rem;line-height:1.35}
 
@@ -1396,17 +1403,23 @@ h1,h2,h3{
 .astral-actions .btn:focus-visible{outline:2px solid rgba(0,245,255,.45);outline-offset:2px}
 
 .astral-live-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.astral-live-card{border:1px solid #4c2f96;background:linear-gradient(180deg,rgba(25,22,69,.9),rgba(12,10,40,.95));padding:8px}
-.astral-live-card a{display:grid;gap:6px;color:inherit;text-decoration:none}
-.astral-live-card img{width:100%;height:95px;object-fit:cover;border-radius:0}
+.astral-live-card{position:relative;border:1px solid #4c2f96;background:linear-gradient(180deg,rgba(25,22,69,.9),rgba(12,10,40,.95));padding:8px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;overflow:hidden}
+.astral-live-card::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.06),transparent 36%);opacity:.5;pointer-events:none}
+.astral-live-card:hover{transform:translateY(-3px);border-color:#ff69d4;box-shadow:0 0 20px rgba(255,105,212,.18)}
+.astral-live-card a{display:grid;gap:6px;color:inherit;text-decoration:none;position:relative;z-index:1}
+.astral-live-card img{width:100%;height:95px;object-fit:cover;border-radius:0;border:1px solid rgba(155,89,245,.25)}
 .astral-live-card strong{font-family:"Orbitron",sans-serif;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
 .astral-live-card small{font-size:.76rem;color:#89c2e1}
 .astral-live-card--empty{grid-column:1/-1;text-align:center;color:#9caecf}
 
-.astral-forum-table{width:100%;border-collapse:collapse;font-size:.85rem}
-.astral-forum-table th,.astral-forum-table td{padding:8px 6px;border-bottom:1px solid rgba(112,76,201,.35);text-align:left}
-.astral-forum-table th{font-family:"Orbitron",sans-serif;text-transform:uppercase;font-size:.7rem;letter-spacing:.12em;color:#ffd95e}
+.astral-forum-table{width:100%;border-collapse:collapse;font-size:.85rem;background:rgba(8,3,18,.34)}
+.astral-forum-table th,.astral-forum-table td{padding:9px 8px;border-bottom:1px solid rgba(112,76,201,.35);text-align:left;vertical-align:top}
+.astral-forum-table tbody tr{transition:background .2s ease}
+.astral-forum-table tbody tr:hover{background:rgba(107,33,200,.12)}
+.astral-forum-table th{font-family:"Orbitron",sans-serif;text-transform:uppercase;font-size:.7rem;letter-spacing:.12em;color:#ffd95e;background:rgba(107,33,200,.14)}
 .astral-forum-table td:nth-child(n+2){color:#8aa6cb;font-size:.8rem}
+.astral-forum-table a{color:#f7dcff}
+.astral-forum-table a:hover{color:#00f5ff;text-decoration:none}
 
 @media (max-width:1200px){
   .astral-grid{grid-template-columns:240px minmax(0,1fr) 240px}
@@ -1427,7 +1440,10 @@ h1,h2,h3{
 }
 
 @keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes astralGradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 @keyframes astralPulse{0%{box-shadow:0 0 0 0 rgba(255,77,109,.6)}70%{box-shadow:0 0 0 8px rgba(255,77,109,0)}100%{box-shadow:0 0 0 0 rgba(255,77,109,0)}}
+@keyframes astralLogoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes astralWidgetPulse{50%{transform:scale(1.35);opacity:.65}}
 .astral-hero-copy{max-width:820px;margin:14px auto 0;color:#b7c9ea;font-size:1rem;line-height:1.6}
 .astral-hero-copy p{margin:.4rem 0}
 
