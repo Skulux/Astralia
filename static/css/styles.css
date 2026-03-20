@@ -968,7 +968,7 @@ a:hover{text-decoration:underline}
 
 .form{max-width:780px;margin-top:14px;background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:16px}
 .form label{display:block;font-weight:600;margin:10px 0 6px}
-.form input,.form textarea{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--panel-2);color:var(--ink)}
+.form input,.form textarea,.form select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--panel-2);color:var(--ink)}
 .grid2{display:grid;grid-template-columns:1fr;gap:10px}
 @media (min-width:860px){.grid2{grid-template-columns:1fr 1fr}}
 
