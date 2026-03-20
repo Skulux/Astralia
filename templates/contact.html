@@ -20,7 +20,25 @@
     {% endfor %}
   </nav>
 
-  <section class="page">
+  <section class="page apply-page">
+    <section class="apply-info-grid" aria-label="Bewerbungsinfos">
+      <article class="apply-info-card apply-info-card--primary">
+        <span class="apply-info-card__kicker">Was wir suchen</span>
+        <h2>Sternenstaub mit Persönlichkeit</h2>
+        <p>Ob Gaming, Art, Just Chatting oder Musik: Zeig uns, wer du bist, wofür du brennst und was deine Community an dir liebt.</p>
+      </article>
+      <article class="apply-info-card apply-info-card--accent">
+        <span class="apply-info-card__icon" aria-hidden="true">✦</span>
+        <h2>Antwort mit Plan</h2>
+        <p>Je klarer deine Links, dein Fokus und deine Ziele sind, desto schneller können wir deine Bewerbung intern prüfen.</p>
+      </article>
+      <article class="apply-info-card apply-info-card--accent-alt">
+        <span class="apply-info-card__icon" aria-hidden="true">☄</span>
+        <h2>Partner & Kollabs</h2>
+        <p>Für Kooperationen helfen uns Zielgruppe, Budgetrahmen und eine konkrete Idee, damit wir direkt passende Möglichkeiten einschätzen können.</p>
+      </article>
+    </section>
+
     <div class="apply-shell">
       <input class="apply-shell__radio" type="radio" name="application_tab" id="apply-tab-vtuber" {% if selected_tab != 'partner' %}checked{% endif %}>
       <input class="apply-shell__radio" type="radio" name="application_tab" id="apply-tab-partner" {% if selected_tab == 'partner' %}checked{% endif %}>
