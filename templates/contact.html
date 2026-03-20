@@ -1,11 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
+{% set selected_tab = 'partner' if form_data.application_type == 'Partner / Kollab-Anfrage' else 'vtuber' %}
 <section class="astral-home astral-subpage">
-  <div class="astral-home__topline"><span>✦ Kontakt</span></div>
+  <div class="marquee-bar marquee-bar--subpage" aria-label="Jetzt bewerben Hinweisband">
+    <div class="marquee-bar__track">
+      <span>✦ JETZT BEWERBEN ✦ ASTRALIA PORTAL ✦ DEUTSCHES VTUBER NETZWERK ✦</span>
+      <span aria-hidden="true">✦ JETZT BEWERBEN ✦ ASTRALIA PORTAL ✦ DEUTSCHES VTUBER NETZWERK ✦</span>
+    </div>
+  </div>
   <header class="astral-hero-panel">
     <p class="astral-hero-panel__eyebrow">Open Channel</p>
-    <h1 class="astral-logo-word astral-logo-word--subpage">Kontakt</h1>
-    <p class="astral-about-lead">Fragen, Bewerbungen oder Kollab-Anfragen? Schreibt uns gern.</p>
+    <h1 class="astral-logo-word astral-logo-word--subpage">Jetzt bewerben</h1>
+    <p class="astral-about-lead">Bewirb dich als VTuber*in oder sende uns deine Partner- bzw. Kollab-Anfrage mit allen wichtigen Infos direkt hier.</p>
   </header>
   <nav class="astral-tabnav" aria-label="Hauptnavigation">
     {% for label, endpoint in NAV_ITEMS %}
@@ -15,23 +21,123 @@
   </nav>
 
   <section class="page">
-    <form class="form" method="post" action="{{ url_for('contact') }}">
-      <div class="grid2">
-        <label>Dein Name
-          <input type="text" name="name" value="{{ form_data.name | default('') }}" required>
+    <div class="apply-shell">
+      <input class="apply-shell__radio" type="radio" name="application_tab" id="apply-tab-vtuber" {% if selected_tab != 'partner' %}checked{% endif %}>
+      <input class="apply-shell__radio" type="radio" name="application_tab" id="apply-tab-partner" {% if selected_tab == 'partner' %}checked{% endif %}>
+
+      <div class="apply-tabs" role="tablist" aria-label="Bewerbungsarten">
+        <label class="apply-tab" for="apply-tab-vtuber" role="tab" aria-controls="apply-panel-vtuber">
+          <span class="apply-tab-icon">🌟</span>BEWERBUNG ALS VTUBER
         </label>
-        <label>E-Mail
-          <input type="email" name="email" value="{{ form_data.email | default('') }}" required>
+        <label class="apply-tab partner" for="apply-tab-partner" role="tab" aria-controls="apply-panel-partner">
+          <span class="apply-tab-icon">🤝</span>BEWERBUNG ALS PARTNER
         </label>
       </div>
-      <label>Betreff
-        <input type="text" name="subject" value="{{ form_data.subject | default('') }}" required>
-      </label>
-      <label>Nachricht
-        <textarea name="message" rows="6" required>{{ form_data.message | default('') }}</textarea>
-      </label>
-      <button class="btn" type="submit">Senden</button>
-    </form>
+
+      <div class="apply-panel apply-panel--vtuber" id="apply-panel-vtuber">
+        <form class="form" method="post" action="{{ url_for('contact') }}">
+          <input type="hidden" name="application_type" value="VTuber / Streamer Bewerbung">
+          <input type="hidden" name="subject" value="VTuber Bewerbung">
+          <div class="grid2">
+            <label>VTuber / Streamer Name
+              <input type="text" name="name" value="{{ form_data.name if selected_tab != 'partner' else '' }}" required>
+            </label>
+            <label>E-Mail
+              <input type="email" name="email" value="{{ form_data.email if selected_tab != 'partner' else '' }}" required>
+            </label>
+          </div>
+          <div class="grid2">
+            <label>Twitch / Hauptplattform
+              <input type="text" name="primary_link" value="{{ form_data.primary_link if selected_tab != 'partner' else '' }}" placeholder="https://twitch.tv/deinname" required>
+            </label>
+            <label>Discord Tag
+              <input type="text" name="discord" value="{{ form_data.discord if selected_tab != 'partner' else '' }}" placeholder="deinname#0000">
+            </label>
+          </div>
+          <div class="grid2">
+            <label>Hauptkategorie
+              <select name="focus_type">
+                <option value="" {% if not form_data.focus_type or selected_tab == 'partner' %}selected{% endif %}>Bitte wählen</option>
+                <option value="Gaming" {% if form_data.focus_type == 'Gaming' and selected_tab != 'partner' %}selected{% endif %}>Gaming</option>
+                <option value="Just Chatting" {% if form_data.focus_type == 'Just Chatting' and selected_tab != 'partner' %}selected{% endif %}>Just Chatting</option>
+                <option value="Kunst & Kreativ" {% if form_data.focus_type == 'Kunst & Kreativ' and selected_tab != 'partner' %}selected{% endif %}>Kunst & Kreativ</option>
+                <option value="Musik" {% if form_data.focus_type == 'Musik' and selected_tab != 'partner' %}selected{% endif %}>Musik</option>
+                <option value="Variety" {% if form_data.focus_type == 'Variety' and selected_tab != 'partner' %}selected{% endif %}>Variety</option>
+              </select>
+            </label>
+            <label>Ø Zuschauerzahl
+              <select name="range_info">
+                <option value="" {% if not form_data.range_info or selected_tab == 'partner' %}selected{% endif %}>Keine Angabe</option>
+                <option value="Unter 10 Zuschauer" {% if form_data.range_info == 'Unter 10 Zuschauer' and selected_tab != 'partner' %}selected{% endif %}>Unter 10 Zuschauer</option>
+                <option value="10–50 Zuschauer" {% if form_data.range_info == '10–50 Zuschauer' and selected_tab != 'partner' %}selected{% endif %}>10–50 Zuschauer</option>
+                <option value="50–100 Zuschauer" {% if form_data.range_info == '50–100 Zuschauer' and selected_tab != 'partner' %}selected{% endif %}>50–100 Zuschauer</option>
+                <option value="100+ Zuschauer" {% if form_data.range_info == '100+ Zuschauer' and selected_tab != 'partner' %}selected{% endif %}>100+ Zuschauer</option>
+              </select>
+            </label>
+          </div>
+          <label>Weitere Links
+            <input type="text" name="additional_links" value="{{ form_data.additional_links if selected_tab != 'partner' else '' }}" placeholder="https://...">
+          </label>
+          <label>Erzähl uns von dir
+            <textarea name="message" rows="8" required>{{ form_data.message if selected_tab != 'partner' else '' }}</textarea>
+          </label>
+          <button class="btn" type="submit">Bewerbung senden</button>
+        </form>
+      </div>
+
+      <div class="apply-panel apply-panel--partner" id="apply-panel-partner">
+        <form class="form" method="post" action="{{ url_for('contact') }}">
+          <input type="hidden" name="application_type" value="Partner / Kollab-Anfrage">
+          <input type="hidden" name="subject" value="Partner Anfrage">
+          <div class="grid2">
+            <label>Firmen- / Projektname
+              <input type="text" name="name" value="{{ form_data.name if selected_tab == 'partner' else '' }}" required>
+            </label>
+            <label>Ansprechpartner
+              <input type="text" name="contact_person" value="{{ form_data.contact_person if selected_tab == 'partner' else '' }}">
+            </label>
+          </div>
+          <div class="grid2">
+            <label>E-Mail
+              <input type="email" name="email" value="{{ form_data.email if selected_tab == 'partner' else '' }}" required>
+            </label>
+            <label>Website / Social Media
+              <input type="text" name="primary_link" value="{{ form_data.primary_link if selected_tab == 'partner' else '' }}" placeholder="https://deine-website.de" required>
+            </label>
+          </div>
+          <div class="grid2">
+            <label>Partnerschafts-Art
+              <select name="focus_type">
+                <option value="" {% if not form_data.focus_type or selected_tab != 'partner' %}selected{% endif %}>Bitte wählen</option>
+                <option value="Sponsoring / Brand Deal" {% if form_data.focus_type == 'Sponsoring / Brand Deal' and selected_tab == 'partner' %}selected{% endif %}>Sponsoring / Brand Deal</option>
+                <option value="Produkt-Kooperation / Merch" {% if form_data.focus_type == 'Produkt-Kooperation / Merch' and selected_tab == 'partner' %}selected{% endif %}>Produkt-Kooperation / Merch</option>
+                <option value="Event-Partnerschaft" {% if form_data.focus_type == 'Event-Partnerschaft' and selected_tab == 'partner' %}selected{% endif %}>Event-Partnerschaft</option>
+                <option value="Content-Kooperation" {% if form_data.focus_type == 'Content-Kooperation' and selected_tab == 'partner' %}selected{% endif %}>Content-Kooperation</option>
+                <option value="Affiliate / Empfehlung" {% if form_data.focus_type == 'Affiliate / Empfehlung' and selected_tab == 'partner' %}selected{% endif %}>Affiliate / Empfehlung</option>
+                <option value="Sonstiges" {% if form_data.focus_type == 'Sonstiges' and selected_tab == 'partner' %}selected{% endif %}>Sonstiges</option>
+              </select>
+            </label>
+            <label>Budget-Rahmen
+              <select name="range_info">
+                <option value="" {% if not form_data.range_info or selected_tab != 'partner' %}selected{% endif %}>Keine Angabe</option>
+                <option value="Unter 500 €" {% if form_data.range_info == 'Unter 500 €' and selected_tab == 'partner' %}selected{% endif %}>Unter 500 €</option>
+                <option value="500 € – 1.000 €" {% if form_data.range_info == '500 € – 1.000 €' and selected_tab == 'partner' %}selected{% endif %}>500 € – 1.000 €</option>
+                <option value="1.000 € – 5.000 €" {% if form_data.range_info == '1.000 € – 5.000 €' and selected_tab == 'partner' %}selected{% endif %}>1.000 € – 5.000 €</option>
+                <option value="Über 5.000 €" {% if form_data.range_info == 'Über 5.000 €' and selected_tab == 'partner' %}selected{% endif %}>Über 5.000 €</option>
+                <option value="Produkt-basiert (kein Budget)" {% if form_data.range_info == 'Produkt-basiert (kein Budget)' and selected_tab == 'partner' %}selected{% endif %}>Produkt-basiert (kein Budget)</option>
+              </select>
+            </label>
+          </div>
+          <label>Zielgruppe / Produkt
+            <input type="text" name="target_group" value="{{ form_data.target_group if selected_tab == 'partner' else '' }}" placeholder="z.B. Gaming-Peripherie für 18–30-jährige">
+          </label>
+          <label>Was schwebt dir vor?
+            <textarea name="message" rows="8" required>{{ form_data.message if selected_tab == 'partner' else '' }}</textarea>
+          </label>
+          <button class="btn" type="submit">Anfrage senden</button>
+        </form>
+      </div>
+    </div>
   </section>
 </section>
 {% endblock %}

@@ -2878,7 +2878,7 @@ def inject_globals():
     )
     if artworks_enabled:
         nav_items.append(("Galerie", "artworks"))
-    nav_items.append(("Kontakt", "contact"))
+    nav_items.append(("Jetzt bewerben", "contact"))
     starfield_settings = settings.get("starfield")
     if not isinstance(starfield_settings, dict):
         starfield_settings = DEFAULT_SITE_SETTINGS.get("starfield", {})
@@ -5507,27 +5507,51 @@ def shop_detail(slug):
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     form_data = {
+        "application_type": request.form.get("application_type", "").strip(),
         "name": request.form.get("name", "").strip(),
+        "contact_person": request.form.get("contact_person", "").strip(),
         "email": request.form.get("email", "").strip(),
+        "primary_link": request.form.get("primary_link", "").strip(),
+        "discord": request.form.get("discord", "").strip(),
+        "focus_type": request.form.get("focus_type", "").strip(),
+        "range_info": request.form.get("range_info", "").strip(),
+        "additional_links": request.form.get("additional_links", "").strip(),
+        "target_group": request.form.get("target_group", "").strip(),
         "subject": request.form.get("subject", "").strip(),
         "message": request.form.get("message", "").strip(),
     }
 
     if request.method == "POST":
-        if not all(form_data.values()):
-            flash("Bitte fülle alle Felder aus.", "error")
+        required_fields = [
+            form_data["application_type"],
+            form_data["name"],
+            form_data["email"],
+            form_data["primary_link"],
+            form_data["subject"],
+            form_data["message"],
+        ]
+        if not all(required_fields):
+            flash("Bitte fülle alle Pflichtfelder aus.", "error")
         else:
             msg = Message(
-                subject=f"[Astralia Kontakt] {form_data['subject']}",
+                subject=f"[Astralia Bewerbung] {form_data['subject']}",
                 recipients=[CONTACT_RECIPIENT],
                 reply_to=form_data["email"],
             )
             msg.body = (
-                "Neue Kontaktanfrage von astralia.live\n\n"
-                f"Name: {form_data['name']}\n"
+                "Neue Bewerbung / Anfrage von astralia.live\n\n"
+                f"Bewerbungsart: {form_data['application_type']}\n"
+                f"VTuber / Streamer Name oder Firmenname: {form_data['name']}\n"
+                f"Ansprechpartner / Kontaktperson: {form_data['contact_person'] or '-'}\n"
                 f"E-Mail: {form_data['email']}\n"
+                f"Hauptplattform / Website: {form_data['primary_link']}\n"
+                f"Discord: {form_data['discord'] or '-'}\n"
+                f"Hauptkategorie / Partnerschafts-Art: {form_data['focus_type'] or '-'}\n"
+                f"Ø Zuschauerzahl / Budget-Rahmen: {form_data['range_info'] or '-'}\n"
+                f"Weitere Links: {form_data['additional_links'] or '-'}\n"
+                f"Zielgruppe / Produkt: {form_data['target_group'] or '-'}\n"
                 f"Betreff: {form_data['subject']}\n\n"
-                f"Nachricht:\n{form_data['message']}\n"
+                f"Nachricht / Beschreibung:\n{form_data['message']}\n"
             )
             try:
                 mail.send(msg)
@@ -5542,7 +5566,7 @@ def contact():
                 return redirect(url_for("contact"))
 
     page_meta = build_seo_metadata(
-        title="Kontakt",
+        title="Jetzt bewerben",
         description="Schreibe uns für Kooperationen, Presse oder Community-Anfragen.",
         canonical=url_for("contact", _external=True),
     )
