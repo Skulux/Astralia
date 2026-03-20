@@ -2878,7 +2878,7 @@ def inject_globals():
     )
     if artworks_enabled:
         nav_items.append(("Galerie", "artworks"))
-    nav_items.append(("Kontakt", "contact"))
+    nav_items.append(("Jetzt bewerben", "contact"))
     starfield_settings = settings.get("starfield")
     if not isinstance(starfield_settings, dict):
         starfield_settings = DEFAULT_SITE_SETTINGS.get("starfield", {})
@@ -5542,7 +5542,7 @@ def contact():
                 return redirect(url_for("contact"))
 
     page_meta = build_seo_metadata(
-        title="Kontakt",
+        title="Jetzt bewerben",
         description="Schreibe uns für Kooperationen, Presse oder Community-Anfragen.",
         canonical=url_for("contact", _external=True),
     )
